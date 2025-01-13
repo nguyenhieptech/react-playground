@@ -1,5 +1,6 @@
-import type { Route } from "./+types/home";
+import { ThemeProvider } from "~/providers/theme-provider";
 import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +10,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Welcome />
+    </ThemeProvider>
+  );
 }
