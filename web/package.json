@@ -6,7 +6,9 @@
     "build": "cross-env NODE_ENV=production react-router build",
     "dev": "react-router dev",
     "start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "format:write": "prettier --write \"app/**/*.{ts,tsx}\" --cache",
+    "format:check": "prettier --check \"app/**/*.{ts,tsx}\" --cache"
   },
   "dependencies": {
     "@react-router/node": "^7.1.1",
@@ -24,6 +26,9 @@
     "@types/react-dom": "^19.0.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
