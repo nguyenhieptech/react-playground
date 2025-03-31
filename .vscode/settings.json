@@ -4,7 +4,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.lineHeight": 21,
   "editor.tabSize": 2,
-  "editor.fontSize": 14,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
