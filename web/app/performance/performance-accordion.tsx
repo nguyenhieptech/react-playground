@@ -1,11 +1,11 @@
-import { memo, useCallback, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "~/components/ui/accordion";
-import { makeData } from "~/lib/make-data";
+} from "@/components/ui/accordion";
+import { makeData } from "@/lib/make-data";
+import { memo, useCallback, useState } from "react";
 
 const peopleData = makeData(2000);
 

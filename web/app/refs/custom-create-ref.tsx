@@ -1,7 +1,7 @@
+import { videoRegistry } from "@/assets";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { forwardRef, useEffect } from "react";
-import { videoRegistry } from "~/assets";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 // https://github.com/facebook/react/blob/main/packages/shared/ReactTypes.js#L97C26-L97C26
 export type RefObjectType<T> = {

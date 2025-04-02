@@ -1,3 +1,6 @@
+import { audioRegistry, videoRegistry } from "@/assets";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, {
   createRef,
   forwardRef,
@@ -5,9 +8,6 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react";
-import { audioRegistry, videoRegistry } from "~/assets";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 type AppVideoProps = React.VideoHTMLAttributes<HTMLVideoElement> & {
   // Add props here if needed

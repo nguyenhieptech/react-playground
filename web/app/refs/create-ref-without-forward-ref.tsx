@@ -1,7 +1,7 @@
+import { videoRegistry } from "@/assets";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { createRef, useEffect, useImperativeHandle, useRef } from "react";
-import { videoRegistry } from "~/assets";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 /**
  * Các custom refs sử dụng `useImperativeHandle` thì phải export ra

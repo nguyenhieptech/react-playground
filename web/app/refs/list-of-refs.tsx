@@ -1,8 +1,8 @@
 // https://react.dev/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback
 // How to manage a list of refs using a ref callback
 
+import { Button } from "@/components/ui/button";
 import { useRef } from "react";
-import { Button } from "~/components/ui/button";
 
 type Cat = {
   id: number;

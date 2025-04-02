@@ -1,4 +1,4 @@
-import { ThemeProvider } from "~/providers/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 

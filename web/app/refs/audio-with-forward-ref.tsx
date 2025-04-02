@@ -1,7 +1,7 @@
+import { audioRegistry } from "@/assets";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { audioRegistry } from "~/assets";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 type AudioProps = React.AudioHTMLAttributes<HTMLAudioElement> & {
   // Add more props here if needed

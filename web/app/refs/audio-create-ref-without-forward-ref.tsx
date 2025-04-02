@@ -1,7 +1,7 @@
+import { audioRegistry } from "@/assets";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { createRef, useEffect, useImperativeHandle, useRef } from "react";
-import { audioRegistry } from "~/assets";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 /**
  * Khi dùng useImperativeHandle thì mẹo với createRef không chạy khi thử với DOM methods như là play, pause.

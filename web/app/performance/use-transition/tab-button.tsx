@@ -1,4 +1,4 @@
-import { cn } from "~/lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface TabButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string;
