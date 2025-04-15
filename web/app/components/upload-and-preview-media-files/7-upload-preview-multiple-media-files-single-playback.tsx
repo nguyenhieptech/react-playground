@@ -31,44 +31,51 @@ const ALLOWED_MEDIA_TYPES = [
   "audio/ogg",
 ];
 
-// -------------------------
-// 📦 State & Refs
-// -------------------------
 export function UploadPreviewMultipleMediaFilesSinglePlayback() {
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const dropRef = useRef<HTMLDivElement>(null);
-  const mediaRefs = useRef<HTMLMediaElement[]>([]); // Tracks all audio/video elements
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<HTMLMediaElement | null>(null);
 
-  // -------------------------
-  // 🛠 Handlers
-  // -------------------------
-
+  // Feature: Upload file
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
-    handleNewFiles(files);
+    processFiles(files);
   }
 
-  function handleNewFiles(files: File[]) {
-    const validated: MediaItem[] = [];
+  function processFiles(files: File[]) {
+    const newMediaItems: MediaItem[] = [];
 
     files.forEach((file) => {
       const isValidType = ALLOWED_MEDIA_TYPES.includes(file.type);
-      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
-
       if (!isValidType) {
         setErrorMessage(`❌ File "${file.name}" is invalid: unsupported type.`);
         return;
       }
 
+      const sizeInMB = file.size / (1024 * 1024);
+      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
       if (!isValidSize) {
-        setErrorMessage(`❌ File "${file.name}" is invalid: size too large.`);
+        setErrorMessage(
+          `❌ File "${file.name}" is invalid: size too large (${sizeInMB.toFixed(2)} MB).`
+        );
         return;
       }
 
+      // Simulate upload progress
+
+      // 1. Use FileReader:
+      // Just preview in browser: ❌
+      // Want to simulate disk read progress: ✅
+      // Need to read file content (e.g. upload, base64, validation): ✅
+      // Want simple progress UI only: ✅ more accurate
+      // See 6-upload-preview-multiple-media-files.tsx
+
+      // 2. Use URL.createObjectURL:
+      // Just preview in browser: ✅ Fast, memory-based, no read needed
+      // Want to simulate disk read progress: ❌
+      // Need to read file content (e.g. upload, base64, validation): ❌
+      // Want simple progress UI only: ✅ with setInterval
       const url = URL.createObjectURL(file);
-      validated.push({
+      newMediaItems.push({
         file,
         url,
         type: file.type,
@@ -78,34 +85,42 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
       });
     });
 
-    validated.forEach(simulateUploadProgress);
-    setMediaItems((prev) => [...prev, ...validated]);
+    newMediaItems.forEach((item) => {
+      if (!item.isLoading) return;
+
+      const interval = setInterval(() => {
+        setMediaItems((prev) =>
+          prev.map((m) =>
+            m.url === item.url
+              ? {
+                  ...m,
+                  progress: Math.min(m.progress + 10, 100),
+                  isLoading: m.progress + 10 < 100,
+                }
+              : m
+          )
+        );
+      }, 300);
+
+      setTimeout(() => clearInterval(interval), 4000); // Auto clear after max timeout
+    });
+    setMediaItems((prev) => [...prev, ...newMediaItems]);
+  }
+
+  // Feature: Drag and drop (might be reused processFiles from feature Upload file)
+  const dropRef = useRef<HTMLDivElement>(null);
+
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    dropRef.current?.classList.remove("border-blue-400");
+    const files = Array.from(e.dataTransfer.files);
+    processFiles(files);
   }
 
   function handleRemoveFile(index: number) {
     const file = mediaItems[index];
     URL.revokeObjectURL(file.url);
     setMediaItems((prev) => prev.filter((_, i) => i !== index));
-  }
-
-  function simulateUploadProgress(item: MediaItem) {
-    if (!item.isLoading) return;
-
-    const interval = setInterval(() => {
-      setMediaItems((prev) =>
-        prev.map((m) =>
-          m.url === item.url
-            ? {
-                ...m,
-                progress: Math.min(m.progress + 10, 100),
-                isLoading: m.progress + 10 < 100,
-              }
-            : m
-        )
-      );
-    }, 300);
-
-    setTimeout(() => clearInterval(interval), 4000); // Auto clear after max timeout
   }
 
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
@@ -117,15 +132,10 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
     dropRef.current?.classList.remove("border-blue-400");
   }
 
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    dropRef.current?.classList.remove("border-blue-400");
-    const files = Array.from(e.dataTransfer.files);
-    handleNewFiles(files);
-  }
+  // Feature: Allow only one video or audio play at a time
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<HTMLMediaElement | null>(null);
 
   function handleMediaPlay(current: HTMLMediaElement) {
-    // Pause other media, only one video or audio can play at a time
     if (currentlyPlaying && currentlyPlaying !== current) {
       currentlyPlaying.pause();
     }
@@ -139,22 +149,14 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
     return "📁";
   }
 
-  // -------------------------
-  // 🌀 Effects
-  // -------------------------
   useEffect(() => {
+    // Clean up all object URLs when this component unmounts
     return () => {
+      console.log("Unmount");
       mediaItems.forEach((item) => URL.revokeObjectURL(item.url));
     };
   }, []);
 
-  useEffect(() => {
-    mediaRefs.current = [];
-  }, [mediaItems]);
-
-  // -------------------------
-  // 📦 Render
-  // -------------------------
   return (
     <div className="mx-auto w-full max-w-5xl">
       <div className="mb-4 flex gap-4">
@@ -204,16 +206,6 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
 
           return (
             <div key={url} className="relative rounded-md border p-3 shadow">
-              <div className="absolute right-2 top-2">
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleRemoveFile(index)}
-                >
-                  ✖
-                </Button>
-              </div>
-
               {isLoading && (
                 <div className="mb-2">
                   <Progress value={progress} className="h-2" />
@@ -228,14 +220,23 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
                 />
               )}
 
+              {!isLoading && (
+                <div className="absolute right-2 top-2">
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleRemoveFile(index)}
+                  >
+                    ✖
+                  </Button>
+                </div>
+              )}
+
               {!isLoading && type.startsWith("video/") && (
                 <video
                   controls
                   src={url}
                   className="h-60 w-full rounded"
-                  ref={(el) => {
-                    if (el) mediaRefs.current[index] = el;
-                  }}
                   onPlay={(e) => handleMediaPlay(e.currentTarget)}
                 />
               )}
@@ -248,9 +249,6 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
                   <audio
                     controls
                     src={url}
-                    ref={(el) => {
-                      if (el) mediaRefs.current[index] = el;
-                    }}
                     onPlay={(e) => handleMediaPlay(e.currentTarget)}
                     className="mt-1 w-full"
                   />

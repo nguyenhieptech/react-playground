@@ -34,18 +34,27 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
   const [errorMessage, setErrorMessage] = useState("");
   const dropRef = useRef<HTMLDivElement | null>(null);
 
-  function handleFiles(files: FileList | null) {
+  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+    setErrorMessage("");
+    processFiles(e.target.files);
+  }
+
+  function processFiles(files: FileList | null) {
     if (!files) return;
 
     Array.from(files).forEach((file) => {
-      if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
-        setErrorMessage(`Unsupported file type: ${file.name}`);
+      const isValidType = ALLOWED_MEDIA_TYPES.includes(file.type);
+      if (!isValidType) {
+        setErrorMessage(`❌ File "${file.name}" is invalid: unsupported type.`);
         return;
       }
 
       const sizeInMB = file.size / (1024 * 1024);
-      if (sizeInMB > MAX_FILE_SIZE_MB) {
-        setErrorMessage(`File too large: ${file.name} (${sizeInMB.toFixed(2)} MB)`);
+      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
+      if (!isValidSize) {
+        setErrorMessage(
+          `❌ File "${file.name}" is too large (${sizeInMB.toFixed(2)} MB).`
+        );
         return;
       }
 
@@ -85,26 +94,22 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
         );
       };
 
+      // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsArrayBuffer
       reader.readAsArrayBuffer(file);
     });
-  }
-
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
-    setErrorMessage("");
-    handleFiles(e.target.files);
   }
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     setErrorMessage("");
-    handleFiles(e.dataTransfer.files);
+    processFiles(e.dataTransfer.files);
   }
 
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
   }
 
-  function removeMediaItem(name: string) {
+  function handleRemoveMediaItem(name: string) {
     setMediaItems((prev) => {
       const item = prev.find((item) => item.name === name);
       if (item?.url) URL.revokeObjectURL(item.url);
@@ -171,7 +176,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
           >
             <button
               className="absolute right-2 top-2 z-20 rounded-full bg-white p-1 shadow"
-              onClick={() => removeMediaItem(name)}
+              onClick={() => handleRemoveMediaItem(name)}
             >
               <X className="h-4 w-4 text-zinc-600" />
             </button>

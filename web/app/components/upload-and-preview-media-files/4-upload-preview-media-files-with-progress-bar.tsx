@@ -38,6 +38,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
     if (!files) return;
 
     Array.from(files).forEach((file) => {
+      // Check type
       if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
         setErrorMessage(`Unsupported file type: ${file.name}`);
         return;

@@ -25,7 +25,7 @@ const ALLOWED_MEDIA_TYPES = [
 
 export function UploadAndPreviewMediaFiles() {
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
-  const [mediaBlobUrlsInMemory, setMediaBlobUrlsInMemory] = useState<MediaItem[]>([]);
+  const [mediaBlobItemsInMemory, setMediaBlobItemsInMemory] = useState<MediaItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
@@ -37,13 +37,13 @@ export function UploadAndPreviewMediaFiles() {
     const newMedia: MediaItem[] = [];
 
     for (const file of files) {
-      // Type check
+      // Check type
       if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
         setErrorMessage(`Unsupported file type: ${file.name}`);
         continue;
       }
 
-      // Size check
+      // Check size
       const sizeInMB = file.size / (1024 * 1024);
       if (sizeInMB > MAX_FILE_SIZE_MB) {
         setErrorMessage(`File too large: ${file.name} (${sizeInMB.toFixed(2)} MB)`);
@@ -56,14 +56,14 @@ export function UploadAndPreviewMediaFiles() {
 
     if (newMedia.length > 0) {
       setMediaBlobUrlForPreviewing(newMedia[0].url);
-      setMediaBlobUrlsInMemory((prev) => [...prev, ...newMedia]);
+      setMediaBlobItemsInMemory((prev) => [...prev, ...newMedia]);
     }
   }
 
   useEffect(() => {
     return () => {
       // Clean up object URLs
-      mediaBlobUrlsInMemory.forEach(({ url }) => URL.revokeObjectURL(url));
+      mediaBlobItemsInMemory.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -84,7 +84,7 @@ export function UploadAndPreviewMediaFiles() {
         <p className="mt-2 break-all text-sm">mediaUrl: {mediaBlobUrlForPreviewing}</p>
         <div className="mt-2 text-sm">
           <p>mediaUrlList:</p>
-          {mediaBlobUrlsInMemory.map(({ url }, index) => (
+          {mediaBlobItemsInMemory.map(({ url }, index) => (
             <div key={index} className="truncate">
               {url}
             </div>
@@ -94,7 +94,7 @@ export function UploadAndPreviewMediaFiles() {
 
       {/* Previews */}
       <div className="my-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {mediaBlobUrlsInMemory.map(({ url, type }, index) => {
+        {mediaBlobItemsInMemory.map(({ url, type }, index) => {
           if (type.startsWith("image/")) {
             return (
               <img

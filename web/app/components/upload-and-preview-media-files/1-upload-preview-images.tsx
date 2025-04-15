@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ALLOWED_MEDIA_TYPES = [
   "image/jpeg",
@@ -16,15 +16,16 @@ const ALLOWED_MEDIA_TYPES = [
 export function UploadAndPreviewImages() {
   // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
-  // Media blob URLs in browser memory
+
+  // Media blob URLs in browser memory (for rendering URLs in development)
   const [mediaBlobUrlsInMemory, setMediaBlobUrlsInMemory] = useState([""]);
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
-    const mediaFile = e.target.files?.[0];
+    const files = e.target.files;
     // Create files in browser memory from the media file object
     // so that we can access it with a URL
-    if (mediaFile) {
-      const mediaUrlInMemory = URL.createObjectURL(mediaFile!);
+    if (files) {
+      const mediaUrlInMemory = URL.createObjectURL(files[0]);
       setMediaBlobUrlForPreviewing(mediaUrlInMemory);
       setMediaBlobUrlsInMemory([...mediaBlobUrlsInMemory, mediaUrlInMemory]);
     }
@@ -32,7 +33,7 @@ export function UploadAndPreviewImages() {
 
   useEffect(() => {
     return () => {
-      // Remove media files (image, video) from browser memory when this component unmounts
+      // Remove media files (images) from browser memory when this component unmounts
       mediaBlobUrlsInMemory.forEach((mediaBlobUrl) => {
         URL.revokeObjectURL(mediaBlobUrl);
       });
@@ -63,16 +64,20 @@ export function UploadAndPreviewImages() {
       </div>
 
       <div className="my-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {mediaBlobUrlsInMemory.map((mediaBlobUrl) => {
-          return (
-            <img
-              className="aspect-h-1 aspect-w-1 lg:aspect-none h-60 w-60 rounded-md bg-zinc-300 object-cover"
-              src={mediaBlobUrl}
-              alt="image"
-            />
-          );
+        {mediaBlobUrlsInMemory.map((mediaBlobUrl, index) => {
+          if (mediaBlobUrl) {
+            return (
+              <img
+                key={index}
+                className="aspect-h-1 aspect-w-1 lg:aspect-none h-60 w-60 rounded-md bg-zinc-300 object-cover"
+                src={mediaBlobUrl}
+                alt="image"
+              />
+            );
+          }
         })}
       </div>
+
       <Button>Upload images</Button>
     </div>
   );

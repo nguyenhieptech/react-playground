@@ -34,24 +34,42 @@ export function UploadPreviewMultipleMediaFiles() {
   const [errorMessage, setErrorMessage] = useState("");
   const dropRef = useRef<HTMLDivElement | null>(null);
 
+  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+    setErrorMessage("");
+    processFiles(e.target.files);
+  }
+
   function processFiles(files: FileList | null) {
     if (!files) return;
-    const newItems: MediaItem[] = [];
+    const newMediaItems: MediaItem[] = [];
 
     Array.from(files).forEach((file) => {
       const isValidType = ALLOWED_MEDIA_TYPES.includes(file.type);
-      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
-
       if (!isValidType) {
         setErrorMessage(`❌ File "${file.name}" is invalid: unsupported type.`);
         return;
       }
 
+      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
       if (!isValidSize) {
         setErrorMessage(`❌ File "${file.name}" is invalid: size too large.`);
         return;
       }
 
+      // Simulate upload progress
+
+      // 1. Use URL.createObjectURL:
+      // Just preview in browser: ✅ Fast, memory-based, no read needed
+      // Want to simulate disk read progress: ❌
+      // Need to read file content (e.g. upload, base64, validation): ❌
+      // Want simple progress UI only: ✅ with setInterval
+      // See 7-upload-preview-multiple-media-files-single-playback.tsx
+
+      // 2. Use FileReader:
+      // Just preview in browser: ❌
+      // Want to simulate disk read progress: ✅
+      // Need to read file content (e.g. upload, base64, validation): ✅
+      // Want simple progress UI only: ✅ more accurate
       const reader = new FileReader();
       const mediaItem: MediaItem = {
         url: "",
@@ -61,7 +79,7 @@ export function UploadPreviewMultipleMediaFiles() {
         isLoading: true,
       };
 
-      newItems.push(mediaItem);
+      newMediaItems.push(mediaItem);
 
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -88,12 +106,7 @@ export function UploadPreviewMultipleMediaFiles() {
       reader.readAsArrayBuffer(file);
     });
 
-    setMediaItems((prev) => [...prev, ...newItems]);
-  }
-
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
-    setErrorMessage("");
-    processFiles(e.target.files);
+    setMediaItems((prev) => [...prev, ...newMediaItems]);
   }
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
@@ -106,7 +119,7 @@ export function UploadPreviewMultipleMediaFiles() {
     e.preventDefault();
   }
 
-  function removeMediaItem(name: string) {
+  function handleRemoveMediaItem(name: string) {
     setMediaItems((prev) => {
       const item = prev.find((i) => i.name === name);
       if (item?.url) URL.revokeObjectURL(item.url);
@@ -116,9 +129,7 @@ export function UploadPreviewMultipleMediaFiles() {
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      mediaItems.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, [mediaItems]);
 
@@ -171,7 +182,7 @@ export function UploadPreviewMultipleMediaFiles() {
           >
             <button
               className="absolute right-2 top-2 z-20 rounded-full bg-white p-1 shadow"
-              onClick={() => removeMediaItem(name)}
+              onClick={() => handleRemoveMediaItem(name)}
             >
               <X className="h-4 w-4 text-zinc-600" />
             </button>

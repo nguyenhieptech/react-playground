@@ -2,6 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
+interface MediaItem {
+  url: string;
+  type: string;
+}
+
 const ALLOWED_MEDIA_TYPES = [
   "image/jpeg",
   "image/png",
@@ -19,9 +24,7 @@ export function UploadAndPreviewImagesVideos() {
   // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
   // Media blob URLs in browser memory
-  const [mediaBlobUrlsInMemory, setMediaBlobUrlsInMemory] = useState<
-    { url: string; type: string }[]
-  >([]);
+  const [mediaBlobUrlsInMemory, setMediaBlobUrlsInMemory] = useState<MediaItem[]>([]);
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
