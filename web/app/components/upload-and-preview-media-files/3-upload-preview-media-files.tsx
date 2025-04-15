@@ -35,7 +35,7 @@ export function UploadAndPreviewMediaFiles() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     // If upload 4 files, this function will be called one time only, try it with console.log
 
     setErrorMessage(""); // reset
@@ -43,7 +43,7 @@ export function UploadAndPreviewMediaFiles() {
     const files = e.target.files;
     if (!files) return;
 
-    const newMedia: MediaItem[] = [];
+    const newMediaFiles: MediaItem[] = [];
 
     for (const file of files) {
       // Check type
@@ -60,15 +60,15 @@ export function UploadAndPreviewMediaFiles() {
       }
 
       const url = URL.createObjectURL(file);
-      newMedia.push({ url, type: file.type });
+      newMediaFiles.push({ url, type: file.type });
     }
 
-    if (newMedia.length > 0) {
-      setMediaBlobUrlForPreviewing(newMedia[0].url);
-      setMediaBlobItemsInMemory((prev) => [...prev, ...newMedia]);
+    if (newMediaFiles.length > 0) {
+      setMediaBlobUrlForPreviewing(newMediaFiles[0].url);
+      setMediaBlobItemsInMemory((prev) => [...prev, ...newMediaFiles]);
 
       // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
-      mediaBlobUrlsRef.current.push(...newMedia);
+      mediaBlobUrlsRef.current.push(...newMediaFiles);
     }
   }
 
@@ -85,7 +85,7 @@ export function UploadAndPreviewMediaFiles() {
         className="h-40 w-60"
         type="file"
         multiple
-        onChange={handleUploadMedia}
+        onChange={handleUploadMediaFiles}
         accept={ALLOWED_MEDIA_TYPES.join(",")}
       />
 

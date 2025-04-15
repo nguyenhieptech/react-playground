@@ -40,7 +40,7 @@ export function UploadPreviewMultipleMediaFiles() {
 
   const dropRef = useRef<HTMLDivElement | null>(null);
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     processFiles(e.target.files);
   }
@@ -77,18 +77,17 @@ export function UploadPreviewMultipleMediaFiles() {
       // Need to read file content (e.g. upload, base64, validation): ✅
       // Want simple progress UI only: ✅ more accurate
       const reader = new FileReader();
-      const mediaItem: MediaItem = {
+      const newMediaItem: MediaItem = {
         url: "",
         type: file.type,
         name: file.name,
         progress: 0,
         isLoading: true,
       };
-
-      newMediaItems.push(mediaItem);
+      newMediaItems.push(newMediaItem);
 
       // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
-      mediaBlobUrlsRef.current.push(mediaItem);
+      mediaBlobUrlsRef.current.push(newMediaItem);
 
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -135,7 +134,7 @@ export function UploadPreviewMultipleMediaFiles() {
     e.preventDefault();
   }
 
-  function handleRemoveMediaItem(name: string) {
+  function handleRemoveMediaFile(name: string) {
     setMediaItems((prev) => {
       const item = prev.find((i) => i.name === name);
       if (item?.url) URL.revokeObjectURL(item.url);
@@ -172,7 +171,7 @@ export function UploadPreviewMultipleMediaFiles() {
           className="mt-4 w-full"
           type="file"
           multiple
-          onChange={handleUploadMedia}
+          onChange={handleUploadMediaFiles}
           accept={ALLOWED_MEDIA_TYPES.join(",")}
         />
       </div>
@@ -199,7 +198,7 @@ export function UploadPreviewMultipleMediaFiles() {
           >
             <button
               className="absolute right-2 top-2 z-20 rounded-full bg-white p-1 shadow"
-              onClick={() => handleRemoveMediaItem(name)}
+              onClick={() => handleRemoveMediaFile(name)}
             >
               <X className="h-4 w-4 text-zinc-600" />
             </button>

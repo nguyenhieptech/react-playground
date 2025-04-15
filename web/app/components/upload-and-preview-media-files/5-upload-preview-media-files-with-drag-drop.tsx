@@ -42,7 +42,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
 
   const dropRef = useRef<HTMLDivElement | null>(null);
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     processFiles(e.target.files);
   }
@@ -68,7 +68,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
 
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
       const reader = new FileReader();
-      const newItem: MediaItem = {
+      const newMediaFile: MediaItem = {
         url: "",
         type: file.type,
         name: file.name,
@@ -76,10 +76,10 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
         isLoading: true,
       };
 
-      setMediaItems((prev) => [...prev, newItem]);
+      setMediaItems((prev) => [...prev, newMediaFile]);
 
       // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
-      mediaBlobUrlsRef.current.push(newItem);
+      mediaBlobUrlsRef.current.push(newMediaFile);
 
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event
       reader.onprogress = (event) => {
@@ -94,19 +94,19 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
       };
 
       reader.onloadend = () => {
-        const url = URL.createObjectURL(file);
-        setMediaBlobUrlForPreviewing(url);
+        const blobUrl = URL.createObjectURL(file);
+        setMediaBlobUrlForPreviewing(blobUrl);
         setMediaItems((prev) =>
           prev.map((item) =>
             item.name === file.name
-              ? { ...item, url, isLoading: false, progress: 100 }
+              ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
               : item
           )
         );
 
         mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
           item.name === file.name
-            ? { ...item, url, isLoading: false, progress: 100 }
+            ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
             : item
         );
       };
@@ -126,7 +126,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
     e.preventDefault();
   }
 
-  function handleRemoveMediaItem(name: string) {
+  function handleRemoveMediaFile(name: string) {
     setMediaItems((prev) => {
       const item = prev.find((item) => item.name === name);
       if (item?.url) URL.revokeObjectURL(item.url);
@@ -167,7 +167,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
           className="mt-4 w-full"
           type="file"
           multiple
-          onChange={handleUploadMedia}
+          onChange={handleUploadMediaFiles}
           accept={ALLOWED_MEDIA_TYPES.join(",")}
         />
       </div>
@@ -196,7 +196,7 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
           >
             <button
               className="absolute right-2 top-2 z-20 rounded-full bg-white p-1 shadow"
-              onClick={() => handleRemoveMediaItem(name)}
+              onClick={() => handleRemoveMediaFile(name)}
             >
               <X className="h-4 w-4 text-zinc-600" />
             </button>

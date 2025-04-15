@@ -39,7 +39,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     const files = e.target.files;
     if (!files) return;
@@ -60,7 +60,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
       // Progress bar
       const reader = new FileReader();
-      const newItem: MediaItem = {
+      const newMediaFile: MediaItem = {
         url: "",
         type: file.type,
         name: file.name,
@@ -68,10 +68,10 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
         isLoading: true,
       };
 
-      setMediaItems((prev) => [...prev, newItem]);
+      setMediaItems((prev) => [...prev, newMediaFile]);
 
       // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
-      mediaBlobUrlsRef.current.push(newItem);
+      mediaBlobUrlsRef.current.push(newMediaFile);
 
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event
       reader.onprogress = (event) => {
@@ -86,19 +86,20 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
       };
 
       reader.onloadend = () => {
-        const url = URL.createObjectURL(file);
-        setMediaBlobUrlForPreviewing(url);
+        const blobUrl = URL.createObjectURL(file);
+
+        setMediaBlobUrlForPreviewing(blobUrl);
         setMediaItems((prev) =>
           prev.map((item) =>
             item.name === file.name
-              ? { ...item, url, isLoading: false, progress: 100 }
+              ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
               : item
           )
         );
 
         mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
           item.name === file.name
-            ? { ...item, url, isLoading: false, progress: 100 }
+            ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
             : item
         );
       };
@@ -120,7 +121,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
         className="h-40 w-60"
         type="file"
         multiple
-        onChange={handleUploadMedia}
+        onChange={handleUploadMediaFiles}
         accept={ALLOWED_MEDIA_TYPES.join(",")}
       />
 

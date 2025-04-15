@@ -41,7 +41,7 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
   const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
 
   // Feature: Upload file
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     processFiles(files);
   }
@@ -80,8 +80,7 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
       // Need to read file content (e.g. upload, base64, validation): ❌
       // Want simple progress UI only: ✅ with setInterval
       const url = URL.createObjectURL(file);
-
-      const mediaItem: MediaItem = {
+      const newMediaItem: MediaItem = {
         file,
         url,
         type: file.type,
@@ -89,11 +88,10 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
         isLoading: file.size > 5 * 1024 * 1024,
         progress: 0,
       };
-
-      newMediaItems.push(mediaItem);
+      newMediaItems.push(newMediaItem);
 
       // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
-      mediaBlobUrlsRef.current.push(mediaItem);
+      mediaBlobUrlsRef.current.push(newMediaItem);
     });
 
     newMediaItems.forEach((item) => {
@@ -130,12 +128,6 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
     processFiles(files);
   }
 
-  function handleRemoveFile(index: number) {
-    const file = mediaItems[index];
-    URL.revokeObjectURL(file.url);
-    setMediaItems((prev) => prev.filter((_, i) => i !== index));
-  }
-
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     dropRef.current?.classList.add("border-blue-400");
@@ -143,6 +135,12 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
 
   function handleDragLeave() {
     dropRef.current?.classList.remove("border-blue-400");
+  }
+
+  function handleRemoveMediaFile(index: number) {
+    const file = mediaItems[index];
+    URL.revokeObjectURL(file.url);
+    setMediaItems((prev) => prev.filter((_, i) => i !== index));
   }
 
   // Feature: Allow only one video or audio play at a time
@@ -175,7 +173,7 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
         <Input
           type="file"
           multiple
-          onChange={handleUploadMedia}
+          onChange={handleUploadMediaFiles}
           accept={ALLOWED_MEDIA_TYPES.join(",")}
         />
         <Button onClick={() => dropRef.current?.scrollIntoView({ behavior: "smooth" })}>
@@ -237,7 +235,7 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
                   <Button
                     size="sm"
                     variant="destructive"
-                    onClick={() => handleRemoveFile(index)}
+                    onClick={() => handleRemoveMediaFile(index)}
                   >
                     ✖
                   </Button>

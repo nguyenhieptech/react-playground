@@ -23,7 +23,7 @@ export function UploadAndPreviewImages() {
   // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
   const mediaBlobUrlsRef = useRef<string[]>([]);
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     // If upload 4 files, this function will be called one time only, try it with console.log
 
     const files = e.target.files;
@@ -51,7 +51,7 @@ export function UploadAndPreviewImages() {
         className="h-40 w-60"
         type="file"
         multiple
-        onChange={handleUploadMedia}
+        onChange={handleUploadMediaFiles}
         accept={ALLOWED_MEDIA_TYPES.join(",")}
       />
 
