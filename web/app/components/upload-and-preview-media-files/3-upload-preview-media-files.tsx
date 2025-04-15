@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MediaItem {
   url: string;
@@ -24,26 +24,35 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadAndPreviewMediaFiles() {
+  // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
-  const [mediaBlobUrlsInMemory, setMediaBlobUrlsInMemory] = useState<MediaItem[]>([]);
+
+  // Media blob URLs in browser memory
+  const [mediaBlobItemsInMemory, setMediaBlobItemsInMemory] = useState<MediaItem[]>([]);
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    // If upload 4 files, this function will be called one time only, try it with console.log
+
     setErrorMessage(""); // reset
 
     const files = e.target.files;
     if (!files) return;
 
-    const newMedia: MediaItem[] = [];
+    const newMediaFiles: MediaItem[] = [];
 
     for (const file of files) {
-      // Type check
+      // Check type
       if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
         setErrorMessage(`Unsupported file type: ${file.name}`);
         continue;
       }
 
-      // Size check
+      // Check size
       const sizeInMB = file.size / (1024 * 1024);
       if (sizeInMB > MAX_FILE_SIZE_MB) {
         setErrorMessage(`File too large: ${file.name} (${sizeInMB.toFixed(2)} MB)`);
@@ -51,19 +60,22 @@ export function UploadAndPreviewMediaFiles() {
       }
 
       const url = URL.createObjectURL(file);
-      newMedia.push({ url, type: file.type });
+      newMediaFiles.push({ url, type: file.type });
     }
 
-    if (newMedia.length > 0) {
-      setMediaBlobUrlForPreviewing(newMedia[0].url);
-      setMediaBlobUrlsInMemory((prev) => [...prev, ...newMedia]);
+    if (newMediaFiles.length > 0) {
+      setMediaBlobUrlForPreviewing(newMediaFiles[0].url);
+      setMediaBlobItemsInMemory((prev) => [...prev, ...newMediaFiles]);
+
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(...newMediaFiles);
     }
   }
 
   useEffect(() => {
     return () => {
-      // Clean up object URLs
-      mediaBlobUrlsInMemory.forEach(({ url }) => URL.revokeObjectURL(url));
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -73,7 +85,7 @@ export function UploadAndPreviewMediaFiles() {
         className="h-40 w-60"
         type="file"
         multiple
-        onChange={handleUploadMedia}
+        onChange={handleUploadMediaFiles}
         accept={ALLOWED_MEDIA_TYPES.join(",")}
       />
 
@@ -84,7 +96,7 @@ export function UploadAndPreviewMediaFiles() {
         <p className="mt-2 break-all text-sm">mediaUrl: {mediaBlobUrlForPreviewing}</p>
         <div className="mt-2 text-sm">
           <p>mediaUrlList:</p>
-          {mediaBlobUrlsInMemory.map(({ url }, index) => (
+          {mediaBlobItemsInMemory.map(({ url }, index) => (
             <div key={index} className="truncate">
               {url}
             </div>
@@ -94,7 +106,7 @@ export function UploadAndPreviewMediaFiles() {
 
       {/* Previews */}
       <div className="my-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {mediaBlobUrlsInMemory.map(({ url, type }, index) => {
+        {mediaBlobItemsInMemory.map(({ url, type }, index) => {
           if (type.startsWith("image/")) {
             return (
               <img

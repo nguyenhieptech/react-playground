@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MediaItem {
   url: string;
@@ -28,16 +28,24 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadAndPreviewMediaFilesWithProgressBar() {
+  // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
+
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     const files = e.target.files;
     if (!files) return;
 
     Array.from(files).forEach((file) => {
+      // Check type
       if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
         setErrorMessage(`Unsupported file type: ${file.name}`);
         return;
@@ -52,7 +60,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
       // Progress bar
       const reader = new FileReader();
-      const newItem: MediaItem = {
+      const newMediaFile: MediaItem = {
         url: "",
         type: file.type,
         name: file.name,
@@ -60,7 +68,10 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
         isLoading: true,
       };
 
-      setMediaItems((prev) => [...prev, newItem]);
+      setMediaItems((prev) => [...prev, newMediaFile]);
+
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(newMediaFile);
 
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event
       reader.onprogress = (event) => {
@@ -75,14 +86,21 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
       };
 
       reader.onloadend = () => {
-        const url = URL.createObjectURL(file);
-        setMediaBlobUrlForPreviewing(url);
+        const blobUrl = URL.createObjectURL(file);
+
+        setMediaBlobUrlForPreviewing(blobUrl);
         setMediaItems((prev) =>
           prev.map((item) =>
             item.name === file.name
-              ? { ...item, url, isLoading: false, progress: 100 }
+              ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
               : item
           )
+        );
+
+        mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
+          item.name === file.name
+            ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
+            : item
         );
       };
 
@@ -92,9 +110,8 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -104,7 +121,7 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
         className="h-40 w-60"
         type="file"
         multiple
-        onChange={handleUploadMedia}
+        onChange={handleUploadMediaFiles}
         accept={ALLOWED_MEDIA_TYPES.join(",")}
       />
 

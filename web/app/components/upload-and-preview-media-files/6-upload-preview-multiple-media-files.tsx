@@ -30,38 +30,64 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadPreviewMultipleMediaFiles() {
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const dropRef = useRef<HTMLDivElement | null>(null);
+
+  function handleUploadMediaFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    setErrorMessage("");
+    processFiles(e.target.files);
+  }
 
   function processFiles(files: FileList | null) {
     if (!files) return;
-    const newItems: MediaItem[] = [];
+    const newMediaItems: MediaItem[] = [];
 
     Array.from(files).forEach((file) => {
       const isValidType = ALLOWED_MEDIA_TYPES.includes(file.type);
-      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
-
       if (!isValidType) {
         setErrorMessage(`❌ File "${file.name}" is invalid: unsupported type.`);
         return;
       }
 
+      const isValidSize = file.size <= MAX_FILE_SIZE_MB * 1024 * 1024;
       if (!isValidSize) {
         setErrorMessage(`❌ File "${file.name}" is invalid: size too large.`);
         return;
       }
 
+      // Simulate upload progress
+
+      // 1. Use URL.createObjectURL:
+      // Just preview in browser: ✅ Fast, memory-based, no read needed
+      // Want to simulate disk read progress: ❌
+      // Need to read file content (e.g. upload, base64, validation): ❌
+      // Want simple progress UI only: ✅ with setInterval
+      // See 7-upload-preview-multiple-media-files-single-playback.tsx
+
+      // 2. Use FileReader:
+      // Just preview in browser: ❌
+      // Want to simulate disk read progress: ✅
+      // Need to read file content (e.g. upload, base64, validation): ✅
+      // Want simple progress UI only: ✅ more accurate
       const reader = new FileReader();
-      const mediaItem: MediaItem = {
+      const newMediaItem: MediaItem = {
         url: "",
         type: file.type,
         name: file.name,
         progress: 0,
         isLoading: true,
       };
+      newMediaItems.push(newMediaItem);
 
-      newItems.push(mediaItem);
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(newMediaItem);
 
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -76,6 +102,7 @@ export function UploadPreviewMultipleMediaFiles() {
 
       reader.onloadend = () => {
         const blobUrl = URL.createObjectURL(file);
+
         setMediaItems((prev) =>
           prev.map((item) =>
             item.name === file.name
@@ -83,17 +110,18 @@ export function UploadPreviewMultipleMediaFiles() {
               : item
           )
         );
+
+        mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
+          item.name === file.name
+            ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
+            : item
+        );
       };
 
       reader.readAsArrayBuffer(file);
     });
 
-    setMediaItems((prev) => [...prev, ...newItems]);
-  }
-
-  function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
-    setErrorMessage("");
-    processFiles(e.target.files);
+    setMediaItems((prev) => [...prev, ...newMediaItems]);
   }
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
@@ -106,7 +134,7 @@ export function UploadPreviewMultipleMediaFiles() {
     e.preventDefault();
   }
 
-  function removeMediaItem(name: string) {
+  function handleRemoveMediaFile(name: string) {
     setMediaItems((prev) => {
       const item = prev.find((i) => i.name === name);
       if (item?.url) URL.revokeObjectURL(item.url);
@@ -116,11 +144,10 @@ export function UploadPreviewMultipleMediaFiles() {
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
-  }, [mediaItems]);
+  }, []);
 
   function getFileIcon(type: string) {
     if (type.startsWith("image/")) return "📷";
@@ -144,7 +171,7 @@ export function UploadPreviewMultipleMediaFiles() {
           className="mt-4 w-full"
           type="file"
           multiple
-          onChange={handleUploadMedia}
+          onChange={handleUploadMediaFiles}
           accept={ALLOWED_MEDIA_TYPES.join(",")}
         />
       </div>
@@ -171,7 +198,7 @@ export function UploadPreviewMultipleMediaFiles() {
           >
             <button
               className="absolute right-2 top-2 z-20 rounded-full bg-white p-1 shadow"
-              onClick={() => removeMediaItem(name)}
+              onClick={() => handleRemoveMediaFile(name)}
             >
               <X className="h-4 w-4 text-zinc-600" />
             </button>
