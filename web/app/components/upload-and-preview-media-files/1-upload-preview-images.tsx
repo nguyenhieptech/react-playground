@@ -46,7 +46,7 @@ export function UploadAndPreviewImages() {
   }, []);
 
   return (
-    <div className="w-[100rem]">
+    <div>
       <Input
         className="h-40 w-60"
         type="file"

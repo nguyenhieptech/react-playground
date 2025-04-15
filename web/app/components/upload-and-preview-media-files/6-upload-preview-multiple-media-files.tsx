@@ -162,11 +162,9 @@ export function UploadPreviewMultipleMediaFiles() {
         ref={dropRef}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className="mb-4 rounded-md border-2 border-dashed border-zinc-400 p-6 text-center transition hover:bg-zinc-100"
+        className="mb-4 max-w-4xl rounded-md border-2 border-dashed border-zinc-400 p-6 text-center transition hover:bg-zinc-100 dark:hover:bg-zinc-900"
       >
-        <p className="font-medium text-zinc-700">
-          Drag & Drop multiple files or select below
-        </p>
+        <p className="font-medium">Drag & Drop multiple files or select below</p>
         <Input
           className="mt-4 w-full"
           type="file"

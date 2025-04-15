@@ -205,7 +205,7 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className="mb-6 flex h-32 w-full items-center justify-center rounded-lg border-4 border-dashed border-zinc-300 text-zinc-500"
+        className="mb-4 max-w-4xl rounded-md border-2 border-dashed border-zinc-400 p-6 text-center transition hover:bg-zinc-100 dark:hover:bg-zinc-900"
       >
         Drag & Drop media files here
       </div>
