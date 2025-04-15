@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MediaItem {
   url: string;
@@ -24,11 +24,20 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadAndPreviewMediaFiles() {
+  // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
+
+  // Media blob URLs in browser memory
   const [mediaBlobItemsInMemory, setMediaBlobItemsInMemory] = useState<MediaItem[]>([]);
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
+    // If upload 4 files, this function will be called one time only, try it with console.log
+
     setErrorMessage(""); // reset
 
     const files = e.target.files;
@@ -57,13 +66,16 @@ export function UploadAndPreviewMediaFiles() {
     if (newMedia.length > 0) {
       setMediaBlobUrlForPreviewing(newMedia[0].url);
       setMediaBlobItemsInMemory((prev) => [...prev, ...newMedia]);
+
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(...newMedia);
     }
   }
 
   useEffect(() => {
     return () => {
-      // Clean up object URLs
-      mediaBlobItemsInMemory.forEach(({ url }) => URL.revokeObjectURL(url));
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 

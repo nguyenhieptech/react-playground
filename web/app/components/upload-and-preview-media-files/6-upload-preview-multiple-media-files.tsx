@@ -30,8 +30,14 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadPreviewMultipleMediaFiles() {
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const dropRef = useRef<HTMLDivElement | null>(null);
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
@@ -81,6 +87,9 @@ export function UploadPreviewMultipleMediaFiles() {
 
       newMediaItems.push(mediaItem);
 
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(mediaItem);
+
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
           const percent = Math.round((event.loaded / event.total) * 100);
@@ -94,12 +103,19 @@ export function UploadPreviewMultipleMediaFiles() {
 
       reader.onloadend = () => {
         const blobUrl = URL.createObjectURL(file);
+
         setMediaItems((prev) =>
           prev.map((item) =>
             item.name === file.name
               ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
               : item
           )
+        );
+
+        mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
+          item.name === file.name
+            ? { ...item, url: blobUrl, isLoading: false, progress: 100 }
+            : item
         );
       };
 
@@ -129,9 +145,10 @@ export function UploadPreviewMultipleMediaFiles() {
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => URL.revokeObjectURL(url));
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
-  }, [mediaItems]);
+  }, []);
 
   function getFileIcon(type: string) {
     if (type.startsWith("image/")) return "📷";

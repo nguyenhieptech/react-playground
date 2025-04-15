@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MediaItem {
   url: string;
@@ -28,8 +28,15 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadAndPreviewMediaFilesWithProgressBar() {
+  // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
+
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
@@ -63,6 +70,9 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
       setMediaItems((prev) => [...prev, newItem]);
 
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(newItem);
+
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -85,6 +95,12 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
               : item
           )
         );
+
+        mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
+          item.name === file.name
+            ? { ...item, url, isLoading: false, progress: 100 }
+            : item
+        );
       };
 
       reader.readAsArrayBuffer(file);
@@ -93,9 +109,8 @@ export function UploadAndPreviewMediaFilesWithProgressBar() {
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 

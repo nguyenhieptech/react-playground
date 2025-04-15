@@ -32,8 +32,13 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadPreviewMultipleMediaFilesSinglePlayback() {
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
 
   // Feature: Upload file
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
@@ -75,14 +80,20 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
       // Need to read file content (e.g. upload, base64, validation): ❌
       // Want simple progress UI only: ✅ with setInterval
       const url = URL.createObjectURL(file);
-      newMediaItems.push({
+
+      const mediaItem: MediaItem = {
         file,
         url,
         type: file.type,
         name: file.name,
         isLoading: file.size > 5 * 1024 * 1024,
         progress: 0,
-      });
+      };
+
+      newMediaItems.push(mediaItem);
+
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(mediaItem);
     });
 
     newMediaItems.forEach((item) => {
@@ -105,6 +116,8 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
       setTimeout(() => clearInterval(interval), 4000); // Auto clear after max timeout
     });
     setMediaItems((prev) => [...prev, ...newMediaItems]);
+
+    mediaBlobUrlsRef.current = [...newMediaItems];
   }
 
   // Feature: Drag and drop (might be reused processFiles from feature Upload file)
@@ -150,10 +163,9 @@ export function UploadPreviewMultipleMediaFilesSinglePlayback() {
   }
 
   useEffect(() => {
-    // Clean up all object URLs when this component unmounts
     return () => {
-      console.log("Unmount");
-      mediaItems.forEach((item) => URL.revokeObjectURL(item.url));
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 

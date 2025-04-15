@@ -29,9 +29,17 @@ const ALLOWED_MEDIA_TYPES = [
 ];
 
 export function UploadAndPreviewMediaFilesWithDragDrop() {
+  // Selected media blob URL
   const [mediaBlobUrlForPreviewing, setMediaBlobUrlForPreviewing] = useState("");
+
+  // Media blob URLs in browser memory
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
+  // Store media blob URLs in browser memory inside a ref to clean up when this component unmounts
+  const mediaBlobUrlsRef = useRef<MediaItem[]>([]);
+
   const [errorMessage, setErrorMessage] = useState("");
+
   const dropRef = useRef<HTMLDivElement | null>(null);
 
   function handleUploadMedia(e: React.ChangeEvent<HTMLInputElement>) {
@@ -70,6 +78,9 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
 
       setMediaItems((prev) => [...prev, newItem]);
 
+      // Add media file blob URLs to ref to clean them up from browser memory when this component unmounts
+      mediaBlobUrlsRef.current.push(newItem);
+
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -91,6 +102,12 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
               ? { ...item, url, isLoading: false, progress: 100 }
               : item
           )
+        );
+
+        mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.map((item) =>
+          item.name === file.name
+            ? { ...item, url, isLoading: false, progress: 100 }
+            : item
         );
       };
 
@@ -115,13 +132,16 @@ export function UploadAndPreviewMediaFilesWithDragDrop() {
       if (item?.url) URL.revokeObjectURL(item.url);
       return prev.filter((item) => item.name !== name);
     });
+
+    mediaBlobUrlsRef.current = mediaBlobUrlsRef.current.filter(
+      (item) => item.name !== name
+    );
   }
 
   useEffect(() => {
     return () => {
-      mediaItems.forEach(({ url }) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      // Clean up media blob files from browser memory when this component unmounts to prevent memory leak
+      mediaBlobUrlsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
   }, []);
 
