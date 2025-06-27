@@ -1,5 +1,3 @@
-// https://ui.shadcn.com/docs/dark-mode/next#add-a-mode-toggle
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -11,7 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import React from "react";
+import * as React from "react";
+
+// https://ui.shadcn.com/docs/dark-mode/next#add-a-mode-toggle
 
 export function ThemeToggle() {
   const { setTheme } = useTheme();
