@@ -120,3 +120,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  /* https://x.com/adamwathan/status/1734696245015494711 */
+  @apply min-h-0 min-w-0;
+}
