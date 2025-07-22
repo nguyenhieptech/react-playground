@@ -8,9 +8,27 @@ importers:
 
   .:
     dependencies:
+      '@dnd-kit/core':
+        specifier: ^6.3.1
+        version: 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/modifiers':
+        specifier: ^9.0.0
+        version: 9.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/sortable':
+        specifier: ^10.0.0
+        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/utilities':
+        specifier: ^3.2.2
+        version: 3.2.2(react@19.1.0)
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.57.0(react@19.1.0))
+      '@tabler/icons-react':
+        specifier: ^3.34.0
+        version: 3.34.0(react@19.1.0)
+      '@tanstack/react-table':
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -30,8 +48,8 @@ importers:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       lucide-react:
-        specifier: ^0.523.0
-        version: 0.523.0(react@19.1.0)
+        specifier: ^0.525.0
+        version: 0.525.0(react@19.1.0)
       next:
         specifier: 15.3.4
         version: 15.3.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -57,8 +75,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       recharts:
-        specifier: ^2.15.3
-        version: 2.15.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^2.15.4
+        version: 2.15.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       sonner:
         specifier: ^2.0.5
         version: 2.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -143,8 +161,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  '@babel/runtime@7.27.4':
-    resolution: {integrity: sha512-t3yaEOuGu9NlIZ+hIeGbBjFtZT7j2cb2tg0fuaJKeGotchRjjLfrBA9Kwf8quhpP1EUuxModQg04q/mBwyg8uA==}
+  '@babel/runtime@7.27.6':
+    resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -161,6 +179,34 @@ packages:
 
   '@date-fns/tz@1.2.0':
     resolution: {integrity: sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg==}
+
+  '@dnd-kit/accessibility@3.1.1':
+    resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@dnd-kit/core@6.3.1':
+    resolution: {integrity: sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@dnd-kit/modifiers@9.0.0':
+    resolution: {integrity: sha512-ybiLc66qRGuZoC20wdSSG6pDXFikui/dCNGthxv4Ndy8ylErY0N3KVxY2bgo7AWwIbxDmXDg3ylAFmnrjcbVvw==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.0
+      react: '>=16.8.0'
+
+  '@dnd-kit/sortable@10.0.0':
+    resolution: {integrity: sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.0
+      react: '>=16.8.0'
+
+  '@dnd-kit/utilities@3.2.2':
+    resolution: {integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   '@emnapi/core@1.4.3':
     resolution: {integrity: sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g==}
@@ -1165,6 +1211,14 @@ packages:
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
+  '@tabler/icons-react@3.34.0':
+    resolution: {integrity: sha512-OpEIR2iZsIXECtAIMbn1zfKfQ3zKJjXyIZlkgOGUL9UkMCFycEiF2Y8AVfEQsyre/3FnBdlWJvGr0NU47n2TbQ==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.34.0':
+    resolution: {integrity: sha512-jtVqv0JC1WU2TTEBN32D9+R6mc1iEBuPwLnBsWaR02SIEciu9aq5806AWkCHuObhQ4ERhhXErLEK7Fs+tEZxiA==}
+
   '@tailwindcss/node@4.1.8':
     resolution: {integrity: sha512-OWwBsbC9BFAJelmnNcrKuf+bka2ZxCE2A4Ft53Tkg4uoiE67r/PMEYwCsourC26E+kmxfwE0hVzMdxqeW+xu7Q==}
 
@@ -1252,6 +1306,17 @@ packages:
 
   '@tailwindcss/postcss@4.1.8':
     resolution: {integrity: sha512-vB/vlf7rIky+w94aWMw34bWW1ka6g6C3xIOdICKX2GC0VcLtL6fhlLiafF0DVIwa9V6EHz8kbWMkS2s2QvvNlw==}
+
+  '@tanstack/react-table@8.21.3':
+    resolution: {integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
 
   '@trivago/prettier-plugin-sort-imports@5.2.2':
     resolution: {integrity: sha512-fYDQA9e6yTNmA13TLVSA+WMQRc5Bn/c0EUBditUHNfMMxN7M82c38b1kEggVE3pLpZ0FwkwJkUEKMiOi52JXFA==}
@@ -2330,8 +2395,8 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
-  lucide-react@0.523.0:
-    resolution: {integrity: sha512-rUjQoy7egZT9XYVXBK1je9ckBnNp7qzRZOhLQx5RcEp2dCGlXo+mv6vf7Am4LimEcFBJIIZzSGfgTqc9QCrPSw==}
+  lucide-react@0.525.0:
+    resolution: {integrity: sha512-Tm1txJ2OkymCGkvwoHt33Y2JpN5xucVq1slHcgE6Lk0WjDfjgKWor5CdVER8U6DvcfMwh4M8XxmpTiyzfmfDYQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -2677,8 +2742,8 @@ packages:
   recharts-scale@0.4.5:
     resolution: {integrity: sha512-kivNFO+0OcUNu7jQquLXAxz1FIwZj8nrj+YkOKc5694NbjCvcT6aSZiIzNzd2Kul4o4rTto8QVR9lMNtxD4G1w==}
 
-  recharts@2.15.3:
-    resolution: {integrity: sha512-EdOPzTwcFSuqtvkDoaM5ws/Km1+WTAO2eizL7rqiG0V2UVhTnz0m7J2i0CjVPUCdEkZImaWvXLbZDS2H5t6GFQ==}
+  recharts@2.15.4:
+    resolution: {integrity: sha512-UT/q6fwS3c1dHbXv2uFgYJ9BMFHu3fwnd7AYZaEQhXuYQ4hgsxLvsUXzGdKeZrW5xopzDCvuA2N41WJ88I7zIw==}
     engines: {node: '>=14'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3034,7 +3099,7 @@ snapshots:
     dependencies:
       '@babel/types': 7.27.7
 
-  '@babel/runtime@7.27.4': {}
+  '@babel/runtime@7.27.6': {}
 
   '@babel/template@7.27.2':
     dependencies:
@@ -3060,6 +3125,38 @@ snapshots:
       '@babel/helper-validator-identifier': 7.27.1
 
   '@date-fns/tz@1.2.0': {}
+
+  '@dnd-kit/accessibility@3.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@19.1.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.0)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      tslib: 2.8.1
+
+  '@dnd-kit/modifiers@9.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.0)
+      react: 19.1.0
+      tslib: 2.8.1
+
+  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.0)
+      react: 19.1.0
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      tslib: 2.8.1
 
   '@emnapi/core@1.4.3':
     dependencies:
@@ -4068,6 +4165,13 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@tabler/icons-react@3.34.0(react@19.1.0)':
+    dependencies:
+      '@tabler/icons': 3.34.0
+      react: 19.1.0
+
+  '@tabler/icons@3.34.0': {}
+
   '@tailwindcss/node@4.1.8':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -4139,6 +4243,14 @@ snapshots:
       '@tailwindcss/oxide': 4.1.8
       postcss: 8.5.4
       tailwindcss: 4.1.8
+
+  '@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tanstack/table-core': 8.21.3
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+
+  '@tanstack/table-core@8.21.3': {}
 
   '@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.5.3)':
     dependencies:
@@ -4639,7 +4751,7 @@ snapshots:
 
   dom-helpers@5.2.1:
     dependencies:
-      '@babel/runtime': 7.27.4
+      '@babel/runtime': 7.27.6
       csstype: 3.1.3
 
   dunder-proto@1.0.1:
@@ -5365,7 +5477,7 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lucide-react@0.523.0(react@19.1.0):
+  lucide-react@0.525.0(react@19.1.0):
     dependencies:
       react: 19.1.0
 
@@ -5685,7 +5797,7 @@ snapshots:
 
   react-transition-group@4.4.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      '@babel/runtime': 7.27.4
+      '@babel/runtime': 7.27.6
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -5698,7 +5810,7 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  recharts@2.15.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  recharts@2.15.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       clsx: 2.1.1
       eventemitter3: 4.0.7
