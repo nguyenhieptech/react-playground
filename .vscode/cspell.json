@@ -49,6 +49,8 @@
     "usehooks",
     "algoliasearch",
     "trivago",
+    "tabler",
+    "shadcn",
 
     // Design Patterns
     "adaptee",
