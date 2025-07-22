@@ -48,6 +48,10 @@
     "uidotdev",
     "usehooks",
     "algoliasearch",
+    "trivago",
+    "tabler",
+    "shadcn",
+
     // Design Patterns
     "adaptee",
     "radash"
