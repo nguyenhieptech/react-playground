@@ -16,7 +16,7 @@ import { useCallback } from "react";
 export function ClearFormattingToolbarPlugin() {
   const { activeEditor } = useToolbarContext();
 
-  const clearFormatting = useCallback(() => {
+  const handleClearFormatting = useCallback(() => {
     activeEditor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection) || $isTableSelection(selection)) {
@@ -78,7 +78,7 @@ export function ClearFormattingToolbarPlugin() {
       aria-label="Clear formatting"
       variant={"outline"}
       size={"icon"}
-      onClick={clearFormatting}
+      onClick={handleClearFormatting}
     >
       <EraserIcon className="h-4 w-4" />
     </Button>

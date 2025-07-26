@@ -38,7 +38,7 @@ import { useEffect } from "react";
 
 export const INSERT_COLLAPSIBLE_COMMAND = createCommand<void>();
 
-export function CollapsiblePlugin(): null {
+export function CollapsiblePlugin() {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export function CollapsiblePlugin(): null {
       );
     }
 
-    const $onEscapeUp = () => {
+    function $onEscapeUp() {
       const selection = $getSelection();
       if (
         $isRangeSelection(selection) &&
@@ -79,9 +79,9 @@ export function CollapsiblePlugin(): null {
       }
 
       return false;
-    };
+    }
 
-    const $onEscapeDown = () => {
+    function $onEscapeDown() {
       const selection = $getSelection();
       if ($isRangeSelection(selection) && selection.isCollapsed()) {
         const container = $findMatchingParent(
@@ -110,7 +110,7 @@ export function CollapsiblePlugin(): null {
       }
 
       return false;
-    };
+    }
 
     return mergeRegister(
       // Structure enforcing transformers for each node type. In case nesting structure is not

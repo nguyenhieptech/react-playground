@@ -39,7 +39,7 @@ export function SharedAutocompleteContext({ children }: { children: React.ReactN
   return <Context.Provider value={context}>{children}</Context.Provider>;
 }
 
-export const useSharedAutocompleteContext = (): HookShape => {
+export function useSharedAutocompleteContext(): HookShape {
   const [subscribe, publish]: ContextShape = React.useContext(Context);
   const [suggestion, setSuggestion] = React.useState<Suggestion>(null);
   React.useEffect(() => {
@@ -48,4 +48,4 @@ export const useSharedAutocompleteContext = (): HookShape => {
     });
   }, [subscribe]);
   return [suggestion, publish];
-};
+}

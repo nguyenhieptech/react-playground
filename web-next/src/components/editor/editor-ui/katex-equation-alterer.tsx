@@ -1,4 +1,4 @@
-import KatexRenderer from "@/components/editor/editor-ui/katex-renderer";
+import { KatexRenderer } from "@/components/editor/editor-ui/katex-renderer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -13,19 +13,16 @@ type Props = {
   onConfirm: (equation: string, inline: boolean) => void;
 };
 
-export default function KatexEquationAlterer({
-  onConfirm,
-  initialEquation = "",
-}: Props): React.JSX.Element {
+export function KatexEquationAlterer({ onConfirm, initialEquation = "" }: Props) {
   const [editor] = useLexicalComposerContext();
   const [equation, setEquation] = useState(initialEquation);
   const [inline, setInline] = useState(true);
 
-  const onClick = useCallback(() => {
+  const handleClick = useCallback(() => {
     onConfirm(equation, inline);
   }, [onConfirm, equation, inline]);
 
-  const onCheckboxChange = useCallback(() => {
+  const handleCheckboxChange = useCallback(() => {
     setInline(!inline);
   }, [setInline, inline]);
 
@@ -38,7 +35,7 @@ export default function KatexEquationAlterer({
         <Checkbox
           id="inline-toggle"
           checked={inline}
-          onCheckedChange={onCheckboxChange}
+          onCheckedChange={handleCheckboxChange}
         />
       </div>
 
@@ -78,7 +75,7 @@ export default function KatexEquationAlterer({
       </div>
 
       <div className="flex justify-end">
-        <Button onClick={onClick}>Confirm</Button>
+        <Button onClick={handleClick}>Confirm</Button>
       </div>
     </>
   );

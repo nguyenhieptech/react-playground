@@ -126,7 +126,7 @@ export function ContextMenuPlugin(): React.JSX.Element {
 
   const [options, setOptions] = useState(defaultOptions);
 
-  const onSelectOption = useCallback(
+  const handleSelectOption = useCallback(
     (
       selectedOption: ContextMenuOption,
       targetNode: LexicalNode | null,
@@ -140,7 +140,7 @@ export function ContextMenuPlugin(): React.JSX.Element {
     [editor]
   );
 
-  function onWillOpen(event: MouseEvent) {
+  function handleWillOpen(event: MouseEvent) {
     let newOptions = defaultOptions;
     setIsOpen(true);
     editor.update(() => {
@@ -166,11 +166,11 @@ export function ContextMenuPlugin(): React.JSX.Element {
     <LexicalContextMenuPlugin
       options={options}
       onSelectOption={(option, targetNode) => {
-        onSelectOption(option as ContextMenuOption, targetNode, () => {
+        handleSelectOption(option as ContextMenuOption, targetNode, () => {
           setIsOpen(false);
         });
       }}
-      onWillOpen={onWillOpen}
+      onWillOpen={handleWillOpen}
       onOpen={() => {
         setIsOpen(true);
       }}

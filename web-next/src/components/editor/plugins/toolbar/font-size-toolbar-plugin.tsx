@@ -19,7 +19,7 @@ export function FontSizeToolbarPlugin() {
 
   const { activeEditor } = useToolbarContext();
 
-  const $updateToolbar = (selection: BaseSelection) => {
+  function $updateToolbar(selection: BaseSelection) {
     if ($isRangeSelection(selection)) {
       const value = $getSelectionStyleValueForProperty(
         selection,
@@ -28,11 +28,11 @@ export function FontSizeToolbarPlugin() {
       );
       setFontSize(parseInt(value) || DEFAULT_FONT_SIZE);
     }
-  };
+  }
 
   useUpdateToolbarHandler($updateToolbar);
 
-  const updateFontSize = useCallback(
+  const handleUpdateFontSize = useCallback(
     (newSize: number) => {
       const size = Math.min(Math.max(newSize, MIN_FONT_SIZE), MAX_FONT_SIZE);
       activeEditor.update(() => {
@@ -55,14 +55,16 @@ export function FontSizeToolbarPlugin() {
           variant="outline"
           size="icon"
           className="!h-8 !w-8"
-          onClick={() => updateFontSize(fontSize - 1)}
+          onClick={() => handleUpdateFontSize(fontSize - 1)}
           disabled={fontSize <= MIN_FONT_SIZE}
         >
           <Minus className="size-3" />
         </Button>
         <Input
           value={fontSize}
-          onChange={(e) => updateFontSize(parseInt(e.target.value) || DEFAULT_FONT_SIZE)}
+          onChange={(e) =>
+            handleUpdateFontSize(parseInt(e.target.value) || DEFAULT_FONT_SIZE)
+          }
           className="!h-8 w-12 text-center"
           min={MIN_FONT_SIZE}
           max={MAX_FONT_SIZE}
@@ -71,7 +73,7 @@ export function FontSizeToolbarPlugin() {
           variant="outline"
           size="icon"
           className="!h-8 !w-8"
-          onClick={() => updateFontSize(fontSize + 1)}
+          onClick={() => handleUpdateFontSize(fontSize + 1)}
           disabled={fontSize >= MAX_FONT_SIZE}
         >
           <Plus className="size-3" />

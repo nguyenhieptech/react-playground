@@ -95,7 +95,7 @@ export function EmojiPickerPlugin() {
       .slice(0, MAX_EMOJI_SUGGESTION_COUNT);
   }, [emojiOptions, queryString]);
 
-  const onSelectOption = useCallback(
+  const handleSelectOption = useCallback(
     (
       selectedOption: EmojiOption,
       nodeToRemove: TextNode | null,
@@ -124,7 +124,7 @@ export function EmojiPickerPlugin() {
     // @ts-ignore
     <LexicalTypeaheadMenuPlugin<EmojiOption>
       onQueryChange={setQueryString}
-      onSelectOption={onSelectOption}
+      onSelectOption={handleSelectOption}
       triggerFn={checkForTriggerMatch}
       options={options}
       onOpen={() => {

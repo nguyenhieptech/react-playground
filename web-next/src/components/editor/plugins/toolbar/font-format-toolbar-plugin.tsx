@@ -33,12 +33,12 @@ export function FontFormatToolbarPlugin({
   const { activeEditor } = useToolbarContext();
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  const $updateToolbar = (selection: BaseSelection) => {
+  function $updateToolbar(selection: BaseSelection) {
     if ($isRangeSelection(selection) || $isTableSelection(selection)) {
       // @ts-ignore
       setIsSelected(selection.hasFormat(format as TextFormatType));
     }
-  };
+  }
 
   useUpdateToolbarHandler($updateToolbar);
 

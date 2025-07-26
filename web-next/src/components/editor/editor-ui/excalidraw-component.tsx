@@ -1,4 +1,4 @@
-import ExcalidrawImage from "@/components/editor/editor-ui/excalidraw-image";
+import { ExcalidrawImage } from "@/components/editor/editor-ui/excalidraw-image";
 import type { ExcalidrawInitialElements } from "@/components/editor/editor-ui/excalidraw-modal";
 import { ExcalidrawModal } from "@/components/editor/editor-ui/excalidraw-modal";
 import { ImageResizer } from "@/components/editor/editor-ui/image-resizer";

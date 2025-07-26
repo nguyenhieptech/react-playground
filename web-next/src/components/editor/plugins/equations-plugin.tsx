@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import KatexEquationAlterer from "@/components/editor/editor-ui/katex-equation-alterer";
+import { KatexEquationAlterer } from "@/components/editor/editor-ui/katex-equation-alterer";
 import {
   $createEquationNode,
   EquationNode,

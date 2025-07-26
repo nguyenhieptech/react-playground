@@ -1,6 +1,6 @@
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import ColorPicker from "@/components/editor/editor-ui/colorpicker";
+import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
 import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
 import { BaselineIcon } from "lucide-react";
@@ -11,11 +11,11 @@ export function FontColorToolbarPlugin() {
 
   const [fontColor, setFontColor] = useState("#000");
 
-  const $updateToolbar = (selection: BaseSelection) => {
+  function $updateToolbar(selection: BaseSelection) {
     if ($isRangeSelection(selection)) {
       setFontColor($getSelectionStyleValueForProperty(selection, "color", "#000"));
     }
-  };
+  }
 
   useUpdateToolbarHandler($updateToolbar);
 

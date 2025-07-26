@@ -13,7 +13,7 @@ type Props = {
   onChange?: (color: string, skipHistoryStack: boolean) => void;
 };
 
-export default function ColorPicker({
+export function ColorPicker({
   disabled = false,
   stopCloseOnClickSelf = true,
   color,

@@ -69,7 +69,7 @@ const removeStyleFromSvg_HACK = (svg: SVGElement) => {
  * @explorer-desc
  * A component for rendering Excalidraw elements as a static image
  */
-export default function ExcalidrawImage({
+export function ExcalidrawImage({
   elements,
   files,
   imageContainerRef,

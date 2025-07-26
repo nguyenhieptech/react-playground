@@ -21,7 +21,7 @@ export function LinkToolbarPlugin() {
   const { setIsLinkEditMode } = useFloatingLinkContext();
   const [isLink, setIsLink] = useState(false);
 
-  const $updateToolbar = (selection: BaseSelection) => {
+  function $updateToolbar(selection: BaseSelection) {
     if ($isRangeSelection(selection)) {
       const node = getSelectedNode(selection);
       const parent = node.getParent();
@@ -31,7 +31,7 @@ export function LinkToolbarPlugin() {
         setIsLink(false);
       }
     }
-  };
+  }
 
   useUpdateToolbarHandler($updateToolbar);
 
@@ -60,7 +60,7 @@ export function LinkToolbarPlugin() {
     );
   }, [activeEditor, isLink, setIsLinkEditMode]);
 
-  const insertLink = useCallback(() => {
+  const handleInsertLink = useCallback(() => {
     if (!isLink) {
       setIsLinkEditMode(true);
       activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl("https://"));
@@ -76,7 +76,7 @@ export function LinkToolbarPlugin() {
       size="sm"
       className="!h-8 !w-8"
       aria-label="Toggle link"
-      onClick={insertLink}
+      onClick={handleInsertLink}
     >
       <LinkIcon className="h-4 w-4" />
     </Toggle>

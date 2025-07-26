@@ -2,7 +2,7 @@
 
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import ColorPicker from "@/components/editor/editor-ui/colorpicker";
+import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
 import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
 import { PaintBucketIcon } from "lucide-react";
@@ -38,7 +38,7 @@ export function FontBackgroundToolbarPlugin() {
     [activeEditor]
   );
 
-  const onBgColorSelect = useCallback(
+  const handleBgColorSelect = useCallback(
     (value: string, skipHistoryStack: boolean) => {
       applyStyleText({ "background-color": value }, skipHistoryStack);
     },
@@ -49,7 +49,7 @@ export function FontBackgroundToolbarPlugin() {
     <ColorPicker
       icon={<PaintBucketIcon className="size-4" />}
       color={bgColor}
-      onChange={onBgColorSelect}
+      onChange={handleBgColorSelect}
       title="text background color"
     />
   );

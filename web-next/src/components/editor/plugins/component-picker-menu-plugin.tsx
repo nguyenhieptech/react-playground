@@ -58,7 +58,7 @@ export function ComponentPickerMenuPlugin({
     ];
   }, [editor, queryString, showModal]);
 
-  const onSelectOption = useCallback(
+  const handleSelectOption = useCallback(
     (
       selectedOption: ComponentPickerOption,
       nodeToRemove: TextNode | null,
@@ -80,7 +80,7 @@ export function ComponentPickerMenuPlugin({
       {/* @ts-ignore */}
       <LexicalTypeaheadMenuPlugin<ComponentPickerOption>
         onQueryChange={setQueryString}
-        onSelectOption={onSelectOption}
+        onSelectOption={handleSelectOption}
         triggerFn={checkForTriggerMatch}
         options={options}
         menuRenderFn={(

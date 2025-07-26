@@ -8,7 +8,7 @@
  *
  */
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
-import ColorPicker from "@/components/editor/editor-ui/colorpicker";
+import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
 import {
   Command,
   CommandGroup,

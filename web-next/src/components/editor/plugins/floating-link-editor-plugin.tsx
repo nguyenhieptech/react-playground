@@ -179,7 +179,7 @@ function FloatingLinkEditor({
     }
   }, [isLinkEditMode, isLink]);
 
-  const monitorInputInteraction = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  function monitorInputInteraction(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       event.preventDefault();
       handleLinkSubmission();
@@ -187,9 +187,9 @@ function FloatingLinkEditor({
       event.preventDefault();
       setIsLinkEditMode(false);
     }
-  };
+  }
 
-  const handleLinkSubmission = () => {
+  function handleLinkSubmission() {
     if (lastSelection !== null) {
       if (linkUrl !== "") {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(editedLinkUrl));
@@ -211,7 +211,8 @@ function FloatingLinkEditor({
       setEditedLinkUrl("https://");
       setIsLinkEditMode(false);
     }
-  };
+  }
+
   return (
     <div
       ref={editorRef}

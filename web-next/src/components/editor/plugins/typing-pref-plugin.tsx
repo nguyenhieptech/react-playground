@@ -8,7 +8,7 @@
  *
  */
 import { useReport } from "@/components/editor/editor-hooks/use-report";
-import { JSX, useEffect } from "react";
+import { useEffect } from "react";
 
 const validInputTypes = new Set([
   "insertText",
@@ -29,8 +29,9 @@ const validInputTypes = new Set([
   "deleteSoftLineForward",
 ]);
 
-export function TypingPerfPlugin(): JSX.Element | null {
+export function TypingPerfPlugin() {
   const report = useReport();
+
   useEffect(() => {
     let start = 0;
     let timerId: ReturnType<typeof setTimeout> | null;
@@ -38,7 +39,7 @@ export function TypingPerfPlugin(): JSX.Element | null {
     let log: Array<DOMHighResTimeStamp> = [];
     let invalidatingEvent = false;
 
-    const measureEventEnd = function logKeyPress() {
+    function measureEventEnd() {
       if (keyPressTimerId != null) {
         if (invalidatingEvent) {
           invalidatingEvent = false;
@@ -49,14 +50,13 @@ export function TypingPerfPlugin(): JSX.Element | null {
         clearTimeout(keyPressTimerId);
         keyPressTimerId = null;
       }
-    };
+    }
 
-    const measureEventStart = function measureEvent() {
+    function measureEventStart() {
       if (timerId != null) {
         clearTimeout(timerId);
         timerId = null;
       }
-
       // We use a setTimeout(0) instead of requestAnimationFrame, due to
       // inconsistencies between the sequencing of rAF in different browsers.
       keyPressTimerId = setTimeout(measureEventEnd, 0);
@@ -71,32 +71,31 @@ export function TypingPerfPlugin(): JSX.Element | null {
       // Make the time after we do the previous logic, so we don't measure the overhead
       // for it all.
       start = performance.now();
-    };
+    }
 
-    const beforeInputHandler = function beforeInputHandler(event: InputEvent) {
+    function beforeInputHandler(event: InputEvent) {
       if (!validInputTypes.has(event.inputType) || invalidatingEvent) {
         invalidatingEvent = false;
         return;
       }
-
       measureEventStart();
-    };
+    }
 
-    const keyDownHandler = function keyDownHandler(event: KeyboardEvent) {
+    function keyDownHandler(event: KeyboardEvent) {
       const key = event.key;
 
       if (key === "Backspace" || key === "Enter") {
         measureEventStart();
       }
-    };
+    }
 
-    const pasteHandler = function pasteHandler() {
+    function pasteHandler() {
       invalidatingEvent = true;
-    };
+    }
 
-    const cutHandler = function cutHandler() {
+    function cutHandler() {
       invalidatingEvent = true;
-    };
+    }
 
     window.addEventListener("keydown", keyDownHandler, true);
     window.addEventListener("selectionchange", measureEventEnd, true);

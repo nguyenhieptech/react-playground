@@ -1,4 +1,3 @@
-import type { JSX, Ref, RefObject } from "react";
 import * as React from "react";
 
 type BaseEquationEditorProps = {
@@ -7,15 +6,15 @@ type BaseEquationEditorProps = {
   setEquation: (equation: string) => void;
 };
 
-function EquationEditor(
-  { equation, setEquation, inline }: BaseEquationEditorProps,
-  forwardedRef: Ref<HTMLInputElement | HTMLTextAreaElement>
-): JSX.Element {
+export const EquationEditor = React.forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  BaseEquationEditorProps
+>(({ equation, setEquation, inline }, ref) => {
   function onChange(event: React.ChangeEvent) {
     setEquation((event.target as HTMLInputElement).value);
   }
 
-  return inline && forwardedRef instanceof HTMLInputElement ? (
+  return inline && ref instanceof HTMLInputElement ? (
     <span className="EquationEditor_inputBackground bg-background">
       <span className="EquationEditor_dollarSign text-muted-foreground text-left">$</span>
       <input
@@ -23,7 +22,7 @@ function EquationEditor(
         value={equation}
         onChange={onChange}
         autoFocus={true}
-        ref={forwardedRef as RefObject<HTMLInputElement>}
+        ref={ref as React.RefObject<HTMLInputElement>}
       />
       <span className="EquationEditor_dollarSign text-muted-foreground text-left">$</span>
     </span>
@@ -36,13 +35,11 @@ function EquationEditor(
         className="EquationEditor_blockEditor text-primary m-0 w-full resize-none border-0 bg-inherit p-0 outline-none"
         value={equation}
         onChange={onChange}
-        ref={forwardedRef as RefObject<HTMLTextAreaElement>}
+        ref={ref as React.RefObject<HTMLTextAreaElement>}
       />
       <span className="EquationEditor_dollarSign text-muted-foreground text-left">
         {"\n$$"}
       </span>
     </div>
   );
-}
-
-export default React.forwardRef(EquationEditor);
+});

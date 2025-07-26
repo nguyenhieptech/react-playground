@@ -152,7 +152,7 @@ export function TablePlugin({
 }: {
   cellEditorConfig: CellEditorConfig;
   children: JSX.Element | Array<JSX.Element>;
-}): JSX.Element | null {
+}) {
   const [editor] = useLexicalComposerContext();
   const cellContext = useContext(CellContext);
 

@@ -36,7 +36,7 @@ export function CodeLanguageToolbarPlugin() {
   const [codeLanguage, setCodeLanguage] = useState<string>("");
   const [selectedElementKey, setSelectedElementKey] = useState<string | null>(null);
 
-  const $updateToolbar = (selection: BaseSelection) => {
+  function $updateToolbar(selection: BaseSelection) {
     if ($isRangeSelection(selection)) {
       const anchorNode = selection.anchor.getNode();
       let element =
@@ -64,11 +64,11 @@ export function CodeLanguageToolbarPlugin() {
         }
       }
     }
-  };
+  }
 
   useUpdateToolbarHandler($updateToolbar);
 
-  const onCodeLanguageSelect = useCallback(
+  const handleCodeLanguageSelect = useCallback(
     (value: string) => {
       activeEditor.update(() => {
         if (selectedElementKey !== null) {
@@ -93,7 +93,7 @@ export function CodeLanguageToolbarPlugin() {
             key={value}
             value={value}
             onPointerUp={() => {
-              onCodeLanguageSelect(value);
+              handleCodeLanguageSelect(value);
             }}
           >
             {label}

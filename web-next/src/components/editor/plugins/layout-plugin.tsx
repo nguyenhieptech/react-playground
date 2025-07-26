@@ -90,6 +90,7 @@ export const UPDATE_LAYOUT_COMMAND: LexicalCommand<{
 
 export function LayoutPlugin(): null {
   const [editor] = useLexicalComposerContext();
+
   useEffect(() => {
     if (!editor.hasNodes([LayoutContainerNode, LayoutItemNode])) {
       throw new Error(
@@ -97,7 +98,7 @@ export function LayoutPlugin(): null {
       );
     }
 
-    const $onEscape = (before: boolean) => {
+    function $onEscape(before: boolean) {
       const selection = $getSelection();
       if (
         $isRangeSelection(selection) &&
@@ -135,7 +136,7 @@ export function LayoutPlugin(): null {
       }
 
       return false;
-    };
+    }
 
     return mergeRegister(
       // When layout is the last child pressing down/right arrow will insert paragraph

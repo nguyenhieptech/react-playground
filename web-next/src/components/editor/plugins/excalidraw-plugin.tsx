@@ -15,15 +15,15 @@ import {
   createCommand,
   LexicalCommand,
 } from "lexical";
-import { JSX, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void> = createCommand(
   "INSERT_EXCALIDRAW_COMMAND"
 );
 
-export function ExcalidrawPlugin(): JSX.Element | null {
+export function ExcalidrawPlugin() {
   const [editor] = useLexicalComposerContext();
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (!editor.hasNodes([ExcalidrawNode])) {

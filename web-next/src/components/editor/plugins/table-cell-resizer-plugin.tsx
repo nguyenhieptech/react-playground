@@ -294,7 +294,7 @@ function TableCellResizer({ editor }: { editor: LexicalEditor }): JSX.Element {
     [activeCell, resetState, updateColumnWidth, updateRowHeight]
   );
 
-  const toggleResize = useCallback(
+  const handleToggleResize = useCallback(
     (direction: MouseDraggingDirection): MouseEventHandler<HTMLDivElement> =>
       (event) => {
         event.preventDefault();
@@ -382,12 +382,12 @@ function TableCellResizer({ editor }: { editor: LexicalEditor }): JSX.Element {
           <div
             className="TableCellResizer__ui absolute"
             style={resizerStyles.right || undefined}
-            onMouseDown={toggleResize("right")}
+            onMouseDown={handleToggleResize("right")}
           />
           <div
             className="TableCellResizer__ui absolute"
             style={resizerStyles.bottom || undefined}
-            onMouseDown={toggleResize("bottom")}
+            onMouseDown={handleToggleResize("bottom")}
           />
         </>
       )}

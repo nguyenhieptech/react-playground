@@ -1,5 +1,5 @@
-import EquationEditor from "@/components/editor/editor-ui/equation-editor";
-import KatexRenderer from "@/components/editor/editor-ui/katex-renderer";
+import { EquationEditor } from "@/components/editor/editor-ui/equation-editor";
+import { KatexRenderer } from "@/components/editor/editor-ui/katex-renderer";
 import { $isEquationNode } from "@/components/editor/nodes/equation-node";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
@@ -31,7 +31,7 @@ export default function EquationComponent({
   const isEditable = useLexicalEditable();
   const [equationValue, setEquationValue] = useState(equation);
   const [showEquationEditor, setShowEquationEditor] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onHide = useCallback(
     (restoreSelection?: boolean) => {

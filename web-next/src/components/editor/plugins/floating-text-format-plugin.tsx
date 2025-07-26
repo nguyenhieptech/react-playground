@@ -55,7 +55,7 @@ function FloatingTextFormat({
   isSuperscript: boolean;
   isUnderline: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
-}): React.JSX.Element {
+}) {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
   const insertLink = useCallback(() => {
@@ -403,9 +403,8 @@ export function FloatingTextFormatToolbarPlugin({
   anchorElem,
 }: {
   anchorElem: HTMLDivElement | null;
-}): JSX.Element | null {
+}) {
   const [editor] = useLexicalComposerContext();
   const { setIsLinkEditMode } = useFloatingLinkContext();
-
   return useFloatingTextFormatToolbar(editor, anchorElem, setIsLinkEditMode);
 }
