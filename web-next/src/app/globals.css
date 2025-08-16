@@ -166,3 +166,8 @@
   /* https://x.com/adamwathan/status/1734696245015494711 */
   @apply min-h-0 min-w-0;
 }
+
+body {
+  /* https://x.com/joebell_/status/1952688097730158926 */
+  @apply overscroll-none;
+}
