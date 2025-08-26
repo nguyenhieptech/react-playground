@@ -1,5 +1,5 @@
 import "./globals.css";
-import { AppProvider } from "@/components/app-provider";
+import { AppProvider } from "@/components/providers/app-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
