@@ -25,6 +25,8 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  selectedIndex: number;
+  scrollSnaps: number[];
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -57,11 +59,14 @@ function Carousel({
   );
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
 
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());
+    setSelectedIndex(api.selectedScrollSnap());
   }, []);
 
   const scrollPrev = React.useCallback(() => {
@@ -93,7 +98,12 @@ function Carousel({
   React.useEffect(() => {
     if (!api) return;
     onSelect(api);
-    api.on("reInit", onSelect);
+    setScrollSnaps(api.scrollSnapList());
+
+    api.on("reInit", () => {
+      setScrollSnaps(api.scrollSnapList());
+      onSelect(api);
+    });
     api.on("select", onSelect);
 
     return () => {
@@ -112,6 +122,8 @@ function Carousel({
         scrollNext,
         canScrollPrev,
         canScrollNext,
+        selectedIndex,
+        scrollSnaps,
       }}
     >
       <div
@@ -223,9 +235,31 @@ function CarouselNext({
   );
 }
 
+function CarouselDots({ className, ...props }: React.ComponentProps<"div">) {
+  const { api, selectedIndex, scrollSnaps } = useCarousel();
+
+  return (
+    <div className={cn("mt-4 flex justify-center gap-2", className)} {...props}>
+      {scrollSnaps.map((_, idx) => (
+        <button
+          key={idx}
+          data-slot="carousel-dot"
+          className={cn(
+            "h-4 w-4 rounded-full transition-all duration-300",
+            idx === selectedIndex ? "bg-primary" : "bg-muted-foreground/30"
+          )}
+          onClick={() => api?.scrollTo(idx)}
+          aria-label={`Go to slide ${idx + 1}`}
+        />
+      ))}
+    </div>
+  );
+}
+
 export {
   Carousel,
   CarouselContent,
+  CarouselDots,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
