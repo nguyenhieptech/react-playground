@@ -171,3 +171,6 @@ body {
   /* https://x.com/joebell_/status/1952688097730158926 */
   @apply overscroll-none;
 }
+
+/* https://streamdown.ai/ */
+@source "../../node_modules/streamdown/dist/index.js";
