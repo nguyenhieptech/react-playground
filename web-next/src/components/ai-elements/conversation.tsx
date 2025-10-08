@@ -6,9 +6,10 @@ import { ArrowDownIcon } from "lucide-react";
 import * as React from "react";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 
-export type ConversationProps = React.ComponentProps<typeof StickToBottom>;
-
-export function Conversation({ className, ...props }: ConversationProps) {
+function Conversation({
+  className,
+  ...props
+}: React.ComponentProps<typeof StickToBottom>) {
   return (
     <StickToBottom
       className={cn("relative flex-1 overflow-y-auto", className)}
@@ -20,18 +21,17 @@ export function Conversation({ className, ...props }: ConversationProps) {
   );
 }
 
-export type ConversationContentProps = React.ComponentProps<typeof StickToBottom.Content>;
-
-export function ConversationContent({ className, ...props }: ConversationContentProps) {
+function ConversationContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof StickToBottom.Content>) {
   return <StickToBottom.Content className={cn("p-4", className)} {...props} />;
 }
 
-export type ConversationScrollButtonProps = React.ComponentProps<typeof Button>;
-
-export function ConversationScrollButton({
+function ConversationScrollButton({
   className,
   ...props
-}: ConversationScrollButtonProps) {
+}: React.ComponentProps<typeof Button>) {
   const { isAtBottom, scrollToBottom } = useStickToBottomContext();
 
   const handleScrollToBottom = React.useCallback(() => {
@@ -56,3 +56,5 @@ export function ConversationScrollButton({
     )
   );
 }
+
+export { Conversation, ConversationContent, ConversationScrollButton };

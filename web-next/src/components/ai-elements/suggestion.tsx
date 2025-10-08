@@ -5,9 +5,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
-export type SuggestionsProps = React.ComponentProps<typeof ScrollArea>;
-
-export function Suggestions({ className, children, ...props }: SuggestionsProps) {
+function Suggestions({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof ScrollArea>) {
   return (
     <ScrollArea className="w-full overflow-x-auto whitespace-nowrap" {...props}>
       <div className={cn("flex w-max flex-nowrap items-center gap-2", className)}>
@@ -18,12 +20,7 @@ export function Suggestions({ className, children, ...props }: SuggestionsProps)
   );
 }
 
-export type SuggestionProps = Omit<React.ComponentProps<typeof Button>, "onClick"> & {
-  suggestion: string;
-  onClick?: (suggestion: string) => void;
-};
-
-export function Suggestion({
+function Suggestion({
   suggestion,
   onClick,
   className,
@@ -31,7 +28,10 @@ export function Suggestion({
   size = "sm",
   children,
   ...props
-}: SuggestionProps) {
+}: Omit<React.ComponentProps<typeof Button>, "onClick"> & {
+  suggestion: string;
+  onClick?: (suggestion: string) => void;
+}) {
   function handleClick() {
     onClick?.(suggestion);
   }
@@ -49,3 +49,5 @@ export function Suggestion({
     </Button>
   );
 }
+
+export { Suggestion, Suggestions };

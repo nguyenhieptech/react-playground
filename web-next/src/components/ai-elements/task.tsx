@@ -9,9 +9,7 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
-export type TaskItemFileProps = React.ComponentProps<"div">;
-
-export function TaskItemFile({ children, className, ...props }: TaskItemFileProps) {
+function TaskItemFile({ children, className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
@@ -25,9 +23,7 @@ export function TaskItemFile({ children, className, ...props }: TaskItemFileProp
   );
 }
 
-export type TaskItemProps = React.ComponentProps<"div">;
-
-export function TaskItem({ children, className, ...props }: TaskItemProps) {
+function TaskItem({ children, className, ...props }: React.ComponentProps<"div">) {
   return (
     <div className={cn("text-muted-foreground text-sm", className)} {...props}>
       {children}
@@ -35,9 +31,11 @@ export function TaskItem({ children, className, ...props }: TaskItemProps) {
   );
 }
 
-export type TaskProps = React.ComponentProps<typeof Collapsible>;
-
-export function Task({ defaultOpen = true, className, ...props }: TaskProps) {
+function Task({
+  defaultOpen = true,
+  className,
+  ...props
+}: React.ComponentProps<typeof Collapsible>) {
   return (
     <Collapsible
       className={cn(
@@ -50,11 +48,14 @@ export function Task({ defaultOpen = true, className, ...props }: TaskProps) {
   );
 }
 
-export type TaskTriggerProps = React.ComponentProps<typeof CollapsibleTrigger> & {
+function TaskTrigger({
+  children,
+  className,
+  title,
+  ...props
+}: React.ComponentProps<typeof CollapsibleTrigger> & {
   title: string;
-};
-
-export function TaskTrigger({ children, className, title, ...props }: TaskTriggerProps) {
+}) {
   return (
     <CollapsibleTrigger asChild className={cn("group", className)} {...props}>
       {children ?? (
@@ -68,9 +69,11 @@ export function TaskTrigger({ children, className, title, ...props }: TaskTrigge
   );
 }
 
-export type TaskContentProps = React.ComponentProps<typeof CollapsibleContent>;
-
-export function TaskContent({ children, className, ...props }: TaskContentProps) {
+function TaskContent({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<typeof CollapsibleContent>) {
   return (
     <CollapsibleContent
       className={cn(
@@ -83,3 +86,5 @@ export function TaskContent({ children, className, ...props }: TaskContentProps)
     </CollapsibleContent>
   );
 }
+
+export { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger };

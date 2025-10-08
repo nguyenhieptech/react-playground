@@ -9,9 +9,7 @@ import { cn } from "@/lib/utils";
 import { BookIcon, ChevronDownIcon } from "lucide-react";
 import * as React from "react";
 
-export type SourcesProps = React.ComponentProps<typeof Collapsible>;
-
-export function Sources({ className, ...props }: SourcesProps) {
+function Sources({ className, ...props }: React.ComponentProps<typeof Collapsible>) {
   return (
     <Collapsible
       className={cn("not-prose text-primary mb-4 text-xs", className)}
@@ -20,16 +18,14 @@ export function Sources({ className, ...props }: SourcesProps) {
   );
 }
 
-export type SourcesTriggerProps = React.ComponentProps<typeof CollapsibleTrigger> & {
-  count: number;
-};
-
-export function SourcesTrigger({
+function SourcesTrigger({
   className,
   count,
   children,
   ...props
-}: SourcesTriggerProps) {
+}: React.ComponentProps<typeof CollapsibleTrigger> & {
+  count: number;
+}) {
   return (
     <CollapsibleTrigger className="flex items-center gap-2" {...props}>
       {children ?? (
@@ -42,9 +38,10 @@ export function SourcesTrigger({
   );
 }
 
-export type SourcesContentProps = React.ComponentProps<typeof CollapsibleContent>;
-
-export function SourcesContent({ className, ...props }: SourcesContentProps) {
+function SourcesContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof CollapsibleContent>) {
   return (
     <CollapsibleContent
       className={cn(
@@ -57,9 +54,7 @@ export function SourcesContent({ className, ...props }: SourcesContentProps) {
   );
 }
 
-export type SourceProps = React.ComponentProps<"a">;
-
-export function Source({ href, title, children, ...props }: SourceProps) {
+function Source({ href, title, children, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className="flex items-center gap-2"
@@ -77,3 +72,5 @@ export function Source({ href, title, children, ...props }: SourceProps) {
     </a>
   );
 }
+
+export { Source, Sources, SourcesContent, SourcesTrigger };

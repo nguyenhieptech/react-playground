@@ -10,9 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
-export type ActionsProps = React.ComponentProps<"div">;
-
-export function Actions({ className, children, ...props }: ActionsProps) {
+function Actions({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
     <div className={cn("flex items-center gap-1", className)} {...props}>
       {children}
@@ -20,12 +18,7 @@ export function Actions({ className, children, ...props }: ActionsProps) {
   );
 }
 
-export type ActionProps = React.ComponentProps<typeof Button> & {
-  tooltip?: string;
-  label?: string;
-};
-
-export function Action({
+function Action({
   tooltip,
   children,
   label,
@@ -33,7 +26,10 @@ export function Action({
   variant = "ghost",
   size = "sm",
   ...props
-}: ActionProps) {
+}: React.ComponentProps<typeof Button> & {
+  tooltip?: string;
+  label?: string;
+}) {
   const button = (
     <Button
       className={cn(
@@ -65,3 +61,5 @@ export function Action({
 
   return button;
 }
+
+export { Action, Actions };

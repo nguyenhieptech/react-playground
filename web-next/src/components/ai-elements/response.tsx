@@ -4,10 +4,8 @@ import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Streamdown } from "streamdown";
 
-type ResponseProps = React.ComponentProps<typeof Streamdown>;
-
-export const Response = React.memo(
-  ({ className, ...props }: ResponseProps) => (
+const Response = React.memo<React.ComponentProps<typeof Streamdown>>(
+  ({ className, ...props }) => (
     <Streamdown
       className={cn("size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0", className)}
       {...props}
@@ -15,5 +13,6 @@ export const Response = React.memo(
   ),
   (prevProps, nextProps) => prevProps.children === nextProps.children
 );
-
 Response.displayName = "Response";
+
+export { Response };

@@ -15,21 +15,19 @@ const CodeBlockContext = React.createContext<CodeBlockContextType>({
   code: "",
 });
 
-export type CodeBlockProps = React.HTMLAttributes<HTMLDivElement> & {
-  code: string;
-  language: string;
-  showLineNumbers?: boolean;
-  children?: React.ReactNode;
-};
-
-export function CodeBlock({
+function CodeBlock({
   code,
   language,
   showLineNumbers = false,
   className,
   children,
   ...props
-}: CodeBlockProps) {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  code: string;
+  language: string;
+  showLineNumbers?: boolean;
+  children?: React.ReactNode;
+}) {
   return (
     <CodeBlockContext.Provider value={{ code }}>
       <div
@@ -97,20 +95,18 @@ export function CodeBlock({
   );
 }
 
-export type CodeBlockCopyButtonProps = React.ComponentProps<typeof Button> & {
-  onCopy?: () => void;
-  onError?: (error: Error) => void;
-  timeout?: number;
-};
-
-export function CodeBlockCopyButton({
+function CodeBlockCopyButton({
   onCopy,
   onError,
   timeout = 2000,
   children,
   className,
   ...props
-}: CodeBlockCopyButtonProps) {
+}: React.ComponentProps<typeof Button> & {
+  onCopy?: () => void;
+  onError?: (error: Error) => void;
+  timeout?: number;
+}) {
   const [isCopied, setIsCopied] = React.useState(false);
   const { code } = React.useContext(CodeBlockContext);
 
@@ -144,3 +140,5 @@ export function CodeBlockCopyButton({
     </Button>
   );
 }
+
+export { CodeBlock, CodeBlockCopyButton };

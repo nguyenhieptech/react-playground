@@ -19,9 +19,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
-export type ToolProps = React.ComponentProps<typeof Collapsible>;
-
-export function Tool({ className, ...props }: ToolProps) {
+function Tool({ className, ...props }: React.ComponentProps<typeof Collapsible>) {
   return (
     <Collapsible
       className={cn("not-prose mb-4 w-full rounded-md border", className)}
@@ -29,12 +27,6 @@ export function Tool({ className, ...props }: ToolProps) {
     />
   );
 }
-
-export type ToolHeaderProps = {
-  type: ToolUIPart["type"];
-  state: ToolUIPart["state"];
-  className?: string;
-};
 
 function getStatusBadge(status: ToolUIPart["state"]) {
   const labels = {
@@ -59,7 +51,16 @@ function getStatusBadge(status: ToolUIPart["state"]) {
   );
 }
 
-export function ToolHeader({ className, type, state, ...props }: ToolHeaderProps) {
+function ToolHeader({
+  className,
+  type,
+  state,
+  ...props
+}: {
+  type: ToolUIPart["type"];
+  state: ToolUIPart["state"];
+  className?: string;
+}) {
   return (
     <CollapsibleTrigger
       className={cn("flex w-full items-center justify-between gap-4 p-3", className)}
@@ -75,9 +76,10 @@ export function ToolHeader({ className, type, state, ...props }: ToolHeaderProps
   );
 }
 
-export type ToolContentProps = React.ComponentProps<typeof CollapsibleContent>;
-
-export function ToolContent({ className, ...props }: ToolContentProps) {
+function ToolContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof CollapsibleContent>) {
   return (
     <CollapsibleContent
       className={cn(
@@ -89,11 +91,13 @@ export function ToolContent({ className, ...props }: ToolContentProps) {
   );
 }
 
-export type ToolInputProps = React.ComponentProps<"div"> & {
+function ToolInput({
+  className,
+  input,
+  ...props
+}: React.ComponentProps<"div"> & {
   input: ToolUIPart["input"];
-};
-
-export function ToolInput({ className, input, ...props }: ToolInputProps) {
+}) {
   return (
     <div className={cn("space-y-2 overflow-hidden p-4", className)} {...props}>
       <h4 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
@@ -106,12 +110,15 @@ export function ToolInput({ className, input, ...props }: ToolInputProps) {
   );
 }
 
-export type ToolOutputProps = React.ComponentProps<"div"> & {
+function ToolOutput({
+  className,
+  output,
+  errorText,
+  ...props
+}: React.ComponentProps<"div"> & {
   output: React.ReactNode;
   errorText: ToolUIPart["errorText"];
-};
-
-export function ToolOutput({ className, output, errorText, ...props }: ToolOutputProps) {
+}) {
   if (!(output || errorText)) {
     return null;
   }
@@ -133,3 +140,5 @@ export function ToolOutput({ className, output, errorText, ...props }: ToolOutpu
     </div>
   );
 }
+
+export { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput };
