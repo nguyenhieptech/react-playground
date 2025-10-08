@@ -3,11 +3,13 @@ import { cn } from "@/lib/utils";
 import type { UIMessage } from "ai";
 import * as React from "react";
 
-export type MessageProps = React.HTMLAttributes<HTMLDivElement> & {
+function Message({
+  className,
+  from,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
   from: UIMessage["role"];
-};
-
-export function Message({ className, from, ...props }: MessageProps) {
+}) {
   return (
     <div
       className={cn(
@@ -21,9 +23,11 @@ export function Message({ className, from, ...props }: MessageProps) {
   );
 }
 
-export type MessageContentProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function MessageContent({ children, className, ...props }: MessageContentProps) {
+function MessageContent({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
@@ -40,12 +44,15 @@ export function MessageContent({ children, className, ...props }: MessageContent
   );
 }
 
-export type MessageAvatarProps = React.ComponentProps<typeof Avatar> & {
+function MessageAvatar({
+  src,
+  name,
+  className,
+  ...props
+}: React.ComponentProps<typeof Avatar> & {
   src: string;
   name?: string;
-};
-
-export function MessageAvatar({ src, name, className, ...props }: MessageAvatarProps) {
+}) {
   return (
     <Avatar className={cn("ring-border size-8 ring-1", className)} {...props}>
       <AvatarImage alt="" className="mt-0 mb-0" src={src} />
@@ -53,3 +60,5 @@ export function MessageAvatar({ src, name, className, ...props }: MessageAvatarP
     </Avatar>
   );
 }
+
+export { Message, MessageAvatar, MessageContent };

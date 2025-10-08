@@ -14,9 +14,7 @@ import type { ChatStatus } from "ai";
 import { Loader2Icon, SendIcon, SquareIcon, XIcon } from "lucide-react";
 import * as React from "react";
 
-export type PromptInputProps = React.HTMLAttributes<HTMLFormElement>;
-
-export function PromptInput({ className, ...props }: PromptInputProps) {
+function PromptInput({ className, ...props }: React.HTMLAttributes<HTMLFormElement>) {
   return (
     <form
       className={cn(
@@ -28,19 +26,17 @@ export function PromptInput({ className, ...props }: PromptInputProps) {
   );
 }
 
-export type PromptInputTextareaProps = React.ComponentProps<typeof Textarea> & {
-  minHeight?: number;
-  maxHeight?: number;
-};
-
-export function PromptInputTextarea({
+function PromptInputTextarea({
   onChange,
   className,
   placeholder = "What would you like to know?",
   minHeight = 48,
   maxHeight = 164,
   ...props
-}: PromptInputTextareaProps) {
+}: React.ComponentProps<typeof Textarea> & {
+  minHeight?: number;
+  maxHeight?: number;
+}) {
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       // Don't submit if IME composition is in progress
@@ -81,17 +77,16 @@ export function PromptInputTextarea({
   );
 }
 
-export type PromptInputToolbarProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function PromptInputToolbar({ className, ...props }: PromptInputToolbarProps) {
+function PromptInputToolbar({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={cn("flex items-center justify-between p-1", className)} {...props} />
   );
 }
 
-export type PromptInputToolsProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function PromptInputTools({ className, ...props }: PromptInputToolsProps) {
+function PromptInputTools({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
@@ -104,14 +99,12 @@ export function PromptInputTools({ className, ...props }: PromptInputToolsProps)
   );
 }
 
-export type PromptInputButtonProps = React.ComponentProps<typeof Button>;
-
-export function PromptInputButton({
+function PromptInputButton({
   variant = "ghost",
   className,
   size,
   ...props
-}: PromptInputButtonProps) {
+}: React.ComponentProps<typeof Button>) {
   const newSize = (size ?? React.Children.count(props.children) > 1) ? "default" : "icon";
 
   return (
@@ -130,18 +123,16 @@ export function PromptInputButton({
   );
 }
 
-export type PromptInputSubmitProps = React.ComponentProps<typeof Button> & {
-  status?: ChatStatus;
-};
-
-export function PromptInputSubmit({
+function PromptInputSubmit({
   className,
   variant = "default",
   size = "icon",
   status,
   children,
   ...props
-}: PromptInputSubmitProps) {
+}: React.ComponentProps<typeof Button> & {
+  status?: ChatStatus;
+}) {
   let Icon = <SendIcon className="size-4" />;
 
   if (status === "submitted") {
@@ -165,20 +156,14 @@ export function PromptInputSubmit({
   );
 }
 
-export type PromptInputModelSelectProps = React.ComponentProps<typeof Select>;
-
-export function PromptInputModelSelect(props: PromptInputModelSelectProps) {
+function PromptInputModelSelect(props: React.ComponentProps<typeof Select>) {
   return <Select {...props} />;
 }
 
-export type PromptInputModelSelectTriggerProps = React.ComponentProps<
-  typeof SelectTrigger
->;
-
-export function PromptInputModelSelectTrigger({
+function PromptInputModelSelectTrigger({
   className,
   ...props
-}: PromptInputModelSelectTriggerProps) {
+}: React.ComponentProps<typeof SelectTrigger>) {
   return (
     <SelectTrigger
       className={cn(
@@ -191,31 +176,37 @@ export function PromptInputModelSelectTrigger({
   );
 }
 
-export type PromptInputModelSelectContentProps = React.ComponentProps<
-  typeof SelectContent
->;
-
-export function PromptInputModelSelectContent({
+function PromptInputModelSelectContent({
   className,
   ...props
-}: PromptInputModelSelectContentProps) {
+}: React.ComponentProps<typeof SelectContent>) {
   return <SelectContent className={cn(className)} {...props} />;
 }
 
-export type PromptInputModelSelectItemProps = React.ComponentProps<typeof SelectItem>;
-
-export function PromptInputModelSelectItem({
+function PromptInputModelSelectItem({
   className,
   ...props
-}: PromptInputModelSelectItemProps) {
+}: React.ComponentProps<typeof SelectItem>) {
   return <SelectItem className={cn(className)} {...props} />;
 }
 
-export type PromptInputModelSelectValueProps = React.ComponentProps<typeof SelectValue>;
-
-export function PromptInputModelSelectValue({
+function PromptInputModelSelectValue({
   className,
   ...props
-}: PromptInputModelSelectValueProps) {
+}: React.ComponentProps<typeof SelectValue>) {
   return <SelectValue className={cn(className)} {...props} />;
 }
+
+export {
+  PromptInput,
+  PromptInputButton,
+  PromptInputModelSelect,
+  PromptInputModelSelectContent,
+  PromptInputModelSelectItem,
+  PromptInputModelSelectTrigger,
+  PromptInputModelSelectValue,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputToolbar,
+  PromptInputTools,
+};

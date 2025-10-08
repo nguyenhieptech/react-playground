@@ -16,15 +16,11 @@ import { cn } from "@/lib/utils";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import * as React from "react";
 
-export type InlineCitationProps = React.ComponentProps<"span">;
-
-export function InlineCitation({ className, ...props }: InlineCitationProps) {
+function InlineCitation({ className, ...props }: React.ComponentProps<"span">) {
   return <span className={cn("group inline items-center gap-1", className)} {...props} />;
 }
 
-export type InlineCitationTextProps = React.ComponentProps<"span">;
-
-export function InlineCitationText({ className, ...props }: InlineCitationTextProps) {
+function InlineCitationText({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn("group-hover:bg-accent transition-colors", className)}
@@ -33,21 +29,17 @@ export function InlineCitationText({ className, ...props }: InlineCitationTextPr
   );
 }
 
-export type InlineCitationCardProps = React.ComponentProps<typeof HoverCard>;
-
-export function InlineCitationCard(props: InlineCitationCardProps) {
+function InlineCitationCard(props: React.ComponentProps<typeof HoverCard>) {
   return <HoverCard closeDelay={0} openDelay={0} {...props} />;
 }
 
-export type InlineCitationCardTriggerProps = React.ComponentProps<typeof Badge> & {
-  sources: string[];
-};
-
-export function InlineCitationCardTrigger({
+function InlineCitationCardTrigger({
   sources,
   className,
   ...props
-}: InlineCitationCardTriggerProps) {
+}: React.ComponentProps<typeof Badge> & {
+  sources: string[];
+}) {
   return (
     <HoverCardTrigger asChild>
       <Badge
@@ -68,12 +60,7 @@ export function InlineCitationCardTrigger({
   );
 }
 
-export type InlineCitationCardBodyProps = React.ComponentProps<"div">;
-
-export function InlineCitationCardBody({
-  className,
-  ...props
-}: InlineCitationCardBodyProps) {
+function InlineCitationCardBody({ className, ...props }: React.ComponentProps<"div">) {
   return <HoverCardContent className={cn("relative w-80 p-0", className)} {...props} />;
 }
 
@@ -84,13 +71,11 @@ function useCarouselApi() {
   return context;
 }
 
-export type InlineCitationCarouselProps = React.ComponentProps<typeof Carousel>;
-
-export function InlineCitationCarousel({
+function InlineCitationCarousel({
   className,
   children,
   ...props
-}: InlineCitationCarouselProps) {
+}: React.ComponentProps<typeof Carousel>) {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
@@ -102,29 +87,23 @@ export function InlineCitationCarousel({
   );
 }
 
-export type InlineCitationCarouselContentProps = React.ComponentProps<"div">;
-
-export function InlineCitationCarouselContent(props: InlineCitationCarouselContentProps) {
+function InlineCitationCarouselContent(props: React.ComponentProps<"div">) {
   return <CarouselContent {...props} />;
 }
 
-export type InlineCitationCarouselItemProps = React.ComponentProps<"div">;
-
-export function InlineCitationCarouselItem({
+function InlineCitationCarouselItem({
   className,
   ...props
-}: InlineCitationCarouselItemProps) {
+}: React.ComponentProps<"div">) {
   return (
     <CarouselItem className={cn("w-full space-y-2 p-4 pl-8", className)} {...props} />
   );
 }
 
-export type InlineCitationCarouselHeaderProps = React.ComponentProps<"div">;
-
-export function InlineCitationCarouselHeader({
+function InlineCitationCarouselHeader({
   className,
   ...props
-}: InlineCitationCarouselHeaderProps) {
+}: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
@@ -136,13 +115,11 @@ export function InlineCitationCarouselHeader({
   );
 }
 
-export type InlineCitationCarouselIndexProps = React.ComponentProps<"div">;
-
-export function InlineCitationCarouselIndex({
+function InlineCitationCarouselIndex({
   children,
   className,
   ...props
-}: InlineCitationCarouselIndexProps) {
+}: React.ComponentProps<"div">) {
   const api = useCarouselApi();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -173,12 +150,10 @@ export function InlineCitationCarouselIndex({
   );
 }
 
-export type InlineCitationCarouselPrevProps = React.ComponentProps<"button">;
-
-export function InlineCitationCarouselPrev({
+function InlineCitationCarouselPrev({
   className,
   ...props
-}: InlineCitationCarouselPrevProps) {
+}: React.ComponentProps<"button">) {
   const api = useCarouselApi();
 
   const handleClick = React.useCallback(() => {
@@ -200,12 +175,10 @@ export function InlineCitationCarouselPrev({
   );
 }
 
-export type InlineCitationCarouselNextProps = React.ComponentProps<"button">;
-
-export function InlineCitationCarouselNext({
+function InlineCitationCarouselNext({
   className,
   ...props
-}: InlineCitationCarouselNextProps) {
+}: React.ComponentProps<"button">) {
   const api = useCarouselApi();
 
   const handleClick = React.useCallback(() => {
@@ -227,20 +200,18 @@ export function InlineCitationCarouselNext({
   );
 }
 
-export type InlineCitationSourceProps = React.ComponentProps<"div"> & {
-  title?: string;
-  url?: string;
-  description?: string;
-};
-
-export function InlineCitationSource({
+function InlineCitationSource({
   title,
   url,
   description,
   className,
   children,
   ...props
-}: InlineCitationSourceProps) {
+}: React.ComponentProps<"div"> & {
+  title?: string;
+  url?: string;
+  description?: string;
+}) {
   return (
     <div className={cn("space-y-1", className)} {...props}>
       {title && <h4 className="truncate text-sm leading-tight font-medium">{title}</h4>}
@@ -255,13 +226,11 @@ export function InlineCitationSource({
   );
 }
 
-export type InlineCitationQuoteProps = React.ComponentProps<"blockquote">;
-
-export function InlineCitationQuote({
+function InlineCitationQuote({
   children,
   className,
   ...props
-}: InlineCitationQuoteProps) {
+}: React.ComponentProps<"blockquote">) {
   return (
     <blockquote
       className={cn(
@@ -274,3 +243,20 @@ export function InlineCitationQuote({
     </blockquote>
   );
 }
+
+export {
+  InlineCitation,
+  InlineCitationCard,
+  InlineCitationCardBody,
+  InlineCitationCardTrigger,
+  InlineCitationCarousel,
+  InlineCitationCarouselContent,
+  InlineCitationCarouselHeader,
+  InlineCitationCarouselIndex,
+  InlineCitationCarouselItem,
+  InlineCitationCarouselNext,
+  InlineCitationCarouselPrev,
+  InlineCitationQuote,
+  InlineCitationSource,
+  InlineCitationText,
+};

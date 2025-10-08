@@ -27,17 +27,15 @@ function useBranch() {
   return context;
 }
 
-export type BranchProps = React.HTMLAttributes<HTMLDivElement> & {
-  defaultBranch?: number;
-  onBranchChange?: (branchIndex: number) => void;
-};
-
-export function Branch({
+function Branch({
   defaultBranch = 0,
   onBranchChange,
   className,
   ...props
-}: BranchProps) {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  defaultBranch?: number;
+  onBranchChange?: (branchIndex: number) => void;
+}) {
   const [currentBranch, setCurrentBranch] = React.useState(defaultBranch);
   const [branches, setBranches] = React.useState<React.ReactElement[]>([]);
 
@@ -72,9 +70,7 @@ export function Branch({
   );
 }
 
-export type BranchMessagesProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function BranchMessages({ children, ...props }: BranchMessagesProps) {
+function BranchMessages({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const { currentBranch, setBranches, branches } = useBranch();
   const childrenArray = Array.isArray(children) ? children : [children];
 
@@ -99,11 +95,13 @@ export function BranchMessages({ children, ...props }: BranchMessagesProps) {
   ));
 }
 
-export type BranchSelectorProps = React.HTMLAttributes<HTMLDivElement> & {
+function BranchSelector({
+  className,
+  from,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
   from: UIMessage["role"];
-};
-
-export function BranchSelector({ className, from, ...props }: BranchSelectorProps) {
+}) {
   const { totalBranches } = useBranch();
 
   // Don't render if there's only one branch
@@ -123,9 +121,11 @@ export function BranchSelector({ className, from, ...props }: BranchSelectorProp
   );
 }
 
-export type BranchPreviousProps = React.ComponentProps<typeof Button>;
-
-export function BranchPrevious({ className, children, ...props }: BranchPreviousProps) {
+function BranchPrevious({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   const { goToPrevious, totalBranches } = useBranch();
 
   return (
@@ -149,9 +149,11 @@ export function BranchPrevious({ className, children, ...props }: BranchPrevious
   );
 }
 
-export type BranchNextProps = React.ComponentProps<typeof Button>;
-
-export function BranchNext({ className, children, ...props }: BranchNextProps) {
+function BranchNext({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   const { goToNext, totalBranches } = useBranch();
 
   return (
@@ -175,9 +177,7 @@ export function BranchNext({ className, children, ...props }: BranchNextProps) {
   );
 }
 
-export type BranchPageProps = React.HTMLAttributes<HTMLSpanElement>;
-
-export function BranchPage({ className, ...props }: BranchPageProps) {
+function BranchPage({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   const { currentBranch, totalBranches } = useBranch();
 
   return (
@@ -189,3 +189,5 @@ export function BranchPage({ className, ...props }: BranchPageProps) {
     </span>
   );
 }
+
+export { Branch, BranchMessages, BranchNext, BranchPage, BranchPrevious, BranchSelector };

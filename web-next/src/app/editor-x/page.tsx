@@ -7,7 +7,7 @@ import * as React from "react";
 // Lexical base rich text editor using shadcn/ui components
 // https://github.com/htmujahid/shadcn-editor
 
-export const initialValue = {
+const initialValue = {
   root: {
     children: [
       {

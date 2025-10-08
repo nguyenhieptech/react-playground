@@ -28,7 +28,7 @@ function useReasoning() {
   return context;
 }
 
-export type ReasoningProps = React.ComponentProps<typeof Collapsible> & {
+type ReasoningProps = React.ComponentProps<typeof Collapsible> & {
   isStreaming?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
@@ -39,7 +39,7 @@ export type ReasoningProps = React.ComponentProps<typeof Collapsible> & {
 const AUTO_CLOSE_DELAY = 1000;
 const MS_IN_S = 1000;
 
-export const Reasoning = React.memo(
+const Reasoning = React.memo<ReasoningProps>(
   ({
     className,
     isStreaming = false,
@@ -49,7 +49,7 @@ export const Reasoning = React.memo(
     duration: durationProp,
     children,
     ...props
-  }: ReasoningProps) => {
+  }) => {
     const [isOpen, setIsOpen] = useControllableState({
       prop: open,
       defaultProp: defaultOpen,
@@ -106,11 +106,12 @@ export const Reasoning = React.memo(
     );
   }
 );
+Reasoning.displayName = "Reasoning";
 
-export type ReasoningTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
+type ReasoningTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
 
-export const ReasoningTrigger = React.memo(
-  ({ className, children, ...props }: ReasoningTriggerProps) => {
+const ReasoningTrigger = React.memo<ReasoningTriggerProps>(
+  ({ className, children, ...props }) => {
     const { isStreaming, isOpen, duration } = useReasoning();
 
     return (
@@ -138,13 +139,14 @@ export const ReasoningTrigger = React.memo(
     );
   }
 );
+ReasoningTrigger.displayName = "ReasoningTrigger";
 
-export type ReasoningContentProps = React.ComponentProps<typeof CollapsibleContent> & {
+type ReasoningContentProps = React.ComponentProps<typeof CollapsibleContent> & {
   children: string;
 };
 
-export const ReasoningContent = React.memo(
-  ({ className, children, ...props }: ReasoningContentProps) => (
+const ReasoningContent = React.memo<ReasoningContentProps>(
+  ({ className, children, ...props }) => (
     <CollapsibleContent
       className={cn(
         "mt-4 text-sm",
@@ -157,7 +159,6 @@ export const ReasoningContent = React.memo(
     </CollapsibleContent>
   )
 );
-
-Reasoning.displayName = "Reasoning";
-ReasoningTrigger.displayName = "ReasoningTrigger";
 ReasoningContent.displayName = "ReasoningContent";
+
+export { Reasoning, ReasoningContent, ReasoningTrigger };

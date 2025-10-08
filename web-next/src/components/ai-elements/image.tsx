@@ -1,12 +1,15 @@
 import { cn } from "@/lib/utils";
 import type { Experimental_GeneratedImage } from "ai";
 
-export type ImageProps = Experimental_GeneratedImage & {
+function Image({
+  base64,
+  uint8Array,
+  mediaType,
+  ...props
+}: Experimental_GeneratedImage & {
   className?: string;
   alt?: string;
-};
-
-export function Image({ base64, uint8Array, mediaType, ...props }: ImageProps) {
+}) {
   return (
     <img
       {...props}
@@ -16,3 +19,5 @@ export function Image({ base64, uint8Array, mediaType, ...props }: ImageProps) {
     />
   );
 }
+
+export { Image };
