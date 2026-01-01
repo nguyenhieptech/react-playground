@@ -1,40 +1,78 @@
 "use client";
 
+import { ArrowDownIcon } from "lucide-react";
+import type { ComponentProps } from "react";
+import { useCallback } from "react";
+import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowDownIcon } from "lucide-react";
-import * as React from "react";
-import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 
-function Conversation({
+export type ConversationProps = ComponentProps<typeof StickToBottom>;
+
+export const Conversation = ({ className, ...props }: ConversationProps) => (
+  <StickToBottom
+    className={cn("relative flex-1 overflow-y-hidden", className)}
+    initial="smooth"
+    resize="smooth"
+    role="log"
+    {...props}
+  />
+);
+
+export type ConversationContentProps = ComponentProps<typeof StickToBottom.Content>;
+
+export const ConversationContent = ({
   className,
   ...props
-}: React.ComponentProps<typeof StickToBottom>) {
-  return (
-    <StickToBottom
-      className={cn("relative flex-1 overflow-y-auto", className)}
-      initial="smooth"
-      resize="smooth"
-      role="log"
-      {...props}
-    />
-  );
-}
+}: ConversationContentProps) => (
+  <StickToBottom.Content
+    className={cn("flex flex-col gap-8 p-4", className)}
+    {...props}
+  />
+);
 
-function ConversationContent({
+export type ConversationEmptyStateProps = ComponentProps<"div"> & {
+  title?: string;
+  description?: string;
+  icon?: React.ReactNode;
+};
+
+export const ConversationEmptyState = ({
+  className,
+  title = "No messages yet",
+  description = "Start a conversation to see messages here",
+  icon,
+  children,
+  ...props
+}: ConversationEmptyStateProps) => (
+  <div
+    className={cn(
+      "flex size-full flex-col items-center justify-center gap-3 p-8 text-center",
+      className
+    )}
+    {...props}
+  >
+    {children ?? (
+      <>
+        {icon && <div className="text-muted-foreground">{icon}</div>}
+        <div className="space-y-1">
+          <h3 className="text-sm font-medium">{title}</h3>
+          {description && <p className="text-muted-foreground text-sm">{description}</p>}
+        </div>
+      </>
+    )}
+  </div>
+);
+
+export type ConversationScrollButtonProps = ComponentProps<typeof Button>;
+
+export const ConversationScrollButton = ({
   className,
   ...props
-}: React.ComponentProps<typeof StickToBottom.Content>) {
-  return <StickToBottom.Content className={cn("p-4", className)} {...props} />;
-}
-
-function ConversationScrollButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof Button>) {
+}: ConversationScrollButtonProps) => {
   const { isAtBottom, scrollToBottom } = useStickToBottomContext();
 
-  const handleScrollToBottom = React.useCallback(() => {
+  const handleScrollToBottom = useCallback(() => {
     scrollToBottom();
   }, [scrollToBottom]);
 
@@ -55,6 +93,4 @@ function ConversationScrollButton({
       </Button>
     )
   );
-}
-
-export { Conversation, ConversationContent, ConversationScrollButton };
+};

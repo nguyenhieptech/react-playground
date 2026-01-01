@@ -1,26 +1,27 @@
 "use client";
 
+import type { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import * as React from "react";
 
-function Suggestions({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof ScrollArea>) {
-  return (
-    <ScrollArea className="w-full overflow-x-auto whitespace-nowrap" {...props}>
-      <div className={cn("flex w-max flex-nowrap items-center gap-2", className)}>
-        {children}
-      </div>
-      <ScrollBar className="hidden" orientation="horizontal" />
-    </ScrollArea>
-  );
-}
+export type SuggestionsProps = ComponentProps<typeof ScrollArea>;
 
-function Suggestion({
+export const Suggestions = ({ className, children, ...props }: SuggestionsProps) => (
+  <ScrollArea className="w-full overflow-x-auto whitespace-nowrap" {...props}>
+    <div className={cn("flex w-max flex-nowrap items-center gap-2", className)}>
+      {children}
+    </div>
+    <ScrollBar className="hidden" orientation="horizontal" />
+  </ScrollArea>
+);
+
+export type SuggestionProps = Omit<ComponentProps<typeof Button>, "onClick"> & {
+  suggestion: string;
+  onClick?: (suggestion: string) => void;
+};
+
+export const Suggestion = ({
   suggestion,
   onClick,
   className,
@@ -28,13 +29,10 @@ function Suggestion({
   size = "sm",
   children,
   ...props
-}: Omit<React.ComponentProps<typeof Button>, "onClick"> & {
-  suggestion: string;
-  onClick?: (suggestion: string) => void;
-}) {
-  function handleClick() {
+}: SuggestionProps) => {
+  const handleClick = () => {
     onClick?.(suggestion);
-  }
+  };
 
   return (
     <Button
@@ -48,6 +46,4 @@ function Suggestion({
       {children || suggestion}
     </Button>
   );
-}
-
-export { Suggestion, Suggestions };
+};
