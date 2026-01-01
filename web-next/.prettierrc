@@ -19,5 +19,18 @@
     "leaveTo"
   ],
   "tailwindFunctions": ["clsx", "cva"],
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrderCaseInsensitive": true,
+  "importOrderCombineTypeAndValueImports": true,
+  "importOrderMergeDuplicateImports": true,
+  "importOrderParserPlugins": ["typescript", "jsx"],
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "^react/(.*)$",
+    "^next/(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^[@/].*",
+    "^[./]",
+    "^[../]"
+  ]
 }
