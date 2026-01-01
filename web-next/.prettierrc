@@ -8,7 +8,6 @@
   "bracketSameLine": false,
   "tabWidth": 2,
   "printWidth": 90,
-  "organizeImportsSkipDestructiveCodeActions": true,
   "tailwindAttributes": [
     "enter",
     "enterFrom",
@@ -21,8 +20,6 @@
   "tailwindFunctions": ["clsx", "cva"],
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrderCaseInsensitive": true,
-  "importOrderCombineTypeAndValueImports": true,
-  "importOrderMergeDuplicateImports": true,
   "importOrderParserPlugins": ["typescript", "jsx"],
   "importOrder": [
     "<BUILTIN_MODULES>",
