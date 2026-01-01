@@ -10,7 +10,10 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "typescript.referencesCodeLens.enabled": true,
   "tailwindCSS.suggestions": true,
+  // https://cva.style/docs/getting-started/installation#intellisense
+  "tailwindCSS.classFunctions": ["cva", "cx"],
   "tailwindCSS.classAttributes": [
     // Default
     "class",
@@ -19,7 +22,6 @@
     // shadcn/ui - sonner
     "toastOptions"
   ],
-  // https://cva.style/docs/getting-started/installation#intellisense
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
