@@ -1,4 +1,20 @@
 import {
+  $createParagraphNode,
+  $getNodeByKey,
+  $getSelection,
+  $isRangeSelection,
+  COMMAND_PRIORITY_EDITOR,
+  COMMAND_PRIORITY_LOW,
+  createCommand,
+  KEY_ARROW_DOWN_COMMAND,
+  KEY_ARROW_LEFT_COMMAND,
+  KEY_ARROW_RIGHT_COMMAND,
+  KEY_ARROW_UP_COMMAND,
+  LexicalEditor,
+} from "lexical";
+import type { ElementNode, LexicalCommand, LexicalNode, NodeKey } from "lexical";
+import { JSX, useEffect, useState } from "react";
+import {
   $createLayoutContainerNode,
   $isLayoutContainerNode,
   LayoutContainerNode,
@@ -22,22 +38,6 @@ import {
   $insertNodeToNearestRoot,
   mergeRegister,
 } from "@lexical/utils";
-import {
-  $createParagraphNode,
-  $getNodeByKey,
-  $getSelection,
-  $isRangeSelection,
-  COMMAND_PRIORITY_EDITOR,
-  COMMAND_PRIORITY_LOW,
-  createCommand,
-  KEY_ARROW_DOWN_COMMAND,
-  KEY_ARROW_LEFT_COMMAND,
-  KEY_ARROW_RIGHT_COMMAND,
-  KEY_ARROW_UP_COMMAND,
-  LexicalEditor,
-} from "lexical";
-import type { ElementNode, LexicalCommand, LexicalNode, NodeKey } from "lexical";
-import { JSX, useEffect, useState } from "react";
 
 const LAYOUTS = [
   { label: "2 columns (equal width)", value: "1fr 1fr" },

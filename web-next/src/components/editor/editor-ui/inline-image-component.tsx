@@ -1,3 +1,19 @@
+import type { BaseSelection, LexicalEditor, NodeKey } from "lexical";
+import {
+  $getNodeByKey,
+  $getSelection,
+  $isNodeSelection,
+  $setSelection,
+  CLICK_COMMAND,
+  COMMAND_PRIORITY_LOW,
+  DRAGSTART_COMMAND,
+  KEY_BACKSPACE_COMMAND,
+  KEY_DELETE_COMMAND,
+  KEY_ENTER_COMMAND,
+  KEY_ESCAPE_COMMAND,
+  SELECTION_CHANGE_COMMAND,
+} from "lexical";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
 import { ContentEditable } from "@/components/editor/editor-ui/content-editable";
 import type { Position } from "@/components/editor/nodes/inline-image-node";
@@ -26,22 +42,6 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
-import type { BaseSelection, LexicalEditor, NodeKey } from "lexical";
-import {
-  $getNodeByKey,
-  $getSelection,
-  $isNodeSelection,
-  $setSelection,
-  CLICK_COMMAND,
-  COMMAND_PRIORITY_LOW,
-  DRAGSTART_COMMAND,
-  KEY_BACKSPACE_COMMAND,
-  KEY_DELETE_COMMAND,
-  KEY_ENTER_COMMAND,
-  KEY_ESCAPE_COMMAND,
-  SELECTION_CHANGE_COMMAND,
-} from "lexical";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 const imageCache = new Set();
 

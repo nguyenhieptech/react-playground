@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ContentEditable } from "@/components/editor/editor-ui/content-editable";
 import { ActionsPlugin } from "@/components/editor/plugins/actions/actions-plugin";
 import { CharacterLimitPlugin } from "@/components/editor/plugins/actions/character-limit-plugin";
@@ -122,7 +123,6 @@ import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPl
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
-import { useState } from "react";
 
 const placeholder = "Press / for commands...";
 const maxLength = 500;

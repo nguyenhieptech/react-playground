@@ -1,3 +1,4 @@
+import { $isParagraphNode, $isTextNode, LexicalNode } from "lexical";
 import { EMOJI } from "@/components/editor/transformers/markdown-emoji-transformer";
 import { EQUATION } from "@/components/editor/transformers/markdown-equation-transformer";
 import { HR } from "@/components/editor/transformers/markdown-hr-transformer";
@@ -25,7 +26,6 @@ import {
   TableNode,
   TableRowNode,
 } from "@lexical/table";
-import { $isParagraphNode, $isTextNode, LexicalNode } from "lexical";
 
 // Very primitive table setup
 const TABLE_ROW_REG_EXP = /^(?:\|)(.+)(?:\|)\s?$/;

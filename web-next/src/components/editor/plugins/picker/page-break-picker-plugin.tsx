@@ -1,6 +1,6 @@
+import { ScissorsIcon } from "lucide-react";
 import { INSERT_PAGE_BREAK } from "@/components/editor/plugins/page-break-plugin";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
-import { ScissorsIcon } from "lucide-react";
 
 export function PageBreakPickerPlugin() {
   return new ComponentPickerOption("Page Break", {

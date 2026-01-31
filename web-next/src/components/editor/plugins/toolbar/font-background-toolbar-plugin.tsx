@@ -1,12 +1,12 @@
 "use client";
 
+import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
+import { PaintBucketIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
-import { PaintBucketIcon } from "lucide-react";
-import { useCallback, useState } from "react";
 
 export function FontBackgroundToolbarPlugin() {
   const { activeEditor } = useToolbarContext();

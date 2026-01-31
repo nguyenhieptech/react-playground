@@ -1,9 +1,9 @@
 "use client";
 
+import { SquareSplitVerticalIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { INSERT_PAGE_BREAK } from "@/components/editor/plugins/page-break-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { SquareSplitVerticalIcon } from "lucide-react";
 
 export function InsertPageBreak() {
   const { activeEditor } = useToolbarContext();

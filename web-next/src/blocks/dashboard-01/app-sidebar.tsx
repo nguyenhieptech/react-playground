@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { NavDocuments } from "@/blocks/dashboard-01/nav-documents";
 import { NavMain } from "@/blocks/dashboard-01/nav-main";
 import { NavSecondary } from "@/blocks/dashboard-01/nav-secondary";
@@ -30,7 +31,6 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
-import * as React from "react";
 
 const data = {
   user: {

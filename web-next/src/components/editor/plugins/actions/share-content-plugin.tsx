@@ -1,3 +1,7 @@
+import { CLEAR_HISTORY_COMMAND } from "lexical";
+import { SendIcon } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { docFromHash, docToHash } from "@/components/editor/utils/doc-serialization";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -7,10 +11,6 @@ import {
   serializedDocumentFromEditorState,
 } from "@lexical/file";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { CLEAR_HISTORY_COMMAND } from "lexical";
-import { SendIcon } from "lucide-react";
-import { useEffect } from "react";
-import { toast } from "sonner";
 
 export function ShareContentPlugin() {
   const [editor] = useLexicalComposerContext();

@@ -7,20 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
-import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
-import { setFloatingElemPositionForLinkEditor } from "@/components/editor/utils/set-floating-elem-position-for-link-editor";
-import { sanitizeUrl } from "@/components/editor/utils/url";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  $createLinkNode,
-  $isAutoLinkNode,
-  $isLinkNode,
-  TOGGLE_LINK_COMMAND,
-} from "@lexical/link";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $findMatchingParent, mergeRegister } from "@lexical/utils";
 import {
   $getSelection,
   $isLineBreakNode,
@@ -37,6 +23,20 @@ import {
 import { Check, Pencil, Trash, X } from "lucide-react";
 import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
+import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
+import { setFloatingElemPositionForLinkEditor } from "@/components/editor/utils/set-floating-elem-position-for-link-editor";
+import { sanitizeUrl } from "@/components/editor/utils/url";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  $createLinkNode,
+  $isAutoLinkNode,
+  $isLinkNode,
+  TOGGLE_LINK_COMMAND,
+} from "@lexical/link";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $findMatchingParent, mergeRegister } from "@lexical/utils";
 
 function FloatingLinkEditor({
   editor,

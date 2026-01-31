@@ -1,9 +1,3 @@
-import { useToolbarContext } from "@/components/editor/context/toolbar-context";
-import { Button } from "@/components/ui/button";
-import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
-import { $isHeadingNode, $isQuoteNode } from "@lexical/rich-text";
-import { $isTableSelection } from "@lexical/table";
-import { $getNearestBlockElementAncestorOrThrow } from "@lexical/utils";
 import {
   $createParagraphNode,
   $getSelection,
@@ -12,6 +6,12 @@ import {
 } from "lexical";
 import { EraserIcon } from "lucide-react";
 import { useCallback } from "react";
+import { useToolbarContext } from "@/components/editor/context/toolbar-context";
+import { Button } from "@/components/ui/button";
+import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
+import { $isHeadingNode, $isQuoteNode } from "@lexical/rich-text";
+import { $isTableSelection } from "@lexical/table";
+import { $getNearestBlockElementAncestorOrThrow } from "@lexical/utils";
 
 export function ClearFormattingToolbarPlugin() {
   const { activeEditor } = useToolbarContext();

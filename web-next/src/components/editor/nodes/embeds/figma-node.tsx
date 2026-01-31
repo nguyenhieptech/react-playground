@@ -1,8 +1,3 @@
-import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
-import {
-  DecoratorBlockNode,
-  SerializedDecoratorBlockNode,
-} from "@lexical/react/LexicalDecoratorBlockNode";
 import type {
   EditorConfig,
   ElementFormatType,
@@ -11,6 +6,11 @@ import type {
   NodeKey,
   Spread,
 } from "lexical";
+import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
+import {
+  DecoratorBlockNode,
+  SerializedDecoratorBlockNode,
+} from "@lexical/react/LexicalDecoratorBlockNode";
 
 type FigmaComponentProps = Readonly<{
   className: Readonly<{

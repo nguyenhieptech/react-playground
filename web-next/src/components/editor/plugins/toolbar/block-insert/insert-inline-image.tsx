@@ -1,7 +1,7 @@
+import { FileImageIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { InsertInlineImageDialog } from "@/components/editor/plugins/inline-image-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { FileImageIcon } from "lucide-react";
 
 export function InsertInlineImage() {
   const { activeEditor, showModal } = useToolbarContext();

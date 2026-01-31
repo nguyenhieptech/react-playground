@@ -7,6 +7,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import type { LexicalEditor } from "lexical";
+import { FigmaIcon, TwitterIcon, YoutubeIcon } from "lucide-react";
+import { JSX, useMemo, useState } from "react";
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
 import { INSERT_FIGMA_COMMAND } from "@/components/editor/plugins/embeds/figma-plugin";
 import { INSERT_TWEET_COMMAND } from "@/components/editor/plugins/embeds/twitter-plugin";
@@ -29,9 +32,6 @@ import {
   URL_MATCHER,
 } from "@lexical/react/LexicalAutoEmbedPlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import type { LexicalEditor } from "lexical";
-import { FigmaIcon, TwitterIcon, YoutubeIcon } from "lucide-react";
-import { JSX, useMemo, useState } from "react";
 
 export interface CustomEmbedConfig extends EmbedConfig {
   // Human readable name of the embeded content e.g. Tweet or Google Map.

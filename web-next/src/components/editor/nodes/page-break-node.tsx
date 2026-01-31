@@ -1,6 +1,3 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
-import { mergeRegister } from "@lexical/utils";
 import {
   $getSelection,
   $isNodeSelection,
@@ -17,6 +14,9 @@ import {
   SerializedLexicalNode,
 } from "lexical";
 import { useCallback, useEffect } from "react";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
+import { mergeRegister } from "@lexical/utils";
 
 export type SerializedPageBreakNode = SerializedLexicalNode;
 

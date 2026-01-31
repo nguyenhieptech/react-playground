@@ -1,7 +1,7 @@
+import { TableIcon } from "lucide-react";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
 import { InsertTableDialog } from "@/components/editor/plugins/table-plugin";
 import { INSERT_TABLE_COMMAND } from "@lexical/table";
-import { TableIcon } from "lucide-react";
 
 export function TablePickerPlugin() {
   return new ComponentPickerOption("Table", {

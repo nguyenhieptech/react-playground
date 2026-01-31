@@ -1,3 +1,5 @@
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +13,6 @@ import {
   ExcalidrawImperativeAPI,
   ExcalidrawInitialDataState,
 } from "@excalidraw/excalidraw/types";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const Excalidraw = dynamic(() => import("@/components/editor/editor-ui/excalidraw"), {
   ssr: false,
@@ -216,7 +216,7 @@ export function ExcalidrawModal({
                 }}
               />
               <div className="flex h-full items-center justify-center">Loading...</div>
-              <div className="absolute right-1/2 bottom-0 bottom-5 z-10 flex translate-x-1/2 gap-2">
+              <div className="absolute right-1/2 bottom-0 z-10 flex translate-x-1/2 gap-2">
                 <Button variant="outline" onClick={onClose}>
                   Discard
                 </Button>

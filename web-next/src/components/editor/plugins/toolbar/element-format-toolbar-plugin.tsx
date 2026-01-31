@@ -1,10 +1,3 @@
-import { useToolbarContext } from "@/components/editor/context/toolbar-context";
-import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
-import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { $isLinkNode } from "@lexical/link";
-import { $findMatchingParent } from "@lexical/utils";
 import {
   $isElementNode,
   $isRangeSelection,
@@ -23,6 +16,13 @@ import {
   IndentIncreaseIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { useToolbarContext } from "@/components/editor/context/toolbar-context";
+import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
+import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
+import { Separator } from "@/components/ui/separator";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { $isLinkNode } from "@lexical/link";
+import { $findMatchingParent } from "@lexical/utils";
 
 const ELEMENT_FORMAT_OPTIONS: {
   [key in Exclude<ElementFormatType, "start" | "end" | "">]: {

@@ -1,7 +1,3 @@
-import { useToolbarContext } from "@/components/editor/context/toolbar-context";
-import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import { Toggle } from "@/components/ui/toggle";
-import { $isTableSelection } from "@lexical/table";
 import {
   $isRangeSelection,
   BaseSelection,
@@ -16,6 +12,10 @@ import {
   UnderlineIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { useToolbarContext } from "@/components/editor/context/toolbar-context";
+import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
+import { Toggle } from "@/components/ui/toggle";
+import { $isTableSelection } from "@lexical/table";
 
 const Icons: Partial<Record<TextFormatType, React.ElementType>> = {
   bold: BoldIcon,

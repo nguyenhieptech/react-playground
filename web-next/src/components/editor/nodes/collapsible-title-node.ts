@@ -1,7 +1,3 @@
-import { $isCollapsibleContainerNode } from "@/components/editor/nodes/collapsible-container-node";
-import { $isCollapsibleContentNode } from "@/components/editor/nodes/collapsible-content-node";
-import { IS_CHROME } from "@/components/editor/shared/environment";
-import { invariant } from "@/components/editor/shared/invariant";
 import {
   $createParagraphNode,
   $isElementNode,
@@ -14,6 +10,10 @@ import {
   RangeSelection,
   SerializedElementNode,
 } from "lexical";
+import { $isCollapsibleContainerNode } from "@/components/editor/nodes/collapsible-container-node";
+import { $isCollapsibleContentNode } from "@/components/editor/nodes/collapsible-content-node";
+import { IS_CHROME } from "@/components/editor/shared/environment";
+import { invariant } from "@/components/editor/shared/invariant";
 
 type SerializedCollapsibleTitleNode = SerializedElementNode;
 

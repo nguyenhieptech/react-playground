@@ -1,10 +1,10 @@
 "use client";
 
+import { DownloadIcon, UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { exportFile, importFile } from "@lexical/file";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { DownloadIcon, UploadIcon } from "lucide-react";
 
 export function ImportExportPlugin() {
   const [editor] = useLexicalComposerContext();

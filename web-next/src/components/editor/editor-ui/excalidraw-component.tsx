@@ -1,3 +1,12 @@
+import type { NodeKey } from "lexical";
+import {
+  $getNodeByKey,
+  CLICK_COMMAND,
+  COMMAND_PRIORITY_LOW,
+  KEY_BACKSPACE_COMMAND,
+  KEY_DELETE_COMMAND,
+} from "lexical";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ExcalidrawImage } from "@/components/editor/editor-ui/excalidraw-image";
 import type { ExcalidrawInitialElements } from "@/components/editor/editor-ui/excalidraw-modal";
 import { ExcalidrawModal } from "@/components/editor/editor-ui/excalidraw-modal";
@@ -8,15 +17,6 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
-import type { NodeKey } from "lexical";
-import {
-  $getNodeByKey,
-  CLICK_COMMAND,
-  COMMAND_PRIORITY_LOW,
-  KEY_BACKSPACE_COMMAND,
-  KEY_DELETE_COMMAND,
-} from "lexical";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export default function ExcalidrawComponent({
   nodeKey,

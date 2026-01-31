@@ -7,8 +7,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { useReport } from "@/components/editor/editor-hooks/use-report";
 import { useEffect } from "react";
+import { useReport } from "@/components/editor/editor-hooks/use-report";
 
 const validInputTypes = new Set([
   "insertText",

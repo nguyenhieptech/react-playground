@@ -7,6 +7,19 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import type { ElementNode, LexicalEditor } from "lexical";
+import {
+  $createParagraphNode,
+  $getRoot,
+  $getSelection,
+  $isElementNode,
+  $isParagraphNode,
+  $isRangeSelection,
+  $isTextNode,
+} from "lexical";
+import { ChevronDownIcon, PaintBucketIcon } from "lucide-react";
+import { JSX, ReactPortal, useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
 import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
 import {
@@ -40,19 +53,6 @@ import {
   TableRowNode,
   TableSelection,
 } from "@lexical/table";
-import type { ElementNode, LexicalEditor } from "lexical";
-import {
-  $createParagraphNode,
-  $getRoot,
-  $getSelection,
-  $isElementNode,
-  $isParagraphNode,
-  $isRangeSelection,
-  $isTextNode,
-} from "lexical";
-import { ChevronDownIcon, PaintBucketIcon } from "lucide-react";
-import { JSX, ReactPortal, useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 function computeSelectionCount(selection: TableSelection): {
   columns: number;

@@ -1,6 +1,6 @@
+import { ListChecksIcon } from "lucide-react";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
 import { InsertPollDialog } from "@/components/editor/plugins/poll-plugin";
-import { ListChecksIcon } from "lucide-react";
 
 export function PollPickerPlugin() {
   return new ComponentPickerOption("Poll", {

@@ -7,13 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { KatexEquationAlterer } from "@/components/editor/editor-ui/katex-equation-alterer";
-import {
-  $createEquationNode,
-  EquationNode,
-} from "@/components/editor/nodes/equation-node";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $wrapNodeInElement } from "@lexical/utils";
 import "katex/dist/katex.css";
 import {
   $createParagraphNode,
@@ -25,6 +18,13 @@ import {
   LexicalEditor,
 } from "lexical";
 import { JSX, useCallback, useEffect } from "react";
+import { KatexEquationAlterer } from "@/components/editor/editor-ui/katex-equation-alterer";
+import {
+  $createEquationNode,
+  EquationNode,
+} from "@/components/editor/nodes/equation-node";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $wrapNodeInElement } from "@lexical/utils";
 
 type CommandPayload = {
   equation: string;

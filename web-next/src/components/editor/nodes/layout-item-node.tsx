@@ -1,4 +1,3 @@
-import { addClassNamesToElement } from "@lexical/utils";
 import type {
   DOMConversionMap,
   EditorConfig,
@@ -6,6 +5,7 @@ import type {
   SerializedElementNode,
 } from "lexical";
 import { ElementNode } from "lexical";
+import { addClassNamesToElement } from "@lexical/utils";
 
 export type SerializedLayoutItemNode = SerializedElementNode;
 

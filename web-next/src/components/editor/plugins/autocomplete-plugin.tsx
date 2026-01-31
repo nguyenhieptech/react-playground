@@ -7,15 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { useSharedAutocompleteContext } from "@/components/editor/context/shared-autocomplete-context";
-import {
-  $createAutocompleteNode,
-  AutocompleteNode,
-} from "@/components/editor/nodes/autocomplete-node";
-import { addSwipeRightListener } from "@/components/editor/utils/swipe";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $isAtNodeEnd } from "@lexical/selection";
-import { mergeRegister } from "@lexical/utils";
 import type { BaseSelection, NodeKey } from "lexical";
 import {
   $createTextNode,
@@ -29,6 +20,15 @@ import {
   KEY_TAB_COMMAND,
 } from "lexical";
 import { JSX, useCallback, useEffect } from "react";
+import { useSharedAutocompleteContext } from "@/components/editor/context/shared-autocomplete-context";
+import {
+  $createAutocompleteNode,
+  AutocompleteNode,
+} from "@/components/editor/nodes/autocomplete-node";
+import { addSwipeRightListener } from "@/components/editor/utils/swipe";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $isAtNodeEnd } from "@lexical/selection";
+import { mergeRegister } from "@lexical/utils";
 
 type SearchPromise = {
   dismiss: () => void;

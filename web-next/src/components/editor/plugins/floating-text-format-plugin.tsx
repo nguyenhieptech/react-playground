@@ -1,13 +1,3 @@
-import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
-import { getDOMRangeRect } from "@/components/editor/utils/get-dom-range-rect";
-import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
-import { setFloatingElemPosition } from "@/components/editor/utils/set-floating-elem-position";
-import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { $isCodeHighlightNode } from "@lexical/code";
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { mergeRegister } from "@lexical/utils";
 import {
   $getSelection,
   $isParagraphNode,
@@ -30,6 +20,16 @@ import {
 } from "lucide-react";
 import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
+import { getDOMRangeRect } from "@/components/editor/utils/get-dom-range-rect";
+import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
+import { setFloatingElemPosition } from "@/components/editor/utils/set-floating-elem-position";
+import { Separator } from "@/components/ui/separator";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { $isCodeHighlightNode } from "@lexical/code";
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { mergeRegister } from "@lexical/utils";
 
 function FloatingTextFormat({
   editor,

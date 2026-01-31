@@ -1,6 +1,6 @@
+import { DiffIcon } from "lucide-react";
 import { InsertEquationDialog } from "@/components/editor/plugins/equations-plugin";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
-import { DiffIcon } from "lucide-react";
 
 export function EquationPickerPlugin() {
   return new ComponentPickerOption("Equation", {

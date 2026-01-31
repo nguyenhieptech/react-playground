@@ -1,3 +1,5 @@
+import { useCallback, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { KatexRenderer } from "@/components/editor/editor-ui/katex-renderer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -5,8 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useCallback, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 
 type Props = {
   initialEquation?: string;

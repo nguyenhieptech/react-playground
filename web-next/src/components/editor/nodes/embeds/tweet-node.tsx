@@ -1,8 +1,3 @@
-import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
-import {
-  DecoratorBlockNode,
-  SerializedDecoratorBlockNode,
-} from "@lexical/react/LexicalDecoratorBlockNode";
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -15,6 +10,11 @@ import type {
   Spread,
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
+import {
+  DecoratorBlockNode,
+  SerializedDecoratorBlockNode,
+} from "@lexical/react/LexicalDecoratorBlockNode";
 
 const WIDGET_SCRIPT_URL = "https://platform.twitter.com/widgets.js";
 

@@ -1,4 +1,3 @@
-import { addClassNamesToElement } from "@lexical/utils";
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -10,6 +9,7 @@ import type {
   Spread,
 } from "lexical";
 import { ElementNode } from "lexical";
+import { addClassNamesToElement } from "@lexical/utils";
 
 export type SerializedLayoutContainerNode = Spread<
   {

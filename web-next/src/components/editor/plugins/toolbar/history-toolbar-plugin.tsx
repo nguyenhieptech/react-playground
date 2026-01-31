@@ -1,7 +1,3 @@
-import { useToolbarContext } from "@/components/editor/context/toolbar-context";
-import { Button } from "@/components/ui/button";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { mergeRegister } from "@lexical/utils";
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -11,6 +7,10 @@ import {
 } from "lexical";
 import { RedoIcon, UndoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useToolbarContext } from "@/components/editor/context/toolbar-context";
+import { Button } from "@/components/ui/button";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { mergeRegister } from "@lexical/utils";
 
 const IS_APPLE = true;
 

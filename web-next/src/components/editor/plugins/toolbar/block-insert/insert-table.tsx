@@ -1,9 +1,9 @@
 "use client";
 
+import { TableIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { InsertTableDialog } from "@/components/editor/plugins/table-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { TableIcon } from "lucide-react";
 
 export function InsertTable() {
   const { activeEditor, showModal } = useToolbarContext();

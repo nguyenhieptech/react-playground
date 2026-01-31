@@ -7,9 +7,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import * as React from "react";
 import { validateUrl } from "@/components/editor/utils/url";
 import { LinkPlugin as LexicalLinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import * as React from "react";
 
 export function LinkPlugin(): React.JSX.Element {
   return <LexicalLinkPlugin validateUrl={validateUrl} />;

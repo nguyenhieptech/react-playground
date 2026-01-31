@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $rootTextContent } from "@lexical/text";
-import { useEffect, useState } from "react";
 
 let textEncoderInstance: null | TextEncoder = null;
 

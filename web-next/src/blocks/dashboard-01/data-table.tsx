@@ -1,5 +1,9 @@
 "use client";
 
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -95,10 +99,6 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import { toast } from "sonner";
-import { z } from "zod";
 
 export const schema = z.object({
   id: z.number(),
