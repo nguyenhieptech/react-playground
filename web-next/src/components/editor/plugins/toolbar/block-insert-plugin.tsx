@@ -1,5 +1,6 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
 import {
   Select,
@@ -7,7 +8,6 @@ import {
   SelectGroup,
   SelectTrigger,
 } from "@/components/ui/select";
-import { PlusIcon } from "lucide-react";
 
 export function BlockInsertPlugin({ children }: { children: React.ReactNode }) {
   const [modal] = useEditorModal();

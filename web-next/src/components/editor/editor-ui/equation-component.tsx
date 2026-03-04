@@ -1,9 +1,3 @@
-import { EquationEditor } from "@/components/editor/editor-ui/equation-editor";
-import { KatexRenderer } from "@/components/editor/editor-ui/katex-renderer";
-import { $isEquationNode } from "@/components/editor/nodes/equation-node";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
-import { mergeRegister } from "@lexical/utils";
 import {
   $getNodeByKey,
   $getSelection,
@@ -15,6 +9,12 @@ import {
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { EquationEditor } from "@/components/editor/editor-ui/equation-editor";
+import { KatexRenderer } from "@/components/editor/editor-ui/katex-renderer";
+import { $isEquationNode } from "@/components/editor/nodes/equation-node";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
+import { mergeRegister } from "@lexical/utils";
 
 type EquationComponentProps = {
   equation: string;

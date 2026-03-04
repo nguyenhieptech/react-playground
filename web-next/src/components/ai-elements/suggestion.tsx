@@ -1,9 +1,9 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import * as React from "react";
 
 function Suggestions({
   className,

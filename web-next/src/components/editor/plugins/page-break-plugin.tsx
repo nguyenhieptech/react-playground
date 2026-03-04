@@ -1,10 +1,4 @@
 import {
-  $createPageBreakNode,
-  PageBreakNode,
-} from "@/components/editor/nodes/page-break-node";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $insertNodeToNearestRoot, mergeRegister } from "@lexical/utils";
-import {
   $getSelection,
   $isRangeSelection,
   COMMAND_PRIORITY_EDITOR,
@@ -12,6 +6,12 @@ import {
   LexicalCommand,
 } from "lexical";
 import { JSX, useEffect } from "react";
+import {
+  $createPageBreakNode,
+  PageBreakNode,
+} from "@/components/editor/nodes/page-break-node";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $insertNodeToNearestRoot, mergeRegister } from "@lexical/utils";
 
 export const INSERT_PAGE_BREAK: LexicalCommand<undefined> = createCommand();
 

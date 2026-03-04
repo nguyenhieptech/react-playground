@@ -1,3 +1,15 @@
+import type { LexicalEditor } from "lexical";
+import { $getNearestNodeFromDOMNode } from "lexical";
+import {
+  JSX,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
 import type { TableCellNode, TableDOMCell, TableMapType } from "@lexical/table";
@@ -11,18 +23,6 @@ import {
   TableNode,
 } from "@lexical/table";
 import { calculateZoomLevel } from "@lexical/utils";
-import type { LexicalEditor } from "lexical";
-import { $getNearestNodeFromDOMNode } from "lexical";
-import {
-  JSX,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { createPortal } from "react-dom";
 
 type MousePosition = {
   x: number;

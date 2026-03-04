@@ -1,4 +1,3 @@
-import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
 import { FORMAT_ELEMENT_COMMAND } from "lexical";
 import {
   AlignCenterIcon,
@@ -6,6 +5,7 @@ import {
   AlignLeftIcon,
   AlignRightIcon,
 } from "lucide-react";
+import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
 
 export function AlignmentPickerPlugin({
   alignment,

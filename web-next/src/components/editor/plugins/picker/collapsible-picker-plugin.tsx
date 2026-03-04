@@ -1,6 +1,6 @@
+import { ListCollapseIcon } from "lucide-react";
 import { INSERT_COLLAPSIBLE_COMMAND } from "@/components/editor/plugins/collapsible-plugin";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
-import { ListCollapseIcon } from "lucide-react";
 
 export function CollapsiblePickerPlugin() {
   return new ComponentPickerOption("Collapsible", {

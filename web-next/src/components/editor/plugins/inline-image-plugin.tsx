@@ -1,3 +1,22 @@
+import {
+  $createParagraphNode,
+  $createRangeSelection,
+  $getSelection,
+  $insertNodes,
+  $isNodeSelection,
+  $isRootOrShadowRoot,
+  $setSelection,
+  COMMAND_PRIORITY_EDITOR,
+  COMMAND_PRIORITY_HIGH,
+  COMMAND_PRIORITY_LOW,
+  createCommand,
+  DRAGOVER_COMMAND,
+  DRAGSTART_COMMAND,
+  DROP_COMMAND,
+  LexicalCommand,
+  LexicalEditor,
+} from "lexical";
+import { JSX, useEffect, useRef, useState } from "react";
 import type { Position } from "@/components/editor/nodes/inline-image-node";
 import {
   $createInlineImageNode,
@@ -20,25 +39,6 @@ import {
 // import '../nodes/inline-image-node.css';
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
-import {
-  $createParagraphNode,
-  $createRangeSelection,
-  $getSelection,
-  $insertNodes,
-  $isNodeSelection,
-  $isRootOrShadowRoot,
-  $setSelection,
-  COMMAND_PRIORITY_EDITOR,
-  COMMAND_PRIORITY_HIGH,
-  COMMAND_PRIORITY_LOW,
-  createCommand,
-  DRAGOVER_COMMAND,
-  DRAGSTART_COMMAND,
-  DROP_COMMAND,
-  LexicalCommand,
-  LexicalEditor,
-} from "lexical";
-import { JSX, useEffect, useRef, useState } from "react";
 
 export type InsertInlineImagePayload = Readonly<InlineImagePayload>;
 

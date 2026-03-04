@@ -1,5 +1,3 @@
-import { $getListDepth, $isListItemNode, $isListNode } from "@lexical/list";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import type { ElementNode, RangeSelection } from "lexical";
 import {
   $getSelection,
@@ -9,6 +7,8 @@ import {
   INDENT_CONTENT_COMMAND,
 } from "lexical";
 import { useEffect } from "react";
+import { $getListDepth, $isListItemNode, $isListNode } from "@lexical/list";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 function getElementNodesInSelection(selection: RangeSelection): Set<ElementNode> {
   const nodesInSelection = selection.getNodes();

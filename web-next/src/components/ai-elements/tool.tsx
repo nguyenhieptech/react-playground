@@ -1,13 +1,5 @@
 "use client";
 
-import { CodeBlock } from "./code-block";
-import { Badge } from "@/components/ui/badge";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
 import type { ToolUIPart } from "ai";
 import {
   CheckCircleIcon,
@@ -18,6 +10,14 @@ import {
   XCircleIcon,
 } from "lucide-react";
 import * as React from "react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
+import { CodeBlock } from "./code-block";
 
 function Tool({ className, ...props }: React.ComponentProps<typeof Collapsible>) {
   return (
@@ -29,22 +29,28 @@ function Tool({ className, ...props }: React.ComponentProps<typeof Collapsible>)
 }
 
 function getStatusBadge(status: ToolUIPart["state"]) {
-  const labels = {
+  const labels: Record<ToolUIPart["state"], string> = {
     "input-streaming": "Pending",
     "input-available": "Running",
+    "approval-requested": "Awaiting Approval",
+    "approval-responded": "Responded",
     "output-available": "Completed",
     "output-error": "Error",
-  } as const;
+    "output-denied": "Denied",
+  };
 
-  const icons = {
+  const icons: Record<ToolUIPart["state"], React.ReactNode> = {
     "input-streaming": <CircleIcon className="size-4" />,
     "input-available": <ClockIcon className="size-4 animate-pulse" />,
+    "approval-requested": <ClockIcon className="size-4 text-yellow-600" />,
+    "approval-responded": <CheckCircleIcon className="size-4 text-blue-600" />,
     "output-available": <CheckCircleIcon className="size-4 text-green-600" />,
     "output-error": <XCircleIcon className="size-4 text-red-600" />,
-  } as const;
+    "output-denied": <XCircleIcon className="size-4 text-orange-600" />,
+  };
 
   return (
-    <Badge className="rounded-full text-xs" variant="secondary">
+    <Badge className="gap-1.5 rounded-full text-xs" variant="secondary">
       {icons[status]}
       {labels[status]}
     </Badge>
@@ -53,10 +59,12 @@ function getStatusBadge(status: ToolUIPart["state"]) {
 
 function ToolHeader({
   className,
+  title,
   type,
   state,
   ...props
 }: {
+  title?: string;
   type: ToolUIPart["type"];
   state: ToolUIPart["state"];
   className?: string;
@@ -68,7 +76,9 @@ function ToolHeader({
     >
       <div className="flex items-center gap-2">
         <WrenchIcon className="text-muted-foreground size-4" />
-        <span className="text-sm font-medium">{type}</span>
+        <span className="text-sm font-medium">
+          {title ?? type.split("-").slice(1).join("-")}
+        </span>
         {getStatusBadge(state)}
       </div>
       <ChevronDownIcon className="text-muted-foreground size-4 transition-transform group-data-[state=open]:rotate-180" />
@@ -116,11 +126,19 @@ function ToolOutput({
   errorText,
   ...props
 }: React.ComponentProps<"div"> & {
-  output: React.ReactNode;
+  output: ToolUIPart["output"];
   errorText: ToolUIPart["errorText"];
 }) {
   if (!(output || errorText)) {
     return null;
+  }
+
+  let Output = <div>{output as React.ReactNode}</div>;
+
+  if (typeof output === "object" && !React.isValidElement(output)) {
+    Output = <CodeBlock code={JSON.stringify(output, null, 2)} language="json" />;
+  } else if (typeof output === "string") {
+    Output = <CodeBlock code={output} language="json" />;
   }
 
   return (
@@ -135,7 +153,7 @@ function ToolOutput({
         )}
       >
         {errorText && <div>{errorText}</div>}
-        {output && <div>{output}</div>}
+        {Output}
       </div>
     </div>
   );

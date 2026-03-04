@@ -1,13 +1,13 @@
 "use client";
 
+import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
+import { Minus, Plus } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
-import { Minus, Plus } from "lucide-react";
-import { useCallback, useState } from "react";
 
 const DEFAULT_FONT_SIZE = 16;
 const MIN_FONT_SIZE = 1;

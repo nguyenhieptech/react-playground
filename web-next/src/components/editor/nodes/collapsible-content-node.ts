@@ -1,10 +1,3 @@
-import { $isCollapsibleContainerNode } from "@/components/editor/nodes/collapsible-container-node";
-import { IS_CHROME } from "@/components/editor/shared/environment";
-import { invariant } from "@/components/editor/shared/invariant";
-import {
-  domOnBeforeMatch,
-  setDomHiddenUntilFound,
-} from "@/components/editor/utils/collapsible";
 import {
   DOMConversionMap,
   DOMConversionOutput,
@@ -15,6 +8,13 @@ import {
   LexicalNode,
   SerializedElementNode,
 } from "lexical";
+import { $isCollapsibleContainerNode } from "@/components/editor/nodes/collapsible-container-node";
+import { IS_CHROME } from "@/components/editor/shared/environment";
+import { invariant } from "@/components/editor/shared/invariant";
+import {
+  domOnBeforeMatch,
+  setDomHiddenUntilFound,
+} from "@/components/editor/utils/collapsible";
 
 type SerializedCollapsibleContentNode = SerializedElementNode;
 

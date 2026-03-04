@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  $getNodeByKey,
+  $isRangeSelection,
+  $isRootOrShadowRoot,
+  BaseSelection,
+} from "lexical";
+import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
@@ -11,13 +18,6 @@ import {
 } from "@lexical/code";
 import { $isListNode } from "@lexical/list";
 import { $findMatchingParent } from "@lexical/utils";
-import {
-  $getNodeByKey,
-  $isRangeSelection,
-  $isRootOrShadowRoot,
-  BaseSelection,
-} from "lexical";
-import { useCallback, useState } from "react";
 
 function getCodeLanguageOptions(): [string, string][] {
   const options: [string, string][] = [];

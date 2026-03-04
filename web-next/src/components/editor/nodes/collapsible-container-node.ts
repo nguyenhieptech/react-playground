@@ -1,6 +1,3 @@
-import { IS_CHROME } from "@/components/editor/shared/environment";
-import { invariant } from "@/components/editor/shared/invariant";
-import { setDomHiddenUntilFound } from "@/components/editor/utils/collapsible";
 import {
   DOMConversionMap,
   DOMConversionOutput,
@@ -14,6 +11,9 @@ import {
   SerializedElementNode,
   Spread,
 } from "lexical";
+import { IS_CHROME } from "@/components/editor/shared/environment";
+import { invariant } from "@/components/editor/shared/invariant";
+import { setDomHiddenUntilFound } from "@/components/editor/utils/collapsible";
 
 type SerializedCollapsibleContainerNode = Spread<
   {

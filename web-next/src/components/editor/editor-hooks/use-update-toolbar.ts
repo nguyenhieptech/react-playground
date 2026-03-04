@@ -1,5 +1,3 @@
-import { useToolbarContext } from "@/components/editor/context/toolbar-context";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $getSelection,
   BaseSelection,
@@ -7,6 +5,8 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
 import * as React from "react";
+import { useToolbarContext } from "@/components/editor/context/toolbar-context";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 export function useUpdateToolbarHandler(callback: (selection: BaseSelection) => void) {
   const [editor] = useLexicalComposerContext();

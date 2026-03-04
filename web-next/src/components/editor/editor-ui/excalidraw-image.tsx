@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { exportToSvg } from "@excalidraw/excalidraw";
 import { ExcalidrawElement, NonDeleted } from "@excalidraw/excalidraw/element/types";
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types";
-import { useEffect, useState } from "react";
 
 type ImageType = "svg" | "canvas";
 

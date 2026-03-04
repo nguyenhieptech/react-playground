@@ -1,3 +1,14 @@
+import dynamic from "next/dynamic";
+import {
+  $getNearestNodeFromDOMNode,
+  $getSelection,
+  $isRangeSelection,
+  COPY_COMMAND,
+  CUT_COMMAND,
+  PASTE_COMMAND,
+  type LexicalNode,
+} from "lexical";
+import { useCallback, useMemo, useState } from "react";
 import { Command, CommandItem, CommandList } from "@/components/ui/command";
 import {
   Popover,
@@ -8,17 +19,6 @@ import {
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { MenuOption } from "@lexical/react/LexicalContextMenuPlugin";
-import {
-  $getNearestNodeFromDOMNode,
-  $getSelection,
-  $isRangeSelection,
-  COPY_COMMAND,
-  CUT_COMMAND,
-  PASTE_COMMAND,
-  type LexicalNode,
-} from "lexical";
-import dynamic from "next/dynamic";
-import { useCallback, useMemo, useState } from "react";
 
 const LexicalContextMenuPlugin = dynamic(
   () => import("./default/lexical-context-menu-plugin"),

@@ -7,12 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import { COMMAND_PRIORITY_LOW } from "lexical";
+import { useEffect } from "react";
 import { INSERT_IMAGE_COMMAND } from "@/components/editor/plugins/images-plugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { DRAG_DROP_PASTE } from "@lexical/rich-text";
 import { isMimeType, mediaFileReader } from "@lexical/utils";
-import { COMMAND_PRIORITY_LOW } from "lexical";
-import { useEffect } from "react";
 
 const ACCEPTABLE_IMAGE_TYPES = [
   "image/",

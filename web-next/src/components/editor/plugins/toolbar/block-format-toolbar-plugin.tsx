@@ -1,3 +1,4 @@
+import { $isRangeSelection, $isRootOrShadowRoot, BaseSelection } from "lexical";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { blockTypeToBlockName } from "@/components/editor/plugins/toolbar/block-format/block-format-data";
@@ -10,7 +11,6 @@ import {
 import { $isListNode, ListNode } from "@lexical/list";
 import { $isHeadingNode } from "@lexical/rich-text";
 import { $findMatchingParent, $getNearestNodeOfType } from "@lexical/utils";
-import { $isRangeSelection, $isRootOrShadowRoot, BaseSelection } from "lexical";
 
 export function BlockFormatDropDown({ children }: { children: React.ReactNode }) {
   const { activeEditor, blockType, setBlockType } = useToolbarContext();

@@ -7,6 +7,10 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import { $getNearestNodeFromDOMNode, NodeKey } from "lexical";
+import { PlusIcon } from "lucide-react";
+import { JSX, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useDebounce } from "@/components/editor/editor-hooks/use-debounce";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
@@ -22,10 +26,6 @@ import {
   TableRowNode,
 } from "@lexical/table";
 import { $findMatchingParent, mergeRegister } from "@lexical/utils";
-import { $getNearestNodeFromDOMNode, NodeKey } from "lexical";
-import { PlusIcon } from "lucide-react";
-import { JSX, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 const BUTTON_WIDTH_PX = 20;
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { Editor } from "@/blocks/editor-x/editor";
 import { SerializedEditorState } from "lexical";
 import * as React from "react";
+import { Editor } from "@/blocks/editor-x/editor";
 
 // Lexical base rich text editor using shadcn/ui components
 // https://github.com/htmujahid/shadcn-editor

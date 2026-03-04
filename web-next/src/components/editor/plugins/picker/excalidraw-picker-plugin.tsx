@@ -1,6 +1,6 @@
+import { FrameIcon } from "lucide-react";
 import { INSERT_EXCALIDRAW_COMMAND } from "@/components/editor/plugins/excalidraw-plugin";
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option";
-import { FrameIcon } from "lucide-react";
 
 export function ExcalidrawPickerPlugin() {
   return new ComponentPickerOption("Excalidraw", {

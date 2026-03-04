@@ -1,5 +1,8 @@
 "use client";
 
+import { Upload, X } from "lucide-react";
+import * as React from "react";
+import { toast } from "sonner";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -11,9 +14,6 @@ import {
   FileUploadTrigger,
 } from "@/components/dice-ui/file-upload";
 import { Button } from "@/components/ui/button";
-import { Upload, X } from "lucide-react";
-import * as React from "react";
-import { toast } from "sonner";
 
 export function FileUploadDemo() {
   const [files, setFiles] = React.useState<File[]>([]);

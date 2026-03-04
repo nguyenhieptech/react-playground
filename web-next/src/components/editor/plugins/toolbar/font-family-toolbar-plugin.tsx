@@ -1,12 +1,12 @@
 "use client";
 
+import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
+import { TypeIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
-import { TypeIcon } from "lucide-react";
-import { useCallback, useState } from "react";
 
 const FONT_FAMILY_OPTIONS = [
   "Inter",

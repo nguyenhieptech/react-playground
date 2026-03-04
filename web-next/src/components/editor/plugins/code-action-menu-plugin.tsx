@@ -1,3 +1,6 @@
+import { $getNearestNodeFromDOMNode } from "lexical";
+import { JSX, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useDebounce } from "@/components/editor/editor-hooks/use-debounce";
 import { CopyButton } from "@/components/editor/editor-ui/code-button";
 import {
@@ -7,9 +10,6 @@ import {
   normalizeCodeLang,
 } from "@lexical/code";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getNearestNodeFromDOMNode } from "lexical";
-import { JSX, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 const CODE_PADDING = 8;
 

@@ -1,9 +1,9 @@
 "use client";
 
+import { ChevronRightIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { INSERT_COLLAPSIBLE_COMMAND } from "@/components/editor/plugins/collapsible-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { ChevronRightIcon } from "lucide-react";
 
 export function InsertCollapsibleContainer() {
   const { activeEditor } = useToolbarContext();

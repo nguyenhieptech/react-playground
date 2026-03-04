@@ -1,10 +1,10 @@
-import data from "./data.json";
 import { AppSidebar } from "@/blocks/dashboard-01/app-sidebar";
 import { ChartAreaInteractive } from "@/blocks/dashboard-01/chart-area-interactive";
 import { DataTable } from "@/blocks/dashboard-01/data-table";
 import { SectionCards } from "@/blocks/dashboard-01/section-cards";
 import { SiteHeader } from "@/blocks/dashboard-01/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import data from "./data.json";
 
 export default function Page() {
   return (

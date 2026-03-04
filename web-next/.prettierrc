@@ -8,7 +8,6 @@
   "bracketSameLine": false,
   "tabWidth": 2,
   "printWidth": 90,
-  "organizeImportsSkipDestructiveCodeActions": true,
   "tailwindAttributes": [
     "enter",
     "enterFrom",
@@ -19,5 +18,16 @@
     "leaveTo"
   ],
   "tailwindFunctions": ["clsx", "cva"],
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrderCaseInsensitive": true,
+  "importOrderParserPlugins": ["typescript", "jsx"],
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "^react/(.*)$",
+    "^next/(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^[@/].*",
+    "^[./]",
+    "^[../]"
+  ]
 }

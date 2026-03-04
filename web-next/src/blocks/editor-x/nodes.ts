@@ -1,3 +1,10 @@
+import {
+  Klass,
+  LexicalNode,
+  LexicalNodeReplacement,
+  ParagraphNode,
+  TextNode,
+} from "lexical";
 import { AutocompleteNode } from "@/components/editor/nodes/autocomplete-node";
 import { CollapsibleContainerNode } from "@/components/editor/nodes/collapsible-container-node";
 import { CollapsibleContentNode } from "@/components/editor/nodes/collapsible-content-node";
@@ -24,13 +31,6 @@ import { OverflowNode } from "@lexical/overflow";
 import { HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
-import {
-  Klass,
-  LexicalNode,
-  LexicalNodeReplacement,
-  ParagraphNode,
-  TextNode,
-} from "lexical";
 
 export const nodes: ReadonlyArray<Klass<LexicalNode> | LexicalNodeReplacement> = [
   AutocompleteNode,

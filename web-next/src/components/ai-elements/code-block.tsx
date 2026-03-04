@@ -1,11 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import * as React from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { type BundledLanguage, codeToHtml, type ShikiTransformer } from "shiki";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type CodeBlockContextType = {
   code: string;
@@ -14,6 +13,48 @@ type CodeBlockContextType = {
 const CodeBlockContext = React.createContext<CodeBlockContextType>({
   code: "",
 });
+
+const lineNumberTransformer: ShikiTransformer = {
+  name: "line-numbers",
+  line(node, line) {
+    node.children.unshift({
+      type: "element",
+      tagName: "span",
+      properties: {
+        className: [
+          "inline-block",
+          "min-w-10",
+          "mr-4",
+          "text-right",
+          "select-none",
+          "text-muted-foreground",
+        ],
+      },
+      children: [{ type: "text", value: String(line) }],
+    });
+  },
+};
+
+async function highlightCode(
+  code: string,
+  language: BundledLanguage,
+  showLineNumbers = false
+) {
+  const transformers: ShikiTransformer[] = showLineNumbers ? [lineNumberTransformer] : [];
+
+  return await Promise.all([
+    codeToHtml(code, {
+      lang: language,
+      theme: "one-light",
+      transformers,
+    }),
+    codeToHtml(code, {
+      lang: language,
+      theme: "one-dark-pro",
+      transformers,
+    }),
+  ]);
+}
 
 function CodeBlock({
   code,
@@ -24,66 +65,47 @@ function CodeBlock({
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
   code: string;
-  language: string;
+  language: BundledLanguage;
   showLineNumbers?: boolean;
-  children?: React.ReactNode;
 }) {
+  const [html, setHtml] = React.useState<string>("");
+  const [darkHtml, setDarkHtml] = React.useState<string>("");
+  const mounted = React.useRef(false);
+
+  React.useEffect(() => {
+    highlightCode(code, language, showLineNumbers).then(([light, dark]) => {
+      if (!mounted.current) {
+        setHtml(light);
+        setDarkHtml(dark);
+        mounted.current = true;
+      }
+    });
+
+    return () => {
+      mounted.current = false;
+    };
+  }, [code, language, showLineNumbers]);
+
   return (
     <CodeBlockContext.Provider value={{ code }}>
       <div
         className={cn(
-          "bg-background text-foreground relative w-full overflow-hidden rounded-md border",
+          "group bg-background text-foreground relative w-full overflow-hidden rounded-md border",
           className
         )}
         {...props}
       >
         <div className="relative">
-          <SyntaxHighlighter
-            className="overflow-hidden dark:hidden"
-            codeTagProps={{
-              className: "font-mono text-sm",
-            }}
-            customStyle={{
-              margin: 0,
-              padding: "1rem",
-              fontSize: "0.875rem",
-              background: "hsl(var(--background))",
-              color: "hsl(var(--foreground))",
-            }}
-            language={language}
-            lineNumberStyle={{
-              color: "hsl(var(--muted-foreground))",
-              paddingRight: "1rem",
-              minWidth: "2.5rem",
-            }}
-            showLineNumbers={showLineNumbers}
-            style={oneLight}
-          >
-            {code}
-          </SyntaxHighlighter>
-          <SyntaxHighlighter
-            className="hidden overflow-hidden dark:block"
-            codeTagProps={{
-              className: "font-mono text-sm",
-            }}
-            customStyle={{
-              margin: 0,
-              padding: "1rem",
-              fontSize: "0.875rem",
-              background: "hsl(var(--background))",
-              color: "hsl(var(--foreground))",
-            }}
-            language={language}
-            lineNumberStyle={{
-              color: "hsl(var(--muted-foreground))",
-              paddingRight: "1rem",
-              minWidth: "2.5rem",
-            }}
-            showLineNumbers={showLineNumbers}
-            style={oneDark}
-          >
-            {code}
-          </SyntaxHighlighter>
+          <div
+            className="[&>pre]:bg-background! [&>pre]:text-foreground! overflow-auto dark:hidden [&_code]:font-mono [&_code]:text-sm [&>pre]:m-0 [&>pre]:p-4 [&>pre]:text-sm"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: "this is needed."
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+          <div
+            className="[&>pre]:bg-background! [&>pre]:text-foreground! hidden overflow-auto dark:block [&_code]:font-mono [&_code]:text-sm [&>pre]:m-0 [&>pre]:p-4 [&>pre]:text-sm"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: "this is needed."
+            dangerouslySetInnerHTML={{ __html: darkHtml }}
+          />
           {children && (
             <div className="absolute top-2 right-2 flex items-center gap-2">
               {children}
@@ -111,7 +133,7 @@ function CodeBlockCopyButton({
   const { code } = React.useContext(CodeBlockContext);
 
   async function copyToClipboard() {
-    if (typeof window === "undefined" || !navigator.clipboard.writeText) {
+    if (typeof window === "undefined" || !navigator?.clipboard?.writeText) {
       onError?.(new Error("Clipboard API not available"));
       return;
     }

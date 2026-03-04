@@ -1,11 +1,13 @@
 "use client";
 
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
 } from "@/components/ui/carousel";
 import {
   HoverCard,
@@ -13,8 +15,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import * as React from "react";
 
 function InlineCitation({ className, ...props }: React.ComponentProps<"span">) {
   return <span className={cn("group inline items-center gap-1", className)} {...props} />;
@@ -47,7 +47,7 @@ function InlineCitationCardTrigger({
         variant="secondary"
         {...props}
       >
-        {sources.length ? (
+        {sources[0] ? (
           <>
             {new URL(sources[0]).hostname}{" "}
             {sources.length > 1 && `+${sources.length - 1}`}

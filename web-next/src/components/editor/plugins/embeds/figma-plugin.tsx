@@ -1,8 +1,8 @@
+import { COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand } from "lexical";
+import { JSX, useEffect } from "react";
 import { $createFigmaNode, FigmaNode } from "@/components/editor/nodes/embeds/figma-node";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $insertNodeToNearestRoot } from "@lexical/utils";
-import { COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand } from "lexical";
-import { JSX, useEffect } from "react";
 
 export const INSERT_FIGMA_COMMAND: LexicalCommand<string> =
   createCommand("INSERT_FIGMA_COMMAND");

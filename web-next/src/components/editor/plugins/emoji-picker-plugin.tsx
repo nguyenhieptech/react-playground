@@ -7,16 +7,16 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import dynamic from "next/dynamic";
+import { $createTextNode, $getSelection, $isRangeSelection, TextNode } from "lexical";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   MenuOption,
   useBasicTypeaheadTriggerMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
-import { $createTextNode, $getSelection, $isRangeSelection, TextNode } from "lexical";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
 
 const LexicalTypeaheadMenuPlugin = dynamic(
   () => import("./default/lexical-typeahead-menu-plugin"),

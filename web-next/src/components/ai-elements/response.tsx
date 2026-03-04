@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Streamdown } from "streamdown";
+import { cn } from "@/lib/utils";
 
 const Response = React.memo<React.ComponentProps<typeof Streamdown>>(
   ({ className, ...props }) => (

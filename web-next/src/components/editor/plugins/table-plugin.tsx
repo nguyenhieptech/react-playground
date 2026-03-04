@@ -1,14 +1,3 @@
-import { invariant } from "@/components/editor/shared/invariant";
-import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import {
-  $createTableNodeWithDimensions,
-  INSERT_TABLE_COMMAND,
-  TableNode,
-} from "@lexical/table";
 import {
   $insertNodes,
   COMMAND_PRIORITY_EDITOR,
@@ -20,6 +9,17 @@ import {
   LexicalNode,
 } from "lexical";
 import { createContext, JSX, useContext, useEffect, useMemo, useState } from "react";
+import { invariant } from "@/components/editor/shared/invariant";
+import { Button } from "@/components/ui/button";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import {
+  $createTableNodeWithDimensions,
+  INSERT_TABLE_COMMAND,
+  TableNode,
+} from "@lexical/table";
 
 export type InsertTableCommandPayload = Readonly<{
   columns: string;

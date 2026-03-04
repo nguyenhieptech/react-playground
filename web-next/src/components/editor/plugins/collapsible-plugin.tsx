@@ -1,4 +1,20 @@
 import {
+  $createParagraphNode,
+  $getSelection,
+  $isRangeSelection,
+  COMMAND_PRIORITY_LOW,
+  createCommand,
+  DELETE_CHARACTER_COMMAND,
+  ElementNode,
+  INSERT_PARAGRAPH_COMMAND,
+  KEY_ARROW_DOWN_COMMAND,
+  KEY_ARROW_LEFT_COMMAND,
+  KEY_ARROW_RIGHT_COMMAND,
+  KEY_ARROW_UP_COMMAND,
+  LexicalNode,
+} from "lexical";
+import { useEffect } from "react";
+import {
   $createCollapsibleContainerNode,
   $isCollapsibleContainerNode,
   CollapsibleContainerNode,
@@ -19,22 +35,6 @@ import {
   $insertNodeToNearestRoot,
   mergeRegister,
 } from "@lexical/utils";
-import {
-  $createParagraphNode,
-  $getSelection,
-  $isRangeSelection,
-  COMMAND_PRIORITY_LOW,
-  createCommand,
-  DELETE_CHARACTER_COMMAND,
-  ElementNode,
-  INSERT_PARAGRAPH_COMMAND,
-  KEY_ARROW_DOWN_COMMAND,
-  KEY_ARROW_LEFT_COMMAND,
-  KEY_ARROW_RIGHT_COMMAND,
-  KEY_ARROW_UP_COMMAND,
-  LexicalNode,
-} from "lexical";
-import { useEffect } from "react";
 
 export const INSERT_COLLAPSIBLE_COMMAND = createCommand<void>();
 

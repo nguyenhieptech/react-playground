@@ -1,5 +1,3 @@
-import { useDebounce } from "@/components/editor/editor-hooks/use-debounce";
-import { $isCodeNode } from "@lexical/code";
 import {
   $getNearestNodeFromDOMNode,
   $getSelection,
@@ -8,6 +6,8 @@ import {
 } from "lexical";
 import { CircleCheckIcon, CopyIcon } from "lucide-react";
 import { useState } from "react";
+import { useDebounce } from "@/components/editor/editor-hooks/use-debounce";
+import { $isCodeNode } from "@lexical/code";
 
 interface Props {
   editor: LexicalEditor;

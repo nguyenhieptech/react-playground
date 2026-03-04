@@ -1,9 +1,9 @@
 "use client";
 
+import { FrameIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { INSERT_EXCALIDRAW_COMMAND } from "@/components/editor/plugins/excalidraw-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { FrameIcon } from "lucide-react";
 
 export function InsertExcalidraw() {
   const { activeEditor } = useToolbarContext();

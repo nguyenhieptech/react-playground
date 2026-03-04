@@ -1,7 +1,7 @@
+import { ListChecksIcon } from "lucide-react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { InsertPollDialog } from "@/components/editor/plugins/poll-plugin";
 import { SelectItem } from "@/components/ui/select";
-import { ListChecksIcon } from "lucide-react";
 
 export function InsertPoll() {
   const { activeEditor, showModal } = useToolbarContext();

@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronDownIcon } from "lucide-react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -14,20 +16,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon } from "lucide-react";
-import * as React from "react";
 
-type WebPreviewContextValue = {
+export type WebPreviewContextValue = {
   url: string;
   setUrl: (url: string) => void;
   consoleOpen: boolean;
   setConsoleOpen: (open: boolean) => void;
 };
 
-const WebPreviewContext = React.createContext<WebPreviewContextValue | null>(null);
+const WebPreviewContext = createContext<WebPreviewContextValue | null>(null);
 
 function useWebPreview() {
-  const context = React.useContext(WebPreviewContext);
+  const context = useContext(WebPreviewContext);
   if (!context) {
     throw new Error("WebPreview components must be used within a WebPreview");
   }
@@ -44,13 +44,13 @@ function WebPreview({
   defaultUrl?: string;
   onUrlChange?: (url: string) => void;
 }) {
-  const [url, setUrl] = React.useState(defaultUrl);
-  const [consoleOpen, setConsoleOpen] = React.useState(false);
+  const [url, setUrl] = useState(defaultUrl);
+  const [consoleOpen, setConsoleOpen] = useState(false);
 
-  function handleUrlChange(newUrl: string) {
+  const handleUrlChange = (newUrl: string) => {
     setUrl(newUrl);
     onUrlChange?.(newUrl);
-  }
+  };
 
   const contextValue: WebPreviewContextValue = {
     url,
@@ -122,22 +122,33 @@ function WebPreviewUrl({
   ...props
 }: React.ComponentProps<typeof Input>) {
   const { url, setUrl } = useWebPreview();
+  const [inputValue, setInputValue] = useState(url);
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  // Sync input value with context URL when it changes externally
+  useEffect(() => {
+    setInputValue(url);
+  }, [url]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    onChange?.(event);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       const target = event.target as HTMLInputElement;
       setUrl(target.value);
     }
     onKeyDown?.(event);
-  }
+  };
 
   return (
     <Input
       className="h-8 flex-1 text-sm"
-      onChange={onChange}
+      onChange={onChange ?? handleChange}
       onKeyDown={handleKeyDown}
       placeholder="Enter URL..."
-      value={value ?? url}
+      value={value ?? inputValue}
       {...props}
     />
   );

@@ -1,5 +1,3 @@
-import { useSharedAutocompleteContext } from "@/components/editor/context/shared-autocomplete-context";
-import { uuid as UUID } from "@/components/editor/plugins/autocomplete-plugin";
 import type {
   EditorConfig,
   EditorThemeClassName,
@@ -10,6 +8,8 @@ import type {
 } from "lexical";
 import { DecoratorNode } from "lexical";
 import * as React from "react";
+import { useSharedAutocompleteContext } from "@/components/editor/context/shared-autocomplete-context";
+import { uuid as UUID } from "@/components/editor/plugins/autocomplete-plugin";
 
 declare global {
   interface Navigator {

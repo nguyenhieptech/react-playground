@@ -8,20 +8,6 @@
  *
  */
 import {
-  $createImageNode,
-  $isImageNode,
-  ImageNode,
-  ImagePayload,
-} from "@/components/editor/nodes/image-node";
-import { CAN_USE_DOM } from "@/components/editor/shared/can-use-dom";
-import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
-import {
   $createParagraphNode,
   $createRangeSelection,
   $getSelection,
@@ -40,6 +26,20 @@ import {
   LexicalEditor,
 } from "lexical";
 import { JSX, useEffect, useRef, useState } from "react";
+import {
+  $createImageNode,
+  $isImageNode,
+  ImageNode,
+  ImagePayload,
+} from "@/components/editor/nodes/image-node";
+import { CAN_USE_DOM } from "@/components/editor/shared/can-use-dom";
+import { Button } from "@/components/ui/button";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
 
 export type InsertImagePayload = Readonly<ImagePayload>;
 

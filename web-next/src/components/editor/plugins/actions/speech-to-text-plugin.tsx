@@ -7,11 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { useReport } from "@/components/editor/editor-hooks/use-report";
-import { CAN_USE_DOM } from "@/components/editor/shared/can-use-dom";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import type { LexicalCommand, LexicalEditor, RangeSelection } from "lexical";
 import {
   $getSelection,
@@ -23,6 +18,11 @@ import {
 } from "lexical";
 import { MicIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useReport } from "@/components/editor/editor-hooks/use-report";
+import { CAN_USE_DOM } from "@/components/editor/shared/can-use-dom";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 export const SPEECH_TO_TEXT_COMMAND: LexicalCommand<boolean> = createCommand(
   "SPEECH_TO_TEXT_COMMAND"

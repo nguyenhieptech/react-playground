@@ -1,11 +1,3 @@
-import type { Option, Options, PollNode } from "@/components/editor/nodes/poll-node";
-import { $isPollNode, createPollOption } from "@/components/editor/nodes/poll-node";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useCollaborationContext } from "@lexical/react/LexicalCollaborationContext";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
-import { mergeRegister } from "@lexical/utils";
 import {
   $getNodeByKey,
   $getSelection,
@@ -18,6 +10,14 @@ import {
   NodeKey,
 } from "lexical";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Option, Options, PollNode } from "@/components/editor/nodes/poll-node";
+import { $isPollNode, createPollOption } from "@/components/editor/nodes/poll-node";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useCollaborationContext } from "@lexical/react/LexicalCollaborationContext";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
+import { mergeRegister } from "@lexical/utils";
 
 function getTotalVotes(options: Options): number {
   return options.reduce((totalVotes, next) => {
@@ -194,7 +194,7 @@ export default function PollComponent({
   return (
     <div
       className={`bg-background max-w-[600px] min-w-[400px] cursor-pointer rounded-lg border border-gray-200 select-none ${
-        isFocused ? "outline-primary outline outline-2" : ""
+        isFocused ? "outline-primary outline" : ""
       }`}
       ref={ref}
     >
