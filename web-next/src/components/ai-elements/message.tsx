@@ -2,8 +2,7 @@
 
 import type { FileUIPart, UIMessage } from "ai";
 import { ChevronLeftIcon, ChevronRightIcon, PaperclipIcon, XIcon } from "lucide-react";
-import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
-import { createContext, memo, useContext, useEffect, useState } from "react";
+import * as React from "react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
@@ -15,66 +14,64 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export type MessageProps = HTMLAttributes<HTMLDivElement> & {
+function Message({
+  className,
+  from,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
   from: UIMessage["role"];
-};
+}) {
+  return (
+    <div
+      className={cn(
+        "group flex w-full max-w-[95%] flex-col gap-2",
+        from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export const Message = ({ className, from, ...props }: MessageProps) => (
-  <div
-    className={cn(
-      "group flex w-full max-w-[95%] flex-col gap-2",
-      from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
-      className
-    )}
-    {...props}
-  />
-);
-
-export type MessageContentProps = HTMLAttributes<HTMLDivElement>;
-
-export const MessageContent = ({
+function MessageContent({
   children,
   className,
   ...props
-}: MessageContentProps) => (
-  <div
-    className={cn(
-      "is-user:dark flex w-fit max-w-full min-w-0 flex-col gap-2 overflow-hidden text-sm",
-      "group-[.is-user]:bg-secondary group-[.is-user]:text-foreground group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:px-4 group-[.is-user]:py-3",
-      "group-[.is-assistant]:text-foreground",
-      className
-    )}
-    {...props}
-  >
-    {children}
-  </div>
-);
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "is-user:dark flex w-fit max-w-full min-w-0 flex-col gap-2 overflow-hidden text-sm",
+        "group-[.is-user]:bg-secondary group-[.is-user]:text-foreground group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:px-4 group-[.is-user]:py-3",
+        "group-[.is-assistant]:text-foreground",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
 
-export type MessageActionsProps = ComponentProps<"div">;
+function MessageActions({ className, children, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div className={cn("flex items-center gap-1", className)} {...props}>
+      {children}
+    </div>
+  );
+}
 
-export const MessageActions = ({
-  className,
-  children,
-  ...props
-}: MessageActionsProps) => (
-  <div className={cn("flex items-center gap-1", className)} {...props}>
-    {children}
-  </div>
-);
-
-export type MessageActionProps = ComponentProps<typeof Button> & {
-  tooltip?: string;
-  label?: string;
-};
-
-export const MessageAction = ({
+function MessageAction({
   tooltip,
   children,
   label,
   variant = "ghost",
   size = "icon-sm",
   ...props
-}: MessageActionProps) => {
+}: React.ComponentProps<typeof Button> & {
+  tooltip?: string;
+  label?: string;
+}) {
   const button = (
     <Button size={size} type="button" variant={variant} {...props}>
       {children}
@@ -96,42 +93,40 @@ export const MessageAction = ({
   }
 
   return button;
-};
+}
 
 type MessageBranchContextType = {
   currentBranch: number;
   totalBranches: number;
   goToPrevious: () => void;
   goToNext: () => void;
-  branches: ReactElement[];
-  setBranches: (branches: ReactElement[]) => void;
+  branches: React.ReactElement[];
+  setBranches: (branches: React.ReactElement[]) => void;
 };
 
-const MessageBranchContext = createContext<MessageBranchContextType | null>(null);
+const MessageBranchContext = React.createContext<MessageBranchContextType | null>(null);
 
-const useMessageBranch = () => {
-  const context = useContext(MessageBranchContext);
+function useMessageBranch() {
+  const context = React.useContext(MessageBranchContext);
 
   if (!context) {
     throw new Error("MessageBranch components must be used within MessageBranch");
   }
 
   return context;
-};
+}
 
-export type MessageBranchProps = HTMLAttributes<HTMLDivElement> & {
-  defaultBranch?: number;
-  onBranchChange?: (branchIndex: number) => void;
-};
-
-export const MessageBranch = ({
+function MessageBranch({
   defaultBranch = 0,
   onBranchChange,
   className,
   ...props
-}: MessageBranchProps) => {
-  const [currentBranch, setCurrentBranch] = useState(defaultBranch);
-  const [branches, setBranches] = useState<ReactElement[]>([]);
+}: React.HTMLAttributes<HTMLDivElement> & {
+  defaultBranch?: number;
+  onBranchChange?: (branchIndex: number) => void;
+}) {
+  const [currentBranch, setCurrentBranch] = React.useState(defaultBranch);
+  const [branches, setBranches] = React.useState<React.ReactElement[]>([]);
 
   const handleBranchChange = (newBranch: number) => {
     setCurrentBranch(newBranch);
@@ -162,19 +157,17 @@ export const MessageBranch = ({
       <div className={cn("grid w-full gap-2 [&>div]:pb-0", className)} {...props} />
     </MessageBranchContext.Provider>
   );
-};
+}
 
-export type MessageBranchContentProps = HTMLAttributes<HTMLDivElement>;
-
-export const MessageBranchContent = ({
+function MessageBranchContent({
   children,
   ...props
-}: MessageBranchContentProps) => {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const { currentBranch, setBranches, branches } = useMessageBranch();
   const childrenArray = Array.isArray(children) ? children : [children];
 
   // Use useEffect to update branches when they change
-  useEffect(() => {
+  React.useEffect(() => {
     if (branches.length !== childrenArray.length) {
       setBranches(childrenArray);
     }
@@ -192,17 +185,15 @@ export const MessageBranchContent = ({
       {branch}
     </div>
   ));
-};
+}
 
-export type MessageBranchSelectorProps = HTMLAttributes<HTMLDivElement> & {
-  from: UIMessage["role"];
-};
-
-export const MessageBranchSelector = ({
+function MessageBranchSelector({
   className,
   from,
   ...props
-}: MessageBranchSelectorProps) => {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  from: UIMessage["role"];
+}) {
   const { totalBranches } = useMessageBranch();
 
   // Don't render if there's only one branch
@@ -217,14 +208,12 @@ export const MessageBranchSelector = ({
       {...props}
     />
   );
-};
+}
 
-export type MessageBranchPreviousProps = ComponentProps<typeof Button>;
-
-export const MessageBranchPrevious = ({
+function MessageBranchPrevious({
   children,
   ...props
-}: MessageBranchPreviousProps) => {
+}: React.ComponentProps<typeof Button>) {
   const { goToPrevious, totalBranches } = useMessageBranch();
 
   return (
@@ -240,15 +229,13 @@ export const MessageBranchPrevious = ({
       {children ?? <ChevronLeftIcon size={14} />}
     </Button>
   );
-};
+}
 
-export type MessageBranchNextProps = ComponentProps<typeof Button>;
-
-export const MessageBranchNext = ({
+function MessageBranchNext({
   children,
   className,
   ...props
-}: MessageBranchNextProps) => {
+}: React.ComponentProps<typeof Button>) {
   const { goToNext, totalBranches } = useMessageBranch();
 
   return (
@@ -264,11 +251,12 @@ export const MessageBranchNext = ({
       {children ?? <ChevronRightIcon size={14} />}
     </Button>
   );
-};
+}
 
-export type MessageBranchPageProps = HTMLAttributes<HTMLSpanElement>;
-
-export const MessageBranchPage = ({ className, ...props }: MessageBranchPageProps) => {
+function MessageBranchPage({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) {
   const { currentBranch, totalBranches } = useMessageBranch();
 
   return (
@@ -282,12 +270,10 @@ export const MessageBranchPage = ({ className, ...props }: MessageBranchPageProp
       {currentBranch + 1} of {totalBranches}
     </ButtonGroupText>
   );
-};
+}
 
-export type MessageResponseProps = ComponentProps<typeof Streamdown>;
-
-export const MessageResponse = memo(
-  ({ className, ...props }: MessageResponseProps) => (
+const MessageResponse = React.memo(
+  ({ className, ...props }: React.ComponentProps<typeof Streamdown>) => (
     <Streamdown
       className={cn("size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0", className)}
       {...props}
@@ -295,21 +281,18 @@ export const MessageResponse = memo(
   ),
   (prevProps, nextProps) => prevProps.children === nextProps.children
 );
-
 MessageResponse.displayName = "MessageResponse";
 
-export type MessageAttachmentProps = HTMLAttributes<HTMLDivElement> & {
-  data: FileUIPart;
-  className?: string;
-  onRemove?: () => void;
-};
-
-export function MessageAttachment({
+function MessageAttachment({
   data,
   className,
   onRemove,
   ...props
-}: MessageAttachmentProps) {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  data: FileUIPart;
+  className?: string;
+  onRemove?: () => void;
+}) {
   const filename = data.filename || "";
   const mediaType = data.mediaType?.startsWith("image/") && data.url ? "image" : "file";
   const isImage = mediaType === "image";
@@ -378,13 +361,11 @@ export function MessageAttachment({
   );
 }
 
-export type MessageAttachmentsProps = ComponentProps<"div">;
-
-export function MessageAttachments({
+function MessageAttachments({
   children,
   className,
   ...props
-}: MessageAttachmentsProps) {
+}: React.ComponentProps<"div">) {
   if (!children) {
     return null;
   }
@@ -399,17 +380,30 @@ export function MessageAttachments({
   );
 }
 
-export type MessageToolbarProps = ComponentProps<"div">;
+function MessageToolbar({ className, children, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("mt-4 flex w-full items-center justify-between gap-4", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
 
-export const MessageToolbar = ({
-  className,
-  children,
-  ...props
-}: MessageToolbarProps) => (
-  <div
-    className={cn("mt-4 flex w-full items-center justify-between gap-4", className)}
-    {...props}
-  >
-    {children}
-  </div>
-);
+export {
+  Message,
+  MessageAction,
+  MessageActions,
+  MessageAttachment,
+  MessageAttachments,
+  MessageBranch,
+  MessageBranchContent,
+  MessageBranchNext,
+  MessageBranchPage,
+  MessageBranchPrevious,
+  MessageBranchSelector,
+  MessageContent,
+  MessageResponse,
+  MessageToolbar,
+};

@@ -1,8 +1,7 @@
 "use client";
 
 import { BrainIcon, ChevronDownIcon, DotIcon, type LucideIcon } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
-import { createContext, memo, useContext, useMemo } from "react";
+import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Collapsible,
@@ -17,23 +16,19 @@ type ChainOfThoughtContextValue = {
   setIsOpen: (open: boolean) => void;
 };
 
-const ChainOfThoughtContext = createContext<ChainOfThoughtContextValue | null>(null);
+const ChainOfThoughtContext = React.createContext<ChainOfThoughtContextValue | null>(
+  null
+);
 
-const useChainOfThought = () => {
-  const context = useContext(ChainOfThoughtContext);
+function useChainOfThought() {
+  const context = React.useContext(ChainOfThoughtContext);
   if (!context) {
     throw new Error("ChainOfThought components must be used within ChainOfThought");
   }
   return context;
-};
+}
 
-export type ChainOfThoughtProps = ComponentProps<"div"> & {
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-};
-
-export const ChainOfThought = memo(
+const ChainOfThought = React.memo(
   ({
     className,
     open,
@@ -41,14 +36,18 @@ export const ChainOfThought = memo(
     onOpenChange,
     children,
     ...props
-  }: ChainOfThoughtProps) => {
+  }: React.ComponentProps<"div"> & {
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+  }) => {
     const [isOpen, setIsOpen] = useControllableState({
       prop: open,
       defaultProp: defaultOpen,
       onChange: onOpenChange,
     });
 
-    const chainOfThoughtContext = useMemo(
+    const chainOfThoughtContext = React.useMemo(
       () => ({ isOpen, setIsOpen }),
       [isOpen, setIsOpen]
     );
@@ -62,11 +61,14 @@ export const ChainOfThought = memo(
     );
   }
 );
+ChainOfThought.displayName = "ChainOfThought";
 
-export type ChainOfThoughtHeaderProps = ComponentProps<typeof CollapsibleTrigger>;
-
-export const ChainOfThoughtHeader = memo(
-  ({ className, children, ...props }: ChainOfThoughtHeaderProps) => {
+const ChainOfThoughtHeader = React.memo(
+  ({
+    className,
+    children,
+    ...props
+  }: React.ComponentProps<typeof CollapsibleTrigger>) => {
     const { isOpen, setIsOpen } = useChainOfThought();
 
     return (
@@ -91,15 +93,9 @@ export const ChainOfThoughtHeader = memo(
     );
   }
 );
+ChainOfThoughtHeader.displayName = "ChainOfThoughtHeader";
 
-export type ChainOfThoughtStepProps = ComponentProps<"div"> & {
-  icon?: LucideIcon;
-  label: ReactNode;
-  description?: ReactNode;
-  status?: "complete" | "active" | "pending";
-};
-
-export const ChainOfThoughtStep = memo(
+const ChainOfThoughtStep = React.memo(
   ({
     className,
     icon: Icon = DotIcon,
@@ -108,7 +104,12 @@ export const ChainOfThoughtStep = memo(
     status = "complete",
     children,
     ...props
-  }: ChainOfThoughtStepProps) => {
+  }: React.ComponentProps<"div"> & {
+    icon?: LucideIcon;
+    label: React.ReactNode;
+    description?: React.ReactNode;
+    status?: "complete" | "active" | "pending";
+  }) => {
     const statusStyles = {
       complete: "text-muted-foreground",
       active: "text-foreground",
@@ -140,19 +141,17 @@ export const ChainOfThoughtStep = memo(
     );
   }
 );
+ChainOfThoughtStep.displayName = "ChainOfThoughtStep";
 
-export type ChainOfThoughtSearchResultsProps = ComponentProps<"div">;
-
-export const ChainOfThoughtSearchResults = memo(
-  ({ className, ...props }: ChainOfThoughtSearchResultsProps) => (
+const ChainOfThoughtSearchResults = React.memo(
+  ({ className, ...props }: React.ComponentProps<"div">) => (
     <div className={cn("flex flex-wrap items-center gap-2", className)} {...props} />
   )
 );
+ChainOfThoughtSearchResults.displayName = "ChainOfThoughtSearchResults";
 
-export type ChainOfThoughtSearchResultProps = ComponentProps<typeof Badge>;
-
-export const ChainOfThoughtSearchResult = memo(
-  ({ className, children, ...props }: ChainOfThoughtSearchResultProps) => (
+const ChainOfThoughtSearchResult = React.memo(
+  ({ className, children, ...props }: React.ComponentProps<typeof Badge>) => (
     <Badge
       className={cn("gap-1 px-2 py-0.5 text-xs font-normal", className)}
       variant="secondary"
@@ -162,11 +161,14 @@ export const ChainOfThoughtSearchResult = memo(
     </Badge>
   )
 );
+ChainOfThoughtSearchResult.displayName = "ChainOfThoughtSearchResult";
 
-export type ChainOfThoughtContentProps = ComponentProps<typeof CollapsibleContent>;
-
-export const ChainOfThoughtContent = memo(
-  ({ className, children, ...props }: ChainOfThoughtContentProps) => {
+const ChainOfThoughtContent = React.memo(
+  ({
+    className,
+    children,
+    ...props
+  }: React.ComponentProps<typeof CollapsibleContent>) => {
     const { isOpen } = useChainOfThought();
 
     return (
@@ -185,13 +187,17 @@ export const ChainOfThoughtContent = memo(
     );
   }
 );
+ChainOfThoughtContent.displayName = "ChainOfThoughtContent";
 
-export type ChainOfThoughtImageProps = ComponentProps<"div"> & {
-  caption?: string;
-};
-
-export const ChainOfThoughtImage = memo(
-  ({ className, children, caption, ...props }: ChainOfThoughtImageProps) => (
+const ChainOfThoughtImage = React.memo(
+  ({
+    className,
+    children,
+    caption,
+    ...props
+  }: React.ComponentProps<"div"> & {
+    caption?: string;
+  }) => (
     <div className={cn("mt-2 space-y-2", className)} {...props}>
       <div className="bg-muted relative flex max-h-[22rem] items-center justify-center overflow-hidden rounded-lg p-3">
         {children}
@@ -200,11 +206,14 @@ export const ChainOfThoughtImage = memo(
     </div>
   )
 );
-
-ChainOfThought.displayName = "ChainOfThought";
-ChainOfThoughtHeader.displayName = "ChainOfThoughtHeader";
-ChainOfThoughtStep.displayName = "ChainOfThoughtStep";
-ChainOfThoughtSearchResults.displayName = "ChainOfThoughtSearchResults";
-ChainOfThoughtSearchResult.displayName = "ChainOfThoughtSearchResult";
-ChainOfThoughtContent.displayName = "ChainOfThoughtContent";
 ChainOfThoughtImage.displayName = "ChainOfThoughtImage";
+
+export {
+  ChainOfThought,
+  ChainOfThoughtContent,
+  ChainOfThoughtHeader,
+  ChainOfThoughtImage,
+  ChainOfThoughtSearchResult,
+  ChainOfThoughtSearchResults,
+  ChainOfThoughtStep,
+};

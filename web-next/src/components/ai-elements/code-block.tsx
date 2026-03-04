@@ -1,30 +1,16 @@
 "use client";
 
 import { CheckIcon, CopyIcon } from "lucide-react";
-import {
-  type ComponentProps,
-  createContext,
-  type HTMLAttributes,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 import { type BundledLanguage, codeToHtml, type ShikiTransformer } from "shiki";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-type CodeBlockProps = HTMLAttributes<HTMLDivElement> & {
-  code: string;
-  language: BundledLanguage;
-  showLineNumbers?: boolean;
-};
 
 type CodeBlockContextType = {
   code: string;
 };
 
-const CodeBlockContext = createContext<CodeBlockContextType>({
+const CodeBlockContext = React.createContext<CodeBlockContextType>({
   code: "",
 });
 
@@ -49,7 +35,7 @@ const lineNumberTransformer: ShikiTransformer = {
   },
 };
 
-export async function highlightCode(
+async function highlightCode(
   code: string,
   language: BundledLanguage,
   showLineNumbers = false
@@ -70,19 +56,23 @@ export async function highlightCode(
   ]);
 }
 
-export const CodeBlock = ({
+function CodeBlock({
   code,
   language,
   showLineNumbers = false,
   className,
   children,
   ...props
-}: CodeBlockProps) => {
-  const [html, setHtml] = useState<string>("");
-  const [darkHtml, setDarkHtml] = useState<string>("");
-  const mounted = useRef(false);
+}: React.HTMLAttributes<HTMLDivElement> & {
+  code: string;
+  language: BundledLanguage;
+  showLineNumbers?: boolean;
+}) {
+  const [html, setHtml] = React.useState<string>("");
+  const [darkHtml, setDarkHtml] = React.useState<string>("");
+  const mounted = React.useRef(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     highlightCode(code, language, showLineNumbers).then(([light, dark]) => {
       if (!mounted.current) {
         setHtml(light);
@@ -125,26 +115,24 @@ export const CodeBlock = ({
       </div>
     </CodeBlockContext.Provider>
   );
-};
+}
 
-export type CodeBlockCopyButtonProps = ComponentProps<typeof Button> & {
-  onCopy?: () => void;
-  onError?: (error: Error) => void;
-  timeout?: number;
-};
-
-export const CodeBlockCopyButton = ({
+function CodeBlockCopyButton({
   onCopy,
   onError,
   timeout = 2000,
   children,
   className,
   ...props
-}: CodeBlockCopyButtonProps) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const { code } = useContext(CodeBlockContext);
+}: React.ComponentProps<typeof Button> & {
+  onCopy?: () => void;
+  onError?: (error: Error) => void;
+  timeout?: number;
+}) {
+  const [isCopied, setIsCopied] = React.useState(false);
+  const { code } = React.useContext(CodeBlockContext);
 
-  const copyToClipboard = async () => {
+  async function copyToClipboard() {
     if (typeof window === "undefined" || !navigator?.clipboard?.writeText) {
       onError?.(new Error("Clipboard API not available"));
       return;
@@ -158,7 +146,7 @@ export const CodeBlockCopyButton = ({
     } catch (error) {
       onError?.(error as Error);
     }
-  };
+  }
 
   const Icon = isCopied ? CheckIcon : CopyIcon;
 
@@ -173,4 +161,6 @@ export const CodeBlockCopyButton = ({
       {children ?? <Icon size={14} />}
     </Button>
   );
-};
+}
+
+export { CodeBlock, CodeBlockCopyButton };

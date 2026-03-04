@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronDownIcon } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,26 +26,24 @@ export type WebPreviewContextValue = {
 
 const WebPreviewContext = createContext<WebPreviewContextValue | null>(null);
 
-const useWebPreview = () => {
+function useWebPreview() {
   const context = useContext(WebPreviewContext);
   if (!context) {
     throw new Error("WebPreview components must be used within a WebPreview");
   }
   return context;
-};
+}
 
-export type WebPreviewProps = ComponentProps<"div"> & {
-  defaultUrl?: string;
-  onUrlChange?: (url: string) => void;
-};
-
-export const WebPreview = ({
+function WebPreview({
   className,
   children,
   defaultUrl = "",
   onUrlChange,
   ...props
-}: WebPreviewProps) => {
+}: React.ComponentProps<"div"> & {
+  defaultUrl?: string;
+  onUrlChange?: (url: string) => void;
+}) {
   const [url, setUrl] = useState(defaultUrl);
   const [consoleOpen, setConsoleOpen] = useState(false);
 
@@ -72,60 +69,58 @@ export const WebPreview = ({
       </div>
     </WebPreviewContext.Provider>
   );
-};
+}
 
-export type WebPreviewNavigationProps = ComponentProps<"div">;
-
-export const WebPreviewNavigation = ({
+function WebPreviewNavigation({
   className,
   children,
   ...props
-}: WebPreviewNavigationProps) => (
-  <div className={cn("flex items-center gap-1 border-b p-2", className)} {...props}>
-    {children}
-  </div>
-);
+}: React.ComponentProps<"div">) {
+  return (
+    <div className={cn("flex items-center gap-1 border-b p-2", className)} {...props}>
+      {children}
+    </div>
+  );
+}
 
-export type WebPreviewNavigationButtonProps = ComponentProps<typeof Button> & {
-  tooltip?: string;
-};
-
-export const WebPreviewNavigationButton = ({
+function WebPreviewNavigationButton({
   onClick,
   disabled,
   tooltip,
   children,
   ...props
-}: WebPreviewNavigationButtonProps) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          className="hover:text-foreground h-8 w-8 p-0"
-          disabled={disabled}
-          onClick={onClick}
-          size="sm"
-          variant="ghost"
-          {...props}
-        >
-          {children}
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{tooltip}</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
+}: React.ComponentProps<typeof Button> & {
+  tooltip?: string;
+}) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            className="hover:text-foreground h-8 w-8 p-0"
+            disabled={disabled}
+            onClick={onClick}
+            size="sm"
+            variant="ghost"
+            {...props}
+          >
+            {children}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{tooltip}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
 
-export type WebPreviewUrlProps = ComponentProps<typeof Input>;
-
-export const WebPreviewUrl = ({
+function WebPreviewUrl({
   value,
   onChange,
   onKeyDown,
   ...props
-}: WebPreviewUrlProps) => {
+}: React.ComponentProps<typeof Input>) {
   const { url, setUrl } = useWebPreview();
   const [inputValue, setInputValue] = useState(url);
 
@@ -157,18 +152,16 @@ export const WebPreviewUrl = ({
       {...props}
     />
   );
-};
+}
 
-export type WebPreviewBodyProps = ComponentProps<"iframe"> & {
-  loading?: ReactNode;
-};
-
-export const WebPreviewBody = ({
+function WebPreviewBody({
   className,
   loading,
   src,
   ...props
-}: WebPreviewBodyProps) => {
+}: React.ComponentProps<"iframe"> & {
+  loading?: React.ReactNode;
+}) {
   const { url } = useWebPreview();
 
   return (
@@ -183,22 +176,20 @@ export const WebPreviewBody = ({
       {loading}
     </div>
   );
-};
+}
 
-export type WebPreviewConsoleProps = ComponentProps<"div"> & {
+function WebPreviewConsole({
+  className,
+  logs = [],
+  children,
+  ...props
+}: React.ComponentProps<"div"> & {
   logs?: Array<{
     level: "log" | "warn" | "error";
     message: string;
     timestamp: Date;
   }>;
-};
-
-export const WebPreviewConsole = ({
-  className,
-  logs = [],
-  children,
-  ...props
-}: WebPreviewConsoleProps) => {
+}) {
   const { consoleOpen, setConsoleOpen } = useWebPreview();
 
   return (
@@ -254,4 +245,13 @@ export const WebPreviewConsole = ({
       </CollapsibleContent>
     </Collapsible>
   );
+}
+
+export {
+  WebPreview,
+  WebPreviewBody,
+  WebPreviewConsole,
+  WebPreviewNavigation,
+  WebPreviewNavigationButton,
+  WebPreviewUrl,
 };

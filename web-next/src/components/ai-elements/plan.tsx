@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronsUpDownIcon } from "lucide-react";
-import type { ComponentProps } from "react";
+import * as React from "react";
 import { createContext, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,46 +27,47 @@ type PlanContextValue = {
 
 const PlanContext = createContext<PlanContextValue | null>(null);
 
-const usePlan = () => {
+function usePlan() {
   const context = useContext(PlanContext);
   if (!context) {
     throw new Error("Plan components must be used within Plan");
   }
   return context;
-};
+}
 
-export type PlanProps = ComponentProps<typeof Collapsible> & {
-  isStreaming?: boolean;
-};
-
-export const Plan = ({
+function Plan({
   className,
   isStreaming = false,
   children,
   ...props
-}: PlanProps) => (
-  <PlanContext.Provider value={{ isStreaming }}>
-    <Collapsible asChild data-slot="plan" {...props}>
-      <Card className={cn("shadow-none", className)}>{children}</Card>
-    </Collapsible>
-  </PlanContext.Provider>
-);
+}: React.ComponentProps<typeof Collapsible> & {
+  isStreaming?: boolean;
+}) {
+  return (
+    <PlanContext.Provider value={{ isStreaming }}>
+      <Collapsible asChild data-slot="plan" {...props}>
+        <Card className={cn("shadow-none", className)}>{children}</Card>
+      </Collapsible>
+    </PlanContext.Provider>
+  );
+}
 
-export type PlanHeaderProps = ComponentProps<typeof CardHeader>;
+function PlanHeader({ className, ...props }: React.ComponentProps<typeof CardHeader>) {
+  return (
+    <CardHeader
+      className={cn("flex items-start justify-between", className)}
+      data-slot="plan-header"
+      {...props}
+    />
+  );
+}
 
-export const PlanHeader = ({ className, ...props }: PlanHeaderProps) => (
-  <CardHeader
-    className={cn("flex items-start justify-between", className)}
-    data-slot="plan-header"
-    {...props}
-  />
-);
-
-export type PlanTitleProps = Omit<ComponentProps<typeof CardTitle>, "children"> & {
+function PlanTitle({
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof CardTitle>, "children"> & {
   children: string;
-};
-
-export const PlanTitle = ({ children, ...props }: PlanTitleProps) => {
+}) {
   const { isStreaming } = usePlan();
 
   return (
@@ -74,20 +75,15 @@ export const PlanTitle = ({ children, ...props }: PlanTitleProps) => {
       {isStreaming ? <Shimmer>{children}</Shimmer> : children}
     </CardTitle>
   );
-};
+}
 
-export type PlanDescriptionProps = Omit<
-  ComponentProps<typeof CardDescription>,
-  "children"
-> & {
-  children: string;
-};
-
-export const PlanDescription = ({
+function PlanDescription({
   className,
   children,
   ...props
-}: PlanDescriptionProps) => {
+}: Omit<React.ComponentProps<typeof CardDescription>, "children"> & {
+  children: string;
+}) {
   const { isStreaming } = usePlan();
 
   return (
@@ -99,41 +95,51 @@ export const PlanDescription = ({
       {isStreaming ? <Shimmer>{children}</Shimmer> : children}
     </CardDescription>
   );
+}
+
+function PlanAction(props: React.ComponentProps<typeof CardAction>) {
+  return <CardAction data-slot="plan-action" {...props} />;
+}
+
+function PlanContent(props: React.ComponentProps<typeof CardContent>) {
+  return (
+    <CollapsibleContent asChild>
+      <CardContent data-slot="plan-content" {...props} />
+    </CollapsibleContent>
+  );
+}
+
+function PlanFooter(props: React.ComponentProps<"div">) {
+  return <CardFooter data-slot="plan-footer" {...props} />;
+}
+
+function PlanTrigger({
+  className,
+  ...props
+}: React.ComponentProps<typeof CollapsibleTrigger>) {
+  return (
+    <CollapsibleTrigger asChild>
+      <Button
+        className={cn("size-8", className)}
+        data-slot="plan-trigger"
+        size="icon"
+        variant="ghost"
+        {...props}
+      >
+        <ChevronsUpDownIcon className="size-4" />
+        <span className="sr-only">Toggle plan</span>
+      </Button>
+    </CollapsibleTrigger>
+  );
+}
+
+export {
+  Plan,
+  PlanAction,
+  PlanContent,
+  PlanDescription,
+  PlanFooter,
+  PlanHeader,
+  PlanTitle,
+  PlanTrigger,
 };
-
-export type PlanActionProps = ComponentProps<typeof CardAction>;
-
-export const PlanAction = (props: PlanActionProps) => (
-  <CardAction data-slot="plan-action" {...props} />
-);
-
-export type PlanContentProps = ComponentProps<typeof CardContent>;
-
-export const PlanContent = (props: PlanContentProps) => (
-  <CollapsibleContent asChild>
-    <CardContent data-slot="plan-content" {...props} />
-  </CollapsibleContent>
-);
-
-export type PlanFooterProps = ComponentProps<"div">;
-
-export const PlanFooter = (props: PlanFooterProps) => (
-  <CardFooter data-slot="plan-footer" {...props} />
-);
-
-export type PlanTriggerProps = ComponentProps<typeof CollapsibleTrigger>;
-
-export const PlanTrigger = ({ className, ...props }: PlanTriggerProps) => (
-  <CollapsibleTrigger asChild>
-    <Button
-      className={cn("size-8", className)}
-      data-slot="plan-trigger"
-      size="icon"
-      variant="ghost"
-      {...props}
-    >
-      <ChevronsUpDownIcon className="size-4" />
-      <span className="sr-only">Toggle plan</span>
-    </Button>
-  </CollapsibleTrigger>
-);

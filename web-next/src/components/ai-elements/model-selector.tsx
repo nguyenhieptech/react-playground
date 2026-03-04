@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from "react";
+import * as React from "react";
 import {
   Command,
   CommandDialog,
@@ -18,81 +18,72 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-export type ModelSelectorProps = ComponentProps<typeof Dialog>;
+function ModelSelector(props: React.ComponentProps<typeof Dialog>) {
+  return <Dialog {...props} />;
+}
 
-export const ModelSelector = (props: ModelSelectorProps) => <Dialog {...props} />;
+function ModelSelectorTrigger(props: React.ComponentProps<typeof DialogTrigger>) {
+  return <DialogTrigger {...props} />;
+}
 
-export type ModelSelectorTriggerProps = ComponentProps<typeof DialogTrigger>;
-
-export const ModelSelectorTrigger = (props: ModelSelectorTriggerProps) => (
-  <DialogTrigger {...props} />
-);
-
-export type ModelSelectorContentProps = ComponentProps<typeof DialogContent> & {
-  title?: ReactNode;
-};
-
-export const ModelSelectorContent = ({
+function ModelSelectorContent({
   className,
   children,
   title = "Model Selector",
   ...props
-}: ModelSelectorContentProps) => (
-  <DialogContent className={cn("p-0", className)} {...props}>
-    <DialogTitle className="sr-only">{title}</DialogTitle>
-    <Command className="**:data-[slot=command-input-wrapper]:h-auto">{children}</Command>
-  </DialogContent>
-);
+}: React.ComponentProps<typeof DialogContent> & {
+  title?: React.ReactNode;
+}) {
+  return (
+    <DialogContent className={cn("p-0", className)} {...props}>
+      <DialogTitle className="sr-only">{title}</DialogTitle>
+      <Command className="**:data-[slot=command-input-wrapper]:h-auto">
+        {children}
+      </Command>
+    </DialogContent>
+  );
+}
 
-export type ModelSelectorDialogProps = ComponentProps<typeof CommandDialog>;
+function ModelSelectorDialog(props: React.ComponentProps<typeof CommandDialog>) {
+  return <CommandDialog {...props} />;
+}
 
-export const ModelSelectorDialog = (props: ModelSelectorDialogProps) => (
-  <CommandDialog {...props} />
-);
+function ModelSelectorInput({
+  className,
+  ...props
+}: React.ComponentProps<typeof CommandInput>) {
+  return <CommandInput className={cn("h-auto py-3.5", className)} {...props} />;
+}
 
-export type ModelSelectorInputProps = ComponentProps<typeof CommandInput>;
+function ModelSelectorList(props: React.ComponentProps<typeof CommandList>) {
+  return <CommandList {...props} />;
+}
 
-export const ModelSelectorInput = ({ className, ...props }: ModelSelectorInputProps) => (
-  <CommandInput className={cn("h-auto py-3.5", className)} {...props} />
-);
+function ModelSelectorEmpty(props: React.ComponentProps<typeof CommandEmpty>) {
+  return <CommandEmpty {...props} />;
+}
 
-export type ModelSelectorListProps = ComponentProps<typeof CommandList>;
+function ModelSelectorGroup(props: React.ComponentProps<typeof CommandGroup>) {
+  return <CommandGroup {...props} />;
+}
 
-export const ModelSelectorList = (props: ModelSelectorListProps) => (
-  <CommandList {...props} />
-);
+function ModelSelectorItem(props: React.ComponentProps<typeof CommandItem>) {
+  return <CommandItem {...props} />;
+}
 
-export type ModelSelectorEmptyProps = ComponentProps<typeof CommandEmpty>;
+function ModelSelectorShortcut(props: React.ComponentProps<typeof CommandShortcut>) {
+  return <CommandShortcut {...props} />;
+}
 
-export const ModelSelectorEmpty = (props: ModelSelectorEmptyProps) => (
-  <CommandEmpty {...props} />
-);
+function ModelSelectorSeparator(props: React.ComponentProps<typeof CommandSeparator>) {
+  return <CommandSeparator {...props} />;
+}
 
-export type ModelSelectorGroupProps = ComponentProps<typeof CommandGroup>;
-
-export const ModelSelectorGroup = (props: ModelSelectorGroupProps) => (
-  <CommandGroup {...props} />
-);
-
-export type ModelSelectorItemProps = ComponentProps<typeof CommandItem>;
-
-export const ModelSelectorItem = (props: ModelSelectorItemProps) => (
-  <CommandItem {...props} />
-);
-
-export type ModelSelectorShortcutProps = ComponentProps<typeof CommandShortcut>;
-
-export const ModelSelectorShortcut = (props: ModelSelectorShortcutProps) => (
-  <CommandShortcut {...props} />
-);
-
-export type ModelSelectorSeparatorProps = ComponentProps<typeof CommandSeparator>;
-
-export const ModelSelectorSeparator = (props: ModelSelectorSeparatorProps) => (
-  <CommandSeparator {...props} />
-);
-
-export type ModelSelectorLogoProps = Omit<ComponentProps<"img">, "src" | "alt"> & {
+function ModelSelectorLogo({
+  provider,
+  className,
+  ...props
+}: Omit<React.ComponentProps<"img">, "src" | "alt"> & {
   provider:
     | "moonshotai-cn"
     | "lucidquery"
@@ -151,40 +142,48 @@ export type ModelSelectorLogoProps = Omit<ComponentProps<"img">, "src" | "alt"> 
     | "amazon-bedrock"
     | "cerebras"
     | (string & {});
+}) {
+  return (
+    <img
+      {...props}
+      alt={`${provider} logo`}
+      className={cn("size-3 dark:invert", className)}
+      height={12}
+      src={`https://models.dev/logos/${provider}` + ".svg"}
+      width={12}
+    />
+  );
+}
+
+function ModelSelectorLogoGroup({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "[&>img]:bg-background dark:[&>img]:bg-foreground flex shrink-0 items-center -space-x-1 [&>img]:rounded-full [&>img]:p-px [&>img]:ring-1",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+function ModelSelectorName({ className, ...props }: React.ComponentProps<"span">) {
+  return <span className={cn("flex-1 truncate text-left", className)} {...props} />;
+}
+
+export {
+  ModelSelector,
+  ModelSelectorContent,
+  ModelSelectorDialog,
+  ModelSelectorEmpty,
+  ModelSelectorGroup,
+  ModelSelectorInput,
+  ModelSelectorItem,
+  ModelSelectorList,
+  ModelSelectorLogo,
+  ModelSelectorLogoGroup,
+  ModelSelectorName,
+  ModelSelectorSeparator,
+  ModelSelectorShortcut,
+  ModelSelectorTrigger,
 };
-
-export const ModelSelectorLogo = ({
-  provider,
-  className,
-  ...props
-}: ModelSelectorLogoProps) => (
-  <img
-    {...props}
-    alt={`${provider} logo`}
-    className={cn("size-3 dark:invert", className)}
-    height={12}
-    src={`https://models.dev/logos/${provider}.svg`}
-    width={12}
-  />
-);
-
-export type ModelSelectorLogoGroupProps = ComponentProps<"div">;
-
-export const ModelSelectorLogoGroup = ({
-  className,
-  ...props
-}: ModelSelectorLogoGroupProps) => (
-  <div
-    className={cn(
-      "[&>img]:bg-background dark:[&>img]:bg-foreground flex shrink-0 items-center -space-x-1 [&>img]:rounded-full [&>img]:p-px [&>img]:ring-1",
-      className
-    )}
-    {...props}
-  />
-);
-
-export type ModelSelectorNameProps = ComponentProps<"span">;
-
-export const ModelSelectorName = ({ className, ...props }: ModelSelectorNameProps) => (
-  <span className={cn("flex-1 truncate text-left", className)} {...props} />
-);

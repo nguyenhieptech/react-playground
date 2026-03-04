@@ -1,7 +1,7 @@
 "use client";
 
 import { type LucideIcon, XIcon } from "lucide-react";
-import type { ComponentProps, HTMLAttributes } from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -11,79 +11,72 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export type ArtifactProps = HTMLAttributes<HTMLDivElement>;
+function Artifact({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "bg-background flex flex-col overflow-hidden rounded-lg border shadow-sm",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export const Artifact = ({ className, ...props }: ArtifactProps) => (
-  <div
-    className={cn(
-      "bg-background flex flex-col overflow-hidden rounded-lg border shadow-sm",
-      className
-    )}
-    {...props}
-  />
-);
+function ArtifactHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "bg-muted/50 flex items-center justify-between border-b px-4 py-3",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export type ArtifactHeaderProps = HTMLAttributes<HTMLDivElement>;
-
-export const ArtifactHeader = ({ className, ...props }: ArtifactHeaderProps) => (
-  <div
-    className={cn(
-      "bg-muted/50 flex items-center justify-between border-b px-4 py-3",
-      className
-    )}
-    {...props}
-  />
-);
-
-export type ArtifactCloseProps = ComponentProps<typeof Button>;
-
-export const ArtifactClose = ({
+function ArtifactClose({
   className,
   children,
   size = "sm",
   variant = "ghost",
   ...props
-}: ArtifactCloseProps) => (
-  <Button
-    className={cn("text-muted-foreground hover:text-foreground size-8 p-0", className)}
-    size={size}
-    type="button"
-    variant={variant}
-    {...props}
-  >
-    {children ?? <XIcon className="size-4" />}
-    <span className="sr-only">Close</span>
-  </Button>
-);
+}: React.ComponentProps<typeof Button>) {
+  return (
+    <Button
+      className={cn("text-muted-foreground hover:text-foreground size-8 p-0", className)}
+      size={size}
+      type="button"
+      variant={variant}
+      {...props}
+    >
+      {children ?? <XIcon className="size-4" />}
+      <span className="sr-only">Close</span>
+    </Button>
+  );
+}
 
-export type ArtifactTitleProps = HTMLAttributes<HTMLParagraphElement>;
-
-export const ArtifactTitle = ({ className, ...props }: ArtifactTitleProps) => (
-  <p className={cn("text-foreground text-sm font-medium", className)} {...props} />
-);
-
-export type ArtifactDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
-
-export const ArtifactDescription = ({
+function ArtifactTitle({
   className,
   ...props
-}: ArtifactDescriptionProps) => (
-  <p className={cn("text-muted-foreground text-sm", className)} {...props} />
-);
+}: React.HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p className={cn("text-foreground text-sm font-medium", className)} {...props} />
+  );
+}
 
-export type ArtifactActionsProps = HTMLAttributes<HTMLDivElement>;
+function ArtifactDescription({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) {
+  return <p className={cn("text-muted-foreground text-sm", className)} {...props} />;
+}
 
-export const ArtifactActions = ({ className, ...props }: ArtifactActionsProps) => (
-  <div className={cn("flex items-center gap-1", className)} {...props} />
-);
+function ArtifactActions({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("flex items-center gap-1", className)} {...props} />;
+}
 
-export type ArtifactActionProps = ComponentProps<typeof Button> & {
-  tooltip?: string;
-  label?: string;
-  icon?: LucideIcon;
-};
-
-export const ArtifactAction = ({
+function ArtifactAction({
   tooltip,
   label,
   icon: Icon,
@@ -92,7 +85,11 @@ export const ArtifactAction = ({
   size = "sm",
   variant = "ghost",
   ...props
-}: ArtifactActionProps) => {
+}: React.ComponentProps<typeof Button> & {
+  tooltip?: string;
+  label?: string;
+  icon?: LucideIcon;
+}) {
   const button = (
     <Button
       className={cn("text-muted-foreground hover:text-foreground size-8 p-0", className)}
@@ -120,10 +117,19 @@ export const ArtifactAction = ({
   }
 
   return button;
+}
+
+function ArtifactContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("flex-1 overflow-auto p-4", className)} {...props} />;
+}
+
+export {
+  Artifact,
+  ArtifactAction,
+  ArtifactActions,
+  ArtifactClose,
+  ArtifactContent,
+  ArtifactDescription,
+  ArtifactHeader,
+  ArtifactTitle,
 };
-
-export type ArtifactContentProps = HTMLAttributes<HTMLDivElement>;
-
-export const ArtifactContent = ({ className, ...props }: ArtifactContentProps) => (
-  <div className={cn("flex-1 overflow-auto p-4", className)} {...props} />
-);

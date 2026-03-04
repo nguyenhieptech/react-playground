@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDownIcon, ExternalLinkIcon, MessageCircleIcon } from "lucide-react";
-import { type ComponentProps, createContext, useContext } from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -171,62 +171,71 @@ const providers = {
   },
 };
 
-const OpenInContext = createContext<{ query: string } | undefined>(undefined);
+const OpenInContext = React.createContext<{ query: string } | undefined>(undefined);
 
-const useOpenInContext = () => {
-  const context = useContext(OpenInContext);
+function useOpenInContext() {
+  const context = React.useContext(OpenInContext);
   if (!context) {
     throw new Error("OpenIn components must be used within an OpenIn provider");
   }
   return context;
-};
+}
 
-export type OpenInProps = ComponentProps<typeof DropdownMenu> & {
+function OpenIn({
+  query,
+  ...props
+}: React.ComponentProps<typeof DropdownMenu> & {
   query: string;
-};
+}) {
+  return (
+    <OpenInContext.Provider value={{ query }}>
+      <DropdownMenu {...props} />
+    </OpenInContext.Provider>
+  );
+}
 
-export const OpenIn = ({ query, ...props }: OpenInProps) => (
-  <OpenInContext.Provider value={{ query }}>
-    <DropdownMenu {...props} />
-  </OpenInContext.Provider>
-);
+function OpenInContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuContent>) {
+  return (
+    <DropdownMenuContent
+      align="start"
+      className={cn("w-[240px]", className)}
+      {...props}
+    />
+  );
+}
 
-export type OpenInContentProps = ComponentProps<typeof DropdownMenuContent>;
+function OpenInItem(props: React.ComponentProps<typeof DropdownMenuItem>) {
+  return <DropdownMenuItem {...props} />;
+}
 
-export const OpenInContent = ({ className, ...props }: OpenInContentProps) => (
-  <DropdownMenuContent align="start" className={cn("w-[240px]", className)} {...props} />
-);
+function OpenInLabel(props: React.ComponentProps<typeof DropdownMenuLabel>) {
+  return <DropdownMenuLabel {...props} />;
+}
 
-export type OpenInItemProps = ComponentProps<typeof DropdownMenuItem>;
+function OpenInSeparator(props: React.ComponentProps<typeof DropdownMenuSeparator>) {
+  return <DropdownMenuSeparator {...props} />;
+}
 
-export const OpenInItem = (props: OpenInItemProps) => <DropdownMenuItem {...props} />;
+function OpenInTrigger({
+  children,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuTrigger>) {
+  return (
+    <DropdownMenuTrigger {...props} asChild>
+      {children ?? (
+        <Button type="button" variant="outline">
+          Open in chat
+          <ChevronDownIcon className="size-4" />
+        </Button>
+      )}
+    </DropdownMenuTrigger>
+  );
+}
 
-export type OpenInLabelProps = ComponentProps<typeof DropdownMenuLabel>;
-
-export const OpenInLabel = (props: OpenInLabelProps) => <DropdownMenuLabel {...props} />;
-
-export type OpenInSeparatorProps = ComponentProps<typeof DropdownMenuSeparator>;
-
-export const OpenInSeparator = (props: OpenInSeparatorProps) => (
-  <DropdownMenuSeparator {...props} />
-);
-
-export type OpenInTriggerProps = ComponentProps<typeof DropdownMenuTrigger>;
-
-export const OpenInTrigger = ({ children, ...props }: OpenInTriggerProps) => (
-  <DropdownMenuTrigger {...props} asChild>
-    {children ?? (
-      <Button type="button" variant="outline">
-        Open in chat
-        <ChevronDownIcon className="size-4" />
-      </Button>
-    )}
-  </DropdownMenuTrigger>
-);
-
-export type OpenInChatGPTProps = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInChatGPT = (props: OpenInChatGPTProps) => {
+function OpenInChatGPT(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -242,11 +251,9 @@ export const OpenInChatGPT = (props: OpenInChatGPTProps) => {
       </a>
     </DropdownMenuItem>
   );
-};
+}
 
-export type OpenInClaudeProps = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInClaude = (props: OpenInClaudeProps) => {
+function OpenInClaude(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -262,11 +269,9 @@ export const OpenInClaude = (props: OpenInClaudeProps) => {
       </a>
     </DropdownMenuItem>
   );
-};
+}
 
-export type OpenInT3Props = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInT3 = (props: OpenInT3Props) => {
+function OpenInT3(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -282,11 +287,9 @@ export const OpenInT3 = (props: OpenInT3Props) => {
       </a>
     </DropdownMenuItem>
   );
-};
+}
 
-export type OpenInSciraProps = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInScira = (props: OpenInSciraProps) => {
+function OpenInScira(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -302,11 +305,9 @@ export const OpenInScira = (props: OpenInSciraProps) => {
       </a>
     </DropdownMenuItem>
   );
-};
+}
 
-export type OpenInv0Props = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInv0 = (props: OpenInv0Props) => {
+function OpenInv0(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -322,11 +323,9 @@ export const OpenInv0 = (props: OpenInv0Props) => {
       </a>
     </DropdownMenuItem>
   );
-};
+}
 
-export type OpenInCursorProps = ComponentProps<typeof DropdownMenuItem>;
-
-export const OpenInCursor = (props: OpenInCursorProps) => {
+function OpenInCursor(props: React.ComponentProps<typeof DropdownMenuItem>) {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild {...props}>
@@ -342,4 +341,19 @@ export const OpenInCursor = (props: OpenInCursorProps) => {
       </a>
     </DropdownMenuItem>
   );
+}
+
+export {
+  OpenIn,
+  OpenInChatGPT,
+  OpenInClaude,
+  OpenInContent,
+  OpenInCursor,
+  OpenInItem,
+  OpenInLabel,
+  OpenInScira,
+  OpenInSeparator,
+  OpenInT3,
+  OpenInTrigger,
+  OpenInv0,
 };

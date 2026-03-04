@@ -9,7 +9,7 @@ import {
   useInternalNode,
 } from "@xyflow/react";
 
-const Temporary = ({
+function Temporary({
   id,
   sourceX,
   sourceY,
@@ -17,7 +17,7 @@ const Temporary = ({
   targetY,
   sourcePosition,
   targetPosition,
-}: EdgeProps) => {
+}: EdgeProps) {
   const [edgePath] = getSimpleBezierPath({
     sourceX,
     sourceY,
@@ -37,12 +37,9 @@ const Temporary = ({
       }}
     />
   );
-};
+}
 
-const getHandleCoordsByPosition = (
-  node: InternalNode<Node>,
-  handlePosition: Position
-) => {
+function getHandleCoordsByPosition(node: InternalNode<Node>, handlePosition: Position) {
   // Choose the handle type based on position - Left is for target, Right is for source
   const handleType = handlePosition === Position.Left ? "target" : "source";
 
@@ -81,9 +78,9 @@ const getHandleCoordsByPosition = (
   const y = node.internals.positionAbsolute.y + handle.y + offsetY;
 
   return [x, y] as const;
-};
+}
 
-const getEdgeParams = (source: InternalNode<Node>, target: InternalNode<Node>) => {
+function getEdgeParams(source: InternalNode<Node>, target: InternalNode<Node>) {
   const sourcePos = Position.Right;
   const [sx, sy] = getHandleCoordsByPosition(source, sourcePos);
   const targetPos = Position.Left;
@@ -97,9 +94,9 @@ const getEdgeParams = (source: InternalNode<Node>, target: InternalNode<Node>) =
     sourcePos,
     targetPos,
   };
-};
+}
 
-const Animated = ({ id, source, target, markerEnd, style }: EdgeProps) => {
+function Animated({ id, source, target, markerEnd, style }: EdgeProps) {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
@@ -126,9 +123,11 @@ const Animated = ({ id, source, target, markerEnd, style }: EdgeProps) => {
       </circle>
     </>
   );
-};
+}
 
-export const Edge = {
+const Edge = {
   Temporary,
   Animated,
 };
+
+export { Edge };

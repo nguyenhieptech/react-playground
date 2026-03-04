@@ -9,8 +9,7 @@ import {
   WrenchIcon,
   XCircleIcon,
 } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
-import { isValidElement } from "react";
+import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Collapsible,
@@ -20,27 +19,19 @@ import {
 import { cn } from "@/lib/utils";
 import { CodeBlock } from "./code-block";
 
-export type ToolProps = ComponentProps<typeof Collapsible>;
+function Tool({ className, ...props }: React.ComponentProps<typeof Collapsible>) {
+  return (
+    <Collapsible
+      className={cn("not-prose mb-4 w-full rounded-md border", className)}
+      {...props}
+    />
+  );
+}
 
-export const Tool = ({ className, ...props }: ToolProps) => (
-  <Collapsible
-    className={cn("not-prose mb-4 w-full rounded-md border", className)}
-    {...props}
-  />
-);
-
-export type ToolHeaderProps = {
-  title?: string;
-  type: ToolUIPart["type"];
-  state: ToolUIPart["state"];
-  className?: string;
-};
-
-const getStatusBadge = (status: ToolUIPart["state"]) => {
+function getStatusBadge(status: ToolUIPart["state"]) {
   const labels: Record<ToolUIPart["state"], string> = {
     "input-streaming": "Pending",
     "input-available": "Running",
-    // @ts-expect-error state only available in AI SDK v6
     "approval-requested": "Awaiting Approval",
     "approval-responded": "Responded",
     "output-available": "Completed",
@@ -48,10 +39,9 @@ const getStatusBadge = (status: ToolUIPart["state"]) => {
     "output-denied": "Denied",
   };
 
-  const icons: Record<ToolUIPart["state"], ReactNode> = {
+  const icons: Record<ToolUIPart["state"], React.ReactNode> = {
     "input-streaming": <CircleIcon className="size-4" />,
     "input-available": <ClockIcon className="size-4 animate-pulse" />,
-    // @ts-expect-error state only available in AI SDK v6
     "approval-requested": <ClockIcon className="size-4 text-yellow-600" />,
     "approval-responded": <CheckCircleIcon className="size-4 text-blue-600" />,
     "output-available": <CheckCircleIcon className="size-4 text-green-600" />,
@@ -65,75 +55,87 @@ const getStatusBadge = (status: ToolUIPart["state"]) => {
       {labels[status]}
     </Badge>
   );
-};
+}
 
-export const ToolHeader = ({
+function ToolHeader({
   className,
   title,
   type,
   state,
   ...props
-}: ToolHeaderProps) => (
-  <CollapsibleTrigger
-    className={cn("flex w-full items-center justify-between gap-4 p-3", className)}
-    {...props}
-  >
-    <div className="flex items-center gap-2">
-      <WrenchIcon className="text-muted-foreground size-4" />
-      <span className="text-sm font-medium">
-        {title ?? type.split("-").slice(1).join("-")}
-      </span>
-      {getStatusBadge(state)}
-    </div>
-    <ChevronDownIcon className="text-muted-foreground size-4 transition-transform group-data-[state=open]:rotate-180" />
-  </CollapsibleTrigger>
-);
+}: {
+  title?: string;
+  type: ToolUIPart["type"];
+  state: ToolUIPart["state"];
+  className?: string;
+}) {
+  return (
+    <CollapsibleTrigger
+      className={cn("flex w-full items-center justify-between gap-4 p-3", className)}
+      {...props}
+    >
+      <div className="flex items-center gap-2">
+        <WrenchIcon className="text-muted-foreground size-4" />
+        <span className="text-sm font-medium">
+          {title ?? type.split("-").slice(1).join("-")}
+        </span>
+        {getStatusBadge(state)}
+      </div>
+      <ChevronDownIcon className="text-muted-foreground size-4 transition-transform group-data-[state=open]:rotate-180" />
+    </CollapsibleTrigger>
+  );
+}
 
-export type ToolContentProps = ComponentProps<typeof CollapsibleContent>;
+function ToolContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof CollapsibleContent>) {
+  return (
+    <CollapsibleContent
+      className={cn(
+        "data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-popover-foreground data-[state=closed]:animate-out data-[state=open]:animate-in outline-none",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export const ToolContent = ({ className, ...props }: ToolContentProps) => (
-  <CollapsibleContent
-    className={cn(
-      "data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-popover-foreground data-[state=closed]:animate-out data-[state=open]:animate-in outline-none",
-      className
-    )}
-    {...props}
-  />
-);
-
-export type ToolInputProps = ComponentProps<"div"> & {
+function ToolInput({
+  className,
+  input,
+  ...props
+}: React.ComponentProps<"div"> & {
   input: ToolUIPart["input"];
-};
-
-export const ToolInput = ({ className, input, ...props }: ToolInputProps) => (
-  <div className={cn("space-y-2 overflow-hidden p-4", className)} {...props}>
-    <h4 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-      Parameters
-    </h4>
-    <div className="bg-muted/50 rounded-md">
-      <CodeBlock code={JSON.stringify(input, null, 2)} language="json" />
+}) {
+  return (
+    <div className={cn("space-y-2 overflow-hidden p-4", className)} {...props}>
+      <h4 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+        Parameters
+      </h4>
+      <div className="bg-muted/50 rounded-md">
+        <CodeBlock code={JSON.stringify(input, null, 2)} language="json" />
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
-export type ToolOutputProps = ComponentProps<"div"> & {
-  output: ToolUIPart["output"];
-  errorText: ToolUIPart["errorText"];
-};
-
-export const ToolOutput = ({
+function ToolOutput({
   className,
   output,
   errorText,
   ...props
-}: ToolOutputProps) => {
+}: React.ComponentProps<"div"> & {
+  output: ToolUIPart["output"];
+  errorText: ToolUIPart["errorText"];
+}) {
   if (!(output || errorText)) {
     return null;
   }
 
-  let Output = <div>{output as ReactNode}</div>;
+  let Output = <div>{output as React.ReactNode}</div>;
 
-  if (typeof output === "object" && !isValidElement(output)) {
+  if (typeof output === "object" && !React.isValidElement(output)) {
     Output = <CodeBlock code={JSON.stringify(output, null, 2)} language="json" />;
   } else if (typeof output === "string") {
     Output = <CodeBlock code={output} language="json" />;
@@ -155,4 +157,6 @@ export const ToolOutput = ({
       </div>
     </div>
   );
-};
+}
+
+export { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput };
