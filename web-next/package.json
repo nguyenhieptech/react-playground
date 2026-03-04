@@ -47,6 +47,7 @@
     "lexical": "^0.39.0",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.562.0",
+    "maplibre-gl": "^5.15.0",
     "motion": "^12.23.6",
     "nanoid": "^5.1.6",
     "next": "16.1.1",
