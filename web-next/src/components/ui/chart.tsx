@@ -70,7 +70,10 @@ function ChartContainer({
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer initialDimension={initialDimension}>
+        <RechartsPrimitive.ResponsiveContainer
+          initialDimension={initialDimension}
+          debounce={300}
+        >
           {children}
         </RechartsPrimitive.ResponsiveContainer>
       </div>
