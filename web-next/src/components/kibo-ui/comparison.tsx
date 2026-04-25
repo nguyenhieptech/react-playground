@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { GripVerticalIcon } from "lucide-react";
 import {
   type MotionValue,
@@ -10,6 +9,7 @@ import {
   useTransform,
 } from "motion/react";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 
 // https://www.kibo-ui.com/components/comparison
 

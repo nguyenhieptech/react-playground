@@ -1,9 +1,5 @@
-import { ParallaxSectionTransition } from "@/components/animation/parallax-section-transition";
+import { AnimationRoute } from "@/routes/animation";
 
 export default function AnimationPage() {
-  return (
-    <>
-      <ParallaxSectionTransition />
-    </>
-  );
+  return <AnimationRoute />;
 }

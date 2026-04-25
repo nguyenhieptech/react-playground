@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, MotionValue, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
+import { motion, MotionValue, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 // Build a Parallax Section Transition with React and Framer Motion
@@ -44,7 +44,7 @@ function Section2({ scrollYProgress }: { scrollYProgress: MotionValue<number> })
 
   return (
     <motion.div className="relative h-screen" style={{ scale, rotate }}>
-      <Image src={"/images/parallax/background.jpeg"} alt="img" fill />
+      <Image src={"/images/parallax/background.jpeg"} alt="img" fill loading="eager" />
     </motion.div>
   );
 }

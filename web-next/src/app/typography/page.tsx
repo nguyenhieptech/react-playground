@@ -1,5 +1,5 @@
-import { TypographyExample } from "@/components/typography-example";
+import { TypographyRoute } from "@/routes/typography";
 
-export default function TypographyKiboUIExample() {
-  return <TypographyExample />;
+export default function TypographyPage() {
+  return <TypographyRoute />;
 }
