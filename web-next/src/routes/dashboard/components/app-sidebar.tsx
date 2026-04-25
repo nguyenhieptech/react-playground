@@ -1,10 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { NavDocuments } from "@/blocks/dashboard-01/nav-documents";
-import { NavMain } from "@/blocks/dashboard-01/nav-main";
-import { NavSecondary } from "@/blocks/dashboard-01/nav-secondary";
-import { NavUser } from "@/blocks/dashboard-01/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +27,10 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
+import { NavDocuments } from "./nav-documents";
+import { NavMain } from "./nav-main";
+import { NavSecondary } from "./nav-secondary";
+import { NavUser } from "./nav-user";
 
 const data = {
   user: {

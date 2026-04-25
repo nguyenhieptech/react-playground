@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 
-export function TypographyExample() {
+export function TypographyRoute() {
   return (
     <div className="size-full overflow-y-auto">
-      <div className="typography">
+      <div className="typography mx-auto w-full max-w-2xl p-8">
         <h1>Styling the Web: A Modern CSS Journey</h1>
 
         <p>
