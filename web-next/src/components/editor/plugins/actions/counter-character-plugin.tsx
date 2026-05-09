@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $rootTextContent } from "@lexical/text";
@@ -34,17 +32,17 @@ interface CounterCharacterPluginProps {
   charset?: "UTF-8" | "UTF-16";
 }
 
-function strlen(text: string, charset: "UTF-8" | "UTF-16") {
+const strlen = (text: string, charset: "UTF-8" | "UTF-16") => {
   if (charset === "UTF-8") {
     return utf8Length(text);
   } else if (charset === "UTF-16") {
     return text.length;
   }
-}
+};
 
-function countWords(text: string) {
+const countWords = (text: string) => {
   return text.split(/\s+/).filter((word) => word.length > 0).length;
-}
+};
 
 export function CounterCharacterPlugin({
   charset = "UTF-16",

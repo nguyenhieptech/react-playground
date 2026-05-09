@@ -1,11 +1,20 @@
-"use client";
-
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
+import { $getSelection, $isRangeSelection, type BaseSelection } from "lexical";
 import { PaintBucketIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import { ColorPicker } from "@/components/editor/editor-ui/colorpicker";
+import {
+  ColorPicker,
+  ColorPickerAlphaSlider,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerEyeDropper,
+  ColorPickerFormatSelect,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerTrigger,
+} from "@/components/editor/editor-ui/color-picker";
+import { Button } from "@/components/ui/button";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
 
 export function FontBackgroundToolbarPlugin() {
@@ -24,33 +33,60 @@ export function FontBackgroundToolbarPlugin() {
   useUpdateToolbarHandler($updateToolbar);
 
   const applyStyleText = useCallback(
-    (styles: Record<string, string>, skipHistoryStack?: boolean) => {
+    (styles: Record<string, string>, _skipHistoryStack?: boolean) => {
       activeEditor.update(
         () => {
           const selection = $getSelection();
+          activeEditor.setEditable(false);
           if (selection !== null) {
             $patchStyleText(selection, styles);
           }
         },
-        skipHistoryStack ? { tag: "historic" } : {}
+        { tag: "historic" }
       );
     },
     [activeEditor]
   );
 
-  const handleBgColorSelect = useCallback(
-    (value: string, skipHistoryStack: boolean) => {
-      applyStyleText({ "background-color": value }, skipHistoryStack);
+  const onBgColorSelect = useCallback(
+    (value: string) => {
+      applyStyleText({ "background-color": value }, true);
     },
     [applyStyleText]
   );
 
   return (
     <ColorPicker
-      icon={<PaintBucketIcon className="size-4" />}
-      color={bgColor}
-      onChange={handleBgColorSelect}
-      title="text background color"
-    />
+      modal
+      defaultFormat="hex"
+      defaultValue={bgColor}
+      onValueChange={onBgColorSelect}
+      onOpenChange={(open) => {
+        if (!open) {
+          activeEditor.setEditable(true);
+          activeEditor.focus();
+        }
+      }}
+    >
+      <ColorPickerTrigger asChild>
+        <Button variant={"outline"} size={"icon-sm"}>
+          <PaintBucketIcon className="size-4" />
+        </Button>
+      </ColorPickerTrigger>
+      <ColorPickerContent>
+        <ColorPickerArea />
+        <div className="flex items-center gap-2">
+          <ColorPickerEyeDropper />
+          <div className="flex flex-1 flex-col gap-2">
+            <ColorPickerHueSlider />
+            <ColorPickerAlphaSlider />
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <ColorPickerFormatSelect />
+          <ColorPickerInput />
+        </div>
+      </ColorPickerContent>
+    </ColorPicker>
   );
 }

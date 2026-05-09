@@ -1,4 +1,4 @@
-import { debounce } from "lodash-es";
+import { debounce } from "lodash";
 import { useMemo, useRef } from "react";
 
 export function useDebounce<T extends (...args: never[]) => void>(

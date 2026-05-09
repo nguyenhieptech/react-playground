@@ -1,15 +1,12 @@
-import { LexicalEditor } from "lexical";
-import * as React from "react";
+import type { LexicalEditor } from "lexical";
+import { type JSX, createContext, useContext } from "react";
 
-const Context = React.createContext<{
+const Context = createContext<{
   activeEditor: LexicalEditor;
   $updateToolbar: () => void;
   blockType: string;
   setBlockType: (blockType: string) => void;
-  showModal: (
-    title: string,
-    showModal: (onClose: () => void) => React.JSX.Element
-  ) => void;
+  showModal: (title: string, showModal: (onClose: () => void) => JSX.Element) => void;
 }>({
   activeEditor: {} as LexicalEditor,
   $updateToolbar: () => {},
@@ -30,10 +27,7 @@ export function ToolbarContext({
   $updateToolbar: () => void;
   blockType: string;
   setBlockType: (blockType: string) => void;
-  showModal: (
-    title: string,
-    showModal: (onClose: () => void) => React.JSX.Element
-  ) => void;
+  showModal: (title: string, showModal: (onClose: () => void) => JSX.Element) => void;
   children: React.ReactNode;
 }) {
   return (
@@ -52,5 +46,5 @@ export function ToolbarContext({
 }
 
 export function useToolbarContext() {
-  return React.useContext(Context);
+  return useContext(Context);
 }

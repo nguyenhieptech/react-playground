@@ -1,4 +1,4 @@
-import { EditorThemeClasses } from "lexical";
+import { type EditorThemeClasses } from "lexical";
 import "./editor-theme.css";
 
 export const editorTheme: EditorThemeClasses = {
@@ -25,7 +25,7 @@ export const editorTheme: EditorThemeClasses = {
     nested: {
       listitem: "list-none before:hidden after:hidden",
     },
-    ol: "my-6 ml-6 list-decimal [&>li]:mt-2",
+    ol: "m-0 p-0 list-decimal [&>li]:mt-2",
     olDepth: [
       "list-outside !list-decimal",
       "list-outside !list-[upper-roman]",
@@ -33,7 +33,14 @@ export const editorTheme: EditorThemeClasses = {
       "list-outside !list-[upper-alpha]",
       "list-outside !list-[lower-alpha]",
     ],
-    ul: "m-0 p-0 list-outside",
+    ul: "m-0 p-0 list-outside [&>li]:mt-2",
+    ulDepth: [
+      "list-outside !list-disc",
+      "list-outside !list-disc",
+      "list-outside !list-disc",
+      "list-outside !list-disc",
+      "list-outside !list-disc",
+    ],
   },
   hashtag: "text-blue-600 bg-blue-100 rounded-md px-1",
   text: {
@@ -44,7 +51,7 @@ export const editorTheme: EditorThemeClasses = {
     subscript: "sub",
     superscript: "sup",
     underline: "underline",
-    underlineStrikethrough: "underline line-through",
+    underlineStrikethrough: "[text-decoration:underline_line-through]",
   },
   image: "relative inline-block user-select-none cursor-default editor-image",
   inlineImage:

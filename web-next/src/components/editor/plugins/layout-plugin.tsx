@@ -5,15 +5,15 @@ import {
   $isRangeSelection,
   COMMAND_PRIORITY_EDITOR,
   COMMAND_PRIORITY_LOW,
-  createCommand,
   KEY_ARROW_DOWN_COMMAND,
   KEY_ARROW_LEFT_COMMAND,
   KEY_ARROW_RIGHT_COMMAND,
   KEY_ARROW_UP_COMMAND,
-  LexicalEditor,
+  type LexicalEditor,
+  createCommand,
 } from "lexical";
 import type { ElementNode, LexicalCommand, LexicalNode, NodeKey } from "lexical";
-import { JSX, useEffect, useState } from "react";
+import { type JSX, useEffect, useState } from "react";
 import {
   $createLayoutContainerNode,
   $isLayoutContainerNode,
@@ -90,7 +90,6 @@ export const UPDATE_LAYOUT_COMMAND: LexicalCommand<{
 
 export function LayoutPlugin(): null {
   const [editor] = useLexicalComposerContext();
-
   useEffect(() => {
     if (!editor.hasNodes([LayoutContainerNode, LayoutItemNode])) {
       throw new Error(
@@ -98,7 +97,7 @@ export function LayoutPlugin(): null {
       );
     }
 
-    function $onEscape(before: boolean) {
+    const $onEscape = (before: boolean) => {
       const selection = $getSelection();
       if (
         $isRangeSelection(selection) &&
@@ -136,7 +135,7 @@ export function LayoutPlugin(): null {
       }
 
       return false;
-    }
+    };
 
     return mergeRegister(
       // When layout is the last child pressing down/right arrow will insert paragraph

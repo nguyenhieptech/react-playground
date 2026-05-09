@@ -5,7 +5,7 @@ import {
   $isTextNode,
   COMMAND_PRIORITY_LOW,
   FORMAT_TEXT_COMMAND,
-  LexicalEditor,
+  type LexicalEditor,
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
 import {
@@ -18,9 +18,8 @@ import {
   SuperscriptIcon,
   UnderlineIcon,
 } from "lucide-react";
-import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from "react";
+import { type Dispatch, type JSX, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
 import { getDOMRangeRect } from "@/components/editor/utils/get-dom-range-rect";
 import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
 import { setFloatingElemPosition } from "@/components/editor/utils/set-floating-elem-position";
@@ -31,7 +30,7 @@ import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 
-function FloatingTextFormat({
+function TextFormatFloatingToolbar({
   editor,
   anchorElem,
   isLink,
@@ -55,7 +54,7 @@ function FloatingTextFormat({
   isSuperscript: boolean;
   isUnderline: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
-}) {
+}): JSX.Element {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
   const insertLink = useCallback(() => {
@@ -82,7 +81,7 @@ function FloatingTextFormat({
       }
     }
   }
-  function mouseUpListener(e: MouseEvent) {
+  function mouseUpListener(_e: MouseEvent) {
     if (popupCharStylesEditorRef?.current) {
       if (popupCharStylesEditorRef.current.style.pointerEvents !== "auto") {
         popupCharStylesEditorRef.current.style.pointerEvents = "auto";
@@ -173,7 +172,7 @@ function FloatingTextFormat({
   return (
     <div
       ref={popupCharStylesEditorRef}
-      className="bg-background absolute top-0 left-0 z-10 flex gap-1 rounded-md border p-1 opacity-0 shadow-md transition-opacity duration-300 will-change-transform"
+      className="bg-background absolute top-0 left-0 flex gap-1 rounded-md border p-1 opacity-0 shadow-md transition-opacity duration-300 will-change-transform"
     >
       {editor.isEditable() && (
         <>
@@ -382,7 +381,7 @@ function useFloatingTextFormatToolbar(
   }
 
   return createPortal(
-    <FloatingTextFormat
+    <TextFormatFloatingToolbar
       editor={editor}
       anchorElem={anchorElem}
       isLink={isLink}
@@ -401,10 +400,12 @@ function useFloatingTextFormatToolbar(
 
 export function FloatingTextFormatToolbarPlugin({
   anchorElem,
+  setIsLinkEditMode,
 }: {
   anchorElem: HTMLDivElement | null;
-}) {
+  setIsLinkEditMode: Dispatch<boolean>;
+}): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
-  const { setIsLinkEditMode } = useFloatingLinkContext();
+
   return useFloatingTextFormatToolbar(editor, anchorElem, setIsLinkEditMode);
 }

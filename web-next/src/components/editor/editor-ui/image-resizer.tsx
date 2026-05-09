@@ -1,6 +1,6 @@
 import type { LexicalEditor } from "lexical";
-import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { type JSX, useRef } from "react";
 import { calculateZoomLevel } from "@lexical/utils";
 
 function clamp(value: number, min: number, max: number) {
@@ -17,24 +17,16 @@ const Direction = {
 export function ImageResizer({
   onResizeStart,
   onResizeEnd,
-  buttonRef,
   imageRef,
   maxWidth,
   editor,
-  showCaption,
-  setShowCaption,
-  captionsEnabled,
 }: {
   editor: LexicalEditor;
-  buttonRef: { current: null | HTMLButtonElement };
   imageRef: { current: null | HTMLElement };
   maxWidth?: number;
   onResizeEnd: (width: "inherit" | number, height: "inherit" | number) => void;
   onResizeStart: () => void;
-  setShowCaption: (show: boolean) => void;
-  showCaption: boolean;
-  captionsEnabled: boolean;
-}): React.JSX.Element {
+}): JSX.Element {
   const controlWrapperRef = useRef<HTMLDivElement>(null);
   const userSelect = useRef({
     priority: "",
@@ -76,7 +68,7 @@ export function ImageResizer({
   const minWidth = 100;
   const minHeight = 100;
 
-  function setStartCursor(direction: number) {
+  const setStartCursor = (direction: number) => {
     const ew = direction === Direction.east || direction === Direction.west;
     const ns = direction === Direction.north || direction === Direction.south;
     const nwse =
@@ -96,9 +88,9 @@ export function ImageResizer({
         document.body.style.getPropertyPriority("-webkit-user-select");
       document.body.style.setProperty("-webkit-user-select", `none`, "important");
     }
-  }
+  };
 
-  function setEndCursor() {
+  const setEndCursor = () => {
     if (editorRootElement !== null) {
       editorRootElement.style.setProperty("cursor", "text");
     }
@@ -110,12 +102,12 @@ export function ImageResizer({
         userSelect.current.priority
       );
     }
-  }
+  };
 
-  function handlePointerDown(
+  const handlePointerDown = (
     event: React.PointerEvent<HTMLDivElement>,
     direction: number
-  ) {
+  ) => {
     if (!editor.isEditable()) {
       return;
     }
@@ -148,9 +140,8 @@ export function ImageResizer({
       document.addEventListener("pointermove", handlePointerMove);
       document.addEventListener("pointerup", handlePointerUp);
     }
-  }
-
-  function handlePointerMove(event: PointerEvent) {
+  };
+  const handlePointerMove = (event: PointerEvent) => {
     const image = imageRef.current;
     const positioning = positioningRef.current;
 
@@ -193,9 +184,8 @@ export function ImageResizer({
         positioning.currentWidth = width;
       }
     }
-  }
-
-  function handlePointerUp() {
+  };
+  const handlePointerUp = () => {
     const image = imageRef.current;
     const positioning = positioningRef.current;
     const controlWrapper = controlWrapperRef.current;
@@ -219,66 +209,53 @@ export function ImageResizer({
       document.removeEventListener("pointermove", handlePointerMove);
       document.removeEventListener("pointerup", handlePointerUp);
     }
-  }
-
+  };
   return (
-    <div ref={controlWrapperRef}>
-      {!showCaption && captionsEnabled && (
-        <Button
-          className="image-caption-button absolute bottom-1 left-1/2 -translate-x-1/2"
-          ref={buttonRef}
-          variant={"outline"}
-          onClick={() => {
-            setShowCaption(!showCaption);
-          }}
-        >
-          Add Caption
-        </Button>
-      )}
+    <div ref={controlWrapperRef} className="absolute inset-0">
       <div
-        className="image-resizer image-resizer-n bg-primary absolute -top-2.5 left-1/2 h-3 w-3 -translate-x-1/2 cursor-ns-resize"
+        className="border-background bg-primary absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 cursor-ns-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north);
         }}
       />
       <div
-        className="image-resizer image-resizer-ne bg-primary absolute -top-2.5 -right-2.5 h-3 w-3 cursor-nesw-resize"
+        className="border-background bg-primary absolute -top-1.5 -right-1.5 h-3 w-3 cursor-nesw-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-e bg-primary absolute top-1/2 -right-2.5 h-3 w-3 -translate-y-1/2 cursor-ew-resize"
+        className="border-background bg-primary absolute top-1/2 -right-1.5 h-3 w-3 -translate-y-1/2 cursor-ew-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-se bg-primary absolute -right-2.5 -bottom-2.5 h-3 w-3 cursor-nwse-resize"
+        className="border-background bg-primary absolute -right-1.5 -bottom-1.5 h-3 w-3 cursor-nwse-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-s bg-primary absolute -bottom-2.5 left-1/2 h-3 w-3 -translate-x-1/2 cursor-ns-resize"
+        className="border-background bg-primary absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 cursor-ns-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south);
         }}
       />
       <div
-        className="image-resizer image-resizer-sw bg-primary absolute -bottom-2.5 -left-2.5 h-3 w-3 cursor-nesw-resize"
+        className="border-background bg-primary absolute -bottom-1.5 -left-1.5 h-3 w-3 cursor-nesw-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.west);
         }}
       />
       <div
-        className="image-resizer image-resizer-w bg-primary absolute top-1/2 -left-2.5 h-3 w-3 -translate-y-1/2 cursor-ew-resize"
+        className="border-background bg-primary absolute top-1/2 -left-1.5 h-3 w-3 -translate-y-1/2 cursor-ew-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.west);
         }}
       />
       <div
-        className="image-resizer image-resizer-nw bg-primary absolute -top-2.5 -left-2.5 h-3 w-3 cursor-nwse-resize"
+        className="border-background bg-primary absolute -top-1.5 -left-1.5 h-3 w-3 cursor-nwse-resize rounded-sm border-2 shadow-sm"
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.west);
         }}

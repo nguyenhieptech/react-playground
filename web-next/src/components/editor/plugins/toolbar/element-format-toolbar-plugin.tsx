@@ -1,8 +1,8 @@
 import {
   $isElementNode,
   $isRangeSelection,
-  BaseSelection,
-  ElementFormatType,
+  type BaseSelection,
+  type ElementFormatType,
   FORMAT_ELEMENT_COMMAND,
   INDENT_CONTENT_COMMAND,
   OUTDENT_CONTENT_COMMAND,
@@ -53,11 +53,15 @@ const ELEMENT_FORMAT_OPTIONS: {
   },
 } as const;
 
-export function ElementFormatToolbarPlugin() {
+export function ElementFormatToolbarPlugin({
+  separator = true,
+}: {
+  separator?: boolean;
+}) {
   const { activeEditor } = useToolbarContext();
   const [elementFormat, setElementFormat] = useState<ElementFormatType>("left");
 
-  function $updateToolbar(selection: BaseSelection) {
+  const $updateToolbar = (selection: BaseSelection) => {
     if ($isRangeSelection(selection)) {
       const node = getSelectedNode(selection);
       const parent = node.getParent();
@@ -78,11 +82,11 @@ export function ElementFormatToolbarPlugin() {
             : parent?.getFormatType() || "left"
       );
     }
-  }
+  };
 
   useUpdateToolbarHandler($updateToolbar);
 
-  function handleValueChange(value: string) {
+  const handleValueChange = (value: string) => {
     if (!value) return; // Prevent unselecting current value
 
     setElementFormat(value as ElementFormatType);
@@ -94,7 +98,7 @@ export function ElementFormatToolbarPlugin() {
     } else {
       activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, value as ElementFormatType);
     }
-  }
+  };
 
   return (
     <>
@@ -117,7 +121,7 @@ export function ElementFormatToolbarPlugin() {
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
-      <Separator orientation="vertical" className="!h-7" />
+      {separator && <Separator orientation="vertical" className="!h-7" />}
       {/* Indentation toggles */}
       <ToggleGroup
         type="single"

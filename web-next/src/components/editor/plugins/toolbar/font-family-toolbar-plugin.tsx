@@ -1,15 +1,18 @@
-"use client";
-
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
-import { TypeIcon } from "lucide-react";
+import { $getSelection, $isRangeSelection, type BaseSelection } from "lexical";
+import { ChevronDownIcon, TypeIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
 
 const FONT_FAMILY_OPTIONS = [
-  "Inter",
   "Arial",
   "Verdana",
   "Times New Roman",
@@ -20,16 +23,17 @@ const FONT_FAMILY_OPTIONS = [
 
 export function FontFamilyToolbarPlugin() {
   const style = "font-family";
-  const [fontFamily, setFontFamily] = useState("Inter");
+  const [fontFamily, setFontFamily] = useState("Arial");
+
   const { activeEditor } = useToolbarContext();
 
-  function $updateToolbar(selection: BaseSelection) {
+  const $updateToolbar = useCallback((selection: BaseSelection) => {
     if ($isRangeSelection(selection)) {
       setFontFamily(
-        $getSelectionStyleValueForProperty(selection, "font-family", "Inter")
+        $getSelectionStyleValueForProperty(selection, "font-family", "Arial")
       );
     }
-  }
+  }, []);
 
   useUpdateToolbarHandler($updateToolbar);
 
@@ -43,6 +47,9 @@ export function FontFamilyToolbarPlugin() {
           });
         }
       });
+      // Selection doesn't move when only inline styles change, so
+      // SELECTION_CHANGE_COMMAND won't run — sync label here.
+      setFontFamily(option);
     },
     [activeEditor, style]
   );
@@ -50,25 +57,30 @@ export function FontFamilyToolbarPlugin() {
   const buttonAriaLabel = "Formatting options for font family";
 
   return (
-    <Select
-      value={fontFamily}
-      onValueChange={(value) => {
-        setFontFamily(value);
-        handleClick(value);
-      }}
-      aria-label={buttonAriaLabel}
-    >
-      <SelectTrigger className="!h-8 w-min gap-1">
-        <TypeIcon className="size-4" />
-        <span>{fontFamily}</span>
-      </SelectTrigger>
-      <SelectContent>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-min gap-1 px-2"
+          size="sm"
+          aria-label={buttonAriaLabel}
+        >
+          <TypeIcon className="size-4" />
+          <span style={{ fontFamily }}>{fontFamily}</span>
+          <ChevronDownIcon className="size-3" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-40" align="start">
         {FONT_FAMILY_OPTIONS.map((option) => (
-          <SelectItem key={option} value={option}>
+          <DropdownMenuItem
+            key={option}
+            style={{ fontFamily: option }}
+            onClick={() => handleClick(option)}
+          >
             {option}
-          </SelectItem>
+          </DropdownMenuItem>
         ))}
-      </SelectContent>
-    </Select>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

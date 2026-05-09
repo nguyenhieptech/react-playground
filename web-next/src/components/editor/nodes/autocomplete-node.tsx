@@ -1,104 +1,86 @@
 import type {
+  DOMExportOutput,
   EditorConfig,
-  EditorThemeClassName,
   LexicalEditor,
   NodeKey,
-  SerializedLexicalNode,
+  SerializedTextNode,
   Spread,
 } from "lexical";
-import { DecoratorNode } from "lexical";
-import * as React from "react";
-import { useSharedAutocompleteContext } from "@/components/editor/context/shared-autocomplete-context";
-import { uuid as UUID } from "@/components/editor/plugins/autocomplete-plugin";
-
-declare global {
-  interface Navigator {
-    userAgentData?: {
-      mobile: boolean;
-    };
-  }
-}
+import { TextNode } from "lexical";
+import { uuid as UUID } from "@/components/editor/plugins/auto-complete-plugin";
 
 export type SerializedAutocompleteNode = Spread<
   {
     uuid: string;
   },
-  SerializedLexicalNode
+  SerializedTextNode
 >;
 
-export class AutocompleteNode extends DecoratorNode<React.JSX.Element | null> {
+export class AutocompleteNode extends TextNode {
   /**
    * A unique uuid is generated for each session and assigned to the instance.
    * This helps to:
    * - Ensures max one Autocomplete node per session.
    * - Ensure that when collaboration is enabled, this node is not shown in
    *   other sessions.
-   * See https://github.com/facebook/lexical/blob/master/packages/lexical-playground/src/plugins/AutocompletePlugin/index.tsx#L39
+   * See https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/AutocompletePlugin/index.tsx
    */
   __uuid: string;
 
   static clone(node: AutocompleteNode): AutocompleteNode {
-    return new AutocompleteNode(node.__uuid, node.__key);
+    return new AutocompleteNode(node.__text, node.__uuid, node.__key);
   }
 
   static getType(): "autocomplete" {
     return "autocomplete";
   }
 
+  static importDOM() {
+    // Never import from DOM
+    return null;
+  }
+
   static importJSON(serializedNode: SerializedAutocompleteNode): AutocompleteNode {
-    const node = $createAutocompleteNode(serializedNode.uuid);
-    return node;
+    return $createAutocompleteNode(
+      serializedNode.text,
+      serializedNode.uuid
+    ).updateFromJSON(serializedNode);
   }
 
   exportJSON(): SerializedAutocompleteNode {
     return {
       ...super.exportJSON(),
-      type: "autocomplete",
       uuid: this.__uuid,
-      version: 1,
     };
   }
 
-  constructor(uuid: string, key?: NodeKey) {
-    super(key);
+  constructor(text: string, uuid: string, key?: NodeKey) {
+    super(text, key);
     this.__uuid = uuid;
   }
 
-  updateDOM(prevNode: unknown, dom: HTMLElement, config: EditorConfig): boolean {
+  updateDOM(_prevNode: this, _dom: HTMLElement, _config: EditorConfig): boolean {
     return false;
   }
 
+  exportDOM(_: LexicalEditor): DOMExportOutput {
+    return { element: null };
+  }
+
+  excludeFromCopy() {
+    return true;
+  }
+
   createDOM(config: EditorConfig): HTMLElement {
-    return document.createElement("span");
-  }
-
-  decorate(editor: LexicalEditor, config: EditorConfig): React.JSX.Element | null {
+    const dom = super.createDOM(config);
+    dom.classList.add(config.theme.autocomplete);
     if (this.__uuid !== UUID) {
-      return null;
+      dom.style.display = "none";
     }
-    return <AutocompleteComponent className={config.theme.autocomplete} />;
+    return dom;
   }
 }
 
-export function $createAutocompleteNode(uuid: string): AutocompleteNode {
-  return new AutocompleteNode(uuid);
-}
-
-function AutocompleteComponent({
-  className,
-}: {
-  className: EditorThemeClassName;
-}): React.JSX.Element {
-  const [suggestion] = useSharedAutocompleteContext();
-  const userAgentData = window.navigator.userAgentData;
-  const isMobile =
-    userAgentData !== undefined
-      ? userAgentData.mobile
-      : window.innerWidth <= 800 && window.innerHeight <= 600;
-
-  return (
-    <span className={className} spellCheck="false">
-      {suggestion} {isMobile ? "(SWIPE \u2B95)" : "(TAB)"}
-    </span>
-  );
+export function $createAutocompleteNode(text: string, uuid: string): AutocompleteNode {
+  return new AutocompleteNode(text, uuid).setMode("token");
 }

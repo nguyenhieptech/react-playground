@@ -1,7 +1,7 @@
 import { $createParagraphNode, $getSelection, $isRangeSelection } from "lexical";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { blockTypeToBlockName } from "@/components/editor/plugins/toolbar/block-format/block-format-data";
-import { SelectItem } from "@/components/ui/select";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { $setBlocksType } from "@lexical/selection";
 
 const BLOCK_FORMAT_VALUE = "paragraph";
@@ -9,21 +9,21 @@ const BLOCK_FORMAT_VALUE = "paragraph";
 export function FormatParagraph() {
   const { activeEditor } = useToolbarContext();
 
-  function formatParagraph() {
+  const formatParagraph = () => {
     activeEditor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
         $setBlocksType(selection, () => $createParagraphNode());
       }
     });
-  }
+  };
 
   return (
-    <SelectItem value={BLOCK_FORMAT_VALUE} onPointerDown={formatParagraph}>
+    <DropdownMenuItem onClick={formatParagraph}>
       <div className="flex items-center gap-1 font-normal">
         {blockTypeToBlockName[BLOCK_FORMAT_VALUE].icon}
         {blockTypeToBlockName[BLOCK_FORMAT_VALUE].label}
       </div>
-    </SelectItem>
+    </DropdownMenuItem>
   );
 }

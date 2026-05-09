@@ -1,13 +1,3 @@
-"use client";
-
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-import dynamic from "next/dynamic";
 import { $createTextNode, $getSelection, $isRangeSelection, TextNode } from "lexical";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -17,11 +7,15 @@ import {
   MenuOption,
   useBasicTypeaheadTriggerMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
+import { LexicalTypeaheadMenuPlugin } from "@lexical/react/LexicalTypeaheadMenuPlugin";
 
-const LexicalTypeaheadMenuPlugin = dynamic(
-  () => import("./default/lexical-typeahead-menu-plugin"),
-  { ssr: false }
-);
+// const LexicalTypeaheadMenuPlugin = dynamic(
+//   () =>
+//     import("@lexical/react/LexicalTypeaheadMenuPlugin").then(
+//       (mod) => mod.LexicalTypeaheadMenuPlugin<EmojiOption>
+//     ),
+//   { ssr: false }
+// )
 
 class EmojiOption extends MenuOption {
   title: string;
@@ -59,7 +53,6 @@ export function EmojiPickerPlugin() {
   const [editor] = useLexicalComposerContext();
   const [queryString, setQueryString] = useState<string | null>(null);
   const [emojis, setEmojis] = useState<Array<Emoji>>([]);
-  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     import("../utils/emoji-list").then((file) => setEmojis(file.default));
   }, []);
@@ -95,7 +88,7 @@ export function EmojiPickerPlugin() {
       .slice(0, MAX_EMOJI_SUGGESTION_COUNT);
   }, [emojiOptions, queryString]);
 
-  const handleSelectOption = useCallback(
+  const onSelectOption = useCallback(
     (
       selectedOption: EmojiOption,
       nodeToRemove: TextNode | null,
@@ -121,25 +114,18 @@ export function EmojiPickerPlugin() {
   );
 
   return (
-    // @ts-ignore
-    <LexicalTypeaheadMenuPlugin<EmojiOption>
+    <LexicalTypeaheadMenuPlugin
       onQueryChange={setQueryString}
-      onSelectOption={handleSelectOption}
+      onSelectOption={onSelectOption}
       triggerFn={checkForTriggerMatch}
       options={options}
-      onOpen={() => {
-        setIsOpen(true);
-      }}
-      onClose={() => {
-        setIsOpen(false);
-      }}
       menuRenderFn={(
         anchorElementRef,
         { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex }
       ) => {
         return anchorElementRef.current && options.length
           ? createPortal(
-              <div className="fixed w-[200px] rounded-md shadow-md">
+              <div className="absolute z-10 min-w-36 rounded-md shadow-md">
                 <Command
                   onKeyDown={(e) => {
                     if (e.key === "ArrowUp") {

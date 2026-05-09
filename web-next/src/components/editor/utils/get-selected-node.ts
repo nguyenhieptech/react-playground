@@ -1,4 +1,4 @@
-import { ElementNode, RangeSelection, TextNode } from "lexical";
+import { type ElementNode, type RangeSelection, TextNode } from "lexical";
 import { $isAtNodeEnd } from "@lexical/selection";
 
 export function getSelectedNode(selection: RangeSelection): TextNode | ElementNode {

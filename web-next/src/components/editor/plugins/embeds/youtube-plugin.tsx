@@ -1,5 +1,5 @@
-import { COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand } from "lexical";
-import { JSX, useEffect } from "react";
+import { COMMAND_PRIORITY_EDITOR, type LexicalCommand, createCommand } from "lexical";
+import { type JSX, useEffect } from "react";
 import {
   $createYouTubeNode,
   YouTubeNode,

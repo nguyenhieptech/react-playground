@@ -1,5 +1,3 @@
-"use client";
-
 import { DownloadIcon, UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -32,8 +30,8 @@ export function ImportExportPlugin() {
             variant={"ghost"}
             onClick={() =>
               exportFile(editor, {
-                fileName: `Playground ${new Date().toISOString()}`,
-                source: "Playground",
+                fileName: `Editor ${new Date().toISOString()}`,
+                source: "Editor",
               })
             }
             title="Export"

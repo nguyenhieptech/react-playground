@@ -1,7 +1,7 @@
 import { $getSelection, $isRangeSelection } from "lexical";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { blockTypeToBlockName } from "@/components/editor/plugins/toolbar/block-format/block-format-data";
-import { SelectItem } from "@/components/ui/select";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { $createCodeNode } from "@lexical/code";
 import { $setBlocksType } from "@lexical/selection";
 
@@ -10,7 +10,7 @@ const BLOCK_FORMAT_VALUE = "code";
 export function FormatCodeBlock() {
   const { activeEditor, blockType } = useToolbarContext();
 
-  function formatCode() {
+  const formatCode = () => {
     if (blockType !== "code") {
       activeEditor.update(() => {
         let selection = $getSelection();
@@ -30,14 +30,14 @@ export function FormatCodeBlock() {
         }
       });
     }
-  }
+  };
 
   return (
-    <SelectItem value="code" onPointerDown={formatCode}>
+    <DropdownMenuItem onClick={formatCode}>
       <div className="flex items-center gap-1 font-normal">
         {blockTypeToBlockName[BLOCK_FORMAT_VALUE].icon}
         {blockTypeToBlockName[BLOCK_FORMAT_VALUE].label}
       </div>
-    </SelectItem>
+    </DropdownMenuItem>
   );
 }

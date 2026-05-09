@@ -1,21 +1,25 @@
-"use client";
-
 import {
   $getNodeByKey,
   $isRangeSelection,
   $isRootOrShadowRoot,
-  BaseSelection,
+  type BaseSelection,
 } from "lexical";
 import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import {
-  $isCodeNode,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { $isCodeNode } from "@lexical/code";
+import {
   CODE_LANGUAGE_FRIENDLY_NAME_MAP,
   CODE_LANGUAGE_MAP,
-  getLanguageFriendlyName,
-} from "@lexical/code";
+  //   getLanguageFriendlyName,
+} from "@lexical/code-prism";
 import { $isListNode } from "@lexical/list";
 import { $findMatchingParent } from "@lexical/utils";
 
@@ -36,7 +40,7 @@ export function CodeLanguageToolbarPlugin() {
   const [codeLanguage, setCodeLanguage] = useState<string>("");
   const [selectedElementKey, setSelectedElementKey] = useState<string | null>(null);
 
-  function $updateToolbar(selection: BaseSelection) {
+  const $updateToolbar = (selection: BaseSelection) => {
     if ($isRangeSelection(selection)) {
       const anchorNode = selection.anchor.getNode();
       let element =
@@ -64,11 +68,11 @@ export function CodeLanguageToolbarPlugin() {
         }
       }
     }
-  }
+  };
 
   useUpdateToolbarHandler($updateToolbar);
 
-  const handleCodeLanguageSelect = useCallback(
+  const onCodeLanguageSelect = useCallback(
     (value: string) => {
       activeEditor.update(() => {
         if (selectedElementKey !== null) {
@@ -83,19 +87,13 @@ export function CodeLanguageToolbarPlugin() {
   );
 
   return (
-    <Select>
-      <SelectTrigger className="!h-8 w-min gap-1">
-        <span>{getLanguageFriendlyName(codeLanguage)}</span>
+    <Select value={codeLanguage} onValueChange={onCodeLanguageSelect}>
+      <SelectTrigger onMouseDown={(e) => e.stopPropagation()}>
+        <SelectValue placeholder="Select Language" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
         {CODE_LANGUAGE_OPTIONS.map(([value, label]) => (
-          <SelectItem
-            key={value}
-            value={value}
-            onPointerUp={() => {
-              handleCodeLanguageSelect(value);
-            }}
-          >
+          <SelectItem key={value} value={value}>
             {label}
           </SelectItem>
         ))}

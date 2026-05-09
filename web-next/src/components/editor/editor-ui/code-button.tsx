@@ -2,7 +2,7 @@ import {
   $getNearestNodeFromDOMNode,
   $getSelection,
   $setSelection,
-  LexicalEditor,
+  type LexicalEditor,
 } from "lexical";
 import { CircleCheckIcon, CopyIcon } from "lucide-react";
 import { useState } from "react";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function CopyButton({ editor, getCodeDOMNode }: Props) {
-  const [isCopyCompleted, setCopyCompleted] = useState(false);
+  const [isCopyCompleted, setCopyCompleted] = useState<boolean>(false);
 
   const removeSuccessIcon = useDebounce(() => {
     setCopyCompleted(false);

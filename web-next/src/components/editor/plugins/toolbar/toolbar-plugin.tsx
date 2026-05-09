@@ -1,5 +1,3 @@
-"use client";
-
 import { COMMAND_PRIORITY_CRITICAL, SELECTION_CHANGE_COMMAND } from "lexical";
 import { useEffect, useState } from "react";
 import { ToolbarContext } from "@/components/editor/context/toolbar-context";
@@ -18,7 +16,7 @@ export function ToolbarPlugin({
 
   const [modal, showModal] = useEditorModal();
 
-  function $updateToolbar() {}
+  const $updateToolbar = () => {};
 
   useEffect(() => {
     return activeEditor.registerCommand(
@@ -29,7 +27,7 @@ export function ToolbarPlugin({
       },
       COMMAND_PRIORITY_CRITICAL
     );
-  }, [editor]);
+  }, [activeEditor]);
 
   return (
     <ToolbarContext
