@@ -1,13 +1,11 @@
-"use client";
-
 import { PlusIcon } from "lucide-react";
 import { useEditorModal } from "@/components/editor/editor-hooks/use-modal";
+import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectTrigger,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function BlockInsertPlugin({ children }: { children: React.ReactNode }) {
   const [modal] = useEditorModal();
@@ -15,15 +13,15 @@ export function BlockInsertPlugin({ children }: { children: React.ReactNode }) {
   return (
     <>
       {modal}
-      <Select value={""}>
-        <SelectTrigger className="!h-8 w-min gap-1">
-          <PlusIcon className="size-4" />
-          <span>Insert</span>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>{children}</SelectGroup>
-        </SelectContent>
-      </Select>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="gap-1 px-2">
+            <PlusIcon className="size-4" />
+            <span className="text-sm">Insert</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>{children}</DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 }

@@ -3,7 +3,7 @@ import {
   $isTweetNode,
   TweetNode,
 } from "@/components/editor/nodes/embeds/tweet-node";
-import { ElementTransformer } from "@lexical/markdown";
+import { type ElementTransformer } from "@lexical/markdown";
 
 export const TWEET: ElementTransformer = {
   dependencies: [TweetNode],

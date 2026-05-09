@@ -1,4 +1,5 @@
-import { LexicalEditor } from "lexical";
+import { type LexicalEditor } from "lexical";
+import { type JSX } from "react";
 import { MenuOption } from "@lexical/react/LexicalTypeaheadMenuPlugin";
 
 export class ComponentPickerOption extends MenuOption {

@@ -1,14 +1,10 @@
-import { $getNearestNodeFromDOMNode } from "lexical";
-import { JSX, useEffect, useRef, useState } from "react";
+import { $getNearestNodeFromDOMNode, isHTMLElement } from "lexical";
+import { type JSX, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useDebounce } from "@/components/editor/editor-hooks/use-debounce";
 import { CopyButton } from "@/components/editor/editor-ui/code-button";
-import {
-  $isCodeNode,
-  CodeNode,
-  getLanguageFriendlyName,
-  normalizeCodeLang,
-} from "@lexical/code";
+import { $isCodeNode, CodeNode } from "@lexical/code";
+import { getCodeLanguageOptions } from "@lexical/code-shiki";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 const CODE_PADDING = 8;
@@ -100,7 +96,7 @@ function CodeActionMenuContainer({
       CodeNode,
       (mutations) => {
         editor.getEditorState().read(() => {
-          for (const [key, type] of Array.from(mutations)) {
+          for (const [key, type] of mutations) {
             switch (type) {
               case "created":
                 codeSetRef.current.add(key);
@@ -121,17 +117,13 @@ function CodeActionMenuContainer({
     );
   }, [editor]);
 
-  const normalizedLang = normalizeCodeLang(lang);
-  const codeFriendlyName = getLanguageFriendlyName(lang);
+  const codeFriendlyName = getCodeLanguageOptions().find(([key]) => key === lang)?.[1];
 
   return (
     <>
       {isShown ? (
-        <div
-          className="code-action-menu-container user-select-none text-foreground/50 absolute flex h-9 flex-row items-center space-x-1 text-xs"
-          style={{ ...position }}
-        >
-          <div>{codeFriendlyName}</div>
+        <div className="code-action-menu-container" style={{ ...position }}>
+          <div className="code-highlight-language">{codeFriendlyName}</div>
           <CopyButton editor={editor} getCodeDOMNode={getCodeDOMNode} />
         </div>
       ) : null}
@@ -145,8 +137,8 @@ function getMouseInfo(event: MouseEvent): {
 } {
   const target = event.target;
 
-  if (target && target instanceof HTMLElement) {
-    const codeDOMNode = target.closest<HTMLElement>("code.EditorTheme__code");
+  if (isHTMLElement(target)) {
+    const codeDOMNode = target.closest<HTMLElement>("code.PlaygroundEditorTheme__code");
     const isOutside = !(
       codeDOMNode || target.closest<HTMLElement>("div.code-action-menu-container")
     );
@@ -158,9 +150,9 @@ function getMouseInfo(event: MouseEvent): {
 }
 
 export function CodeActionMenuPlugin({
-  anchorElem,
+  anchorElem = document.body,
 }: {
-  anchorElem: HTMLDivElement | null;
+  anchorElem: HTMLElement | null;
 }): React.ReactPortal | null {
   if (!anchorElem) {
     return null;

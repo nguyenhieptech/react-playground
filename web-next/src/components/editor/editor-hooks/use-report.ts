@@ -1,6 +1,6 @@
-import * as React from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-function getElement(): HTMLElement {
+const getElement = (): HTMLElement => {
   let element = document.getElementById("report-container");
 
   if (element === null) {
@@ -21,11 +21,11 @@ function getElement(): HTMLElement {
   }
 
   return element;
-}
+};
 
 export function useReport(): (arg0: string) => ReturnType<typeof setTimeout> {
-  const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const cleanup = React.useCallback(() => {
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cleanup = useCallback(() => {
     if (timer.current !== null) {
       clearTimeout(timer.current);
       timer.current = null;
@@ -36,11 +36,11 @@ export function useReport(): (arg0: string) => ReturnType<typeof setTimeout> {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return cleanup;
   }, [cleanup]);
 
-  return React.useCallback(
+  return useCallback(
     (content) => {
       console.log(content);
       const element = getElement();

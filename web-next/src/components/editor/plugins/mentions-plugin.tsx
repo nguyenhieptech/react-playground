@@ -1,30 +1,24 @@
-"use client";
-
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-import dynamic from "next/dynamic";
 import { TextNode } from "lexical";
 import { CircleUserRoundIcon } from "lucide-react";
-import { JSX, useCallback, useEffect, useMemo, useState } from "react";
+import { type JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { $createMentionNode } from "@/components/editor/nodes/mention-node";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   MenuOption,
-  MenuTextMatch,
+  type MenuTextMatch,
   useBasicTypeaheadTriggerMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
+import { LexicalTypeaheadMenuPlugin } from "@lexical/react/LexicalTypeaheadMenuPlugin";
 
-const LexicalTypeaheadMenuPlugin = dynamic(
-  () => import("./default/lexical-typeahead-menu-plugin"),
-  { ssr: false }
-);
+// const LexicalTypeaheadMenuPlugin = dynamic(
+//   () =>
+//     import("@lexical/react/LexicalTypeaheadMenuPlugin").then(
+//       (mod) => mod.LexicalTypeaheadMenuPlugin<MentionTypeaheadOption>
+//     ),
+//   { ssr: false }
+// )
 
 const PUNCTUATION = "\\.,\\+\\*\\?\\$\\@\\|#{}\\(\\)\\^\\-\\[\\]\\\\/!%'\"~=<>_:;";
 const NAME = "\\b[A-Z][^\\s" + PUNCTUATION + "]";
@@ -629,8 +623,7 @@ export function MentionsPlugin(): JSX.Element | null {
   );
 
   return (
-    // @ts-ignore
-    <LexicalTypeaheadMenuPlugin<MentionTypeaheadOption>
+    <LexicalTypeaheadMenuPlugin
       onQueryChange={setQueryString}
       onSelectOption={onSelectOption}
       triggerFn={checkForMentionMatch}
@@ -641,7 +634,7 @@ export function MentionsPlugin(): JSX.Element | null {
       ) => {
         return anchorElementRef.current && results.length
           ? createPortal(
-              <div className="fixed w-[200px] rounded-md shadow-md">
+              <div className="absolute z-10 min-w-36 rounded-md shadow-md">
                 <Command
                   onKeyDown={(e) => {
                     if (e.key === "ArrowUp") {

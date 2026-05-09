@@ -16,7 +16,7 @@ import { $getNearestBlockElementAncestorOrThrow } from "@lexical/utils";
 export function ClearFormattingToolbarPlugin() {
   const { activeEditor } = useToolbarContext();
 
-  const handleClearFormatting = useCallback(() => {
+  const clearFormatting = useCallback(() => {
     activeEditor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection) || $isTableSelection(selection)) {
@@ -74,13 +74,12 @@ export function ClearFormattingToolbarPlugin() {
 
   return (
     <Button
-      className="!h-8 !w-8"
       aria-label="Clear formatting"
       variant={"outline"}
-      size={"icon"}
-      onClick={handleClearFormatting}
+      size={"icon-sm"}
+      onClick={clearFormatting}
     >
-      <EraserIcon className="h-4 w-4" />
+      <EraserIcon className="size-4" />
     </Button>
   );
 }

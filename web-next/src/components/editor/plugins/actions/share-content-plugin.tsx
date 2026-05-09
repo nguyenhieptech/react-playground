@@ -6,15 +6,14 @@ import { docFromHash, docToHash } from "@/components/editor/utils/doc-serializat
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
+  type SerializedDocument,
   editorStateFromSerializedDocument,
-  SerializedDocument,
   serializedDocumentFromEditorState,
 } from "@lexical/file";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 export function ShareContentPlugin() {
   const [editor] = useLexicalComposerContext();
-
   async function shareDoc(doc: SerializedDocument): Promise<void> {
     const url = new URL(window.location.toString());
     url.hash = await docToHash(doc);
@@ -22,7 +21,6 @@ export function ShareContentPlugin() {
     window.history.replaceState({}, "", newUrl);
     await window.navigator.clipboard.writeText(newUrl);
   }
-
   useEffect(() => {
     docFromHash(window.location.hash).then((doc) => {
       if (doc && doc.source === "editor") {

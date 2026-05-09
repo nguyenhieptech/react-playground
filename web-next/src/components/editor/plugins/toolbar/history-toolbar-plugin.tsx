@@ -9,10 +9,9 @@ import { RedoIcon, UndoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { mergeRegister } from "@lexical/utils";
-
-const IS_APPLE = true;
+import { IS_APPLE, mergeRegister } from "@lexical/utils";
 
 export function HistoryToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -51,7 +50,7 @@ export function HistoryToolbarPlugin() {
   }, [$updateToolbar, activeEditor, editor]);
 
   return (
-    <div className="flex items-center gap-1">
+    <ButtonGroup>
       <Button
         disabled={!canUndo || !isEditable}
         onClick={() => {
@@ -60,8 +59,7 @@ export function HistoryToolbarPlugin() {
         title={IS_APPLE ? "Undo (⌘Z)" : "Undo (Ctrl+Z)"}
         type="button"
         aria-label="Undo"
-        size="icon"
-        className="!h-8 !w-8"
+        size="icon-sm"
         variant={"outline"}
       >
         <UndoIcon className="size-4" />
@@ -75,11 +73,10 @@ export function HistoryToolbarPlugin() {
         type="button"
         aria-label="Redo"
         variant={"outline"}
-        size="icon"
-        className="!h-8 !w-8"
+        size="icon-sm"
       >
         <RedoIcon className="size-4" />
       </Button>
-    </div>
+    </ButtonGroup>
   );
 }

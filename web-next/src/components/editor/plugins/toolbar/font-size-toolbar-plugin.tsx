@@ -1,11 +1,10 @@
-"use client";
-
-import { $getSelection, $isRangeSelection, BaseSelection } from "lexical";
+import { $getSelection, $isRangeSelection, type BaseSelection } from "lexical";
 import { Minus, Plus } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
 import { useUpdateToolbarHandler } from "@/components/editor/editor-hooks/use-update-toolbar";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
 
@@ -19,7 +18,7 @@ export function FontSizeToolbarPlugin() {
 
   const { activeEditor } = useToolbarContext();
 
-  function $updateToolbar(selection: BaseSelection) {
+  const $updateToolbar = (selection: BaseSelection) => {
     if ($isRangeSelection(selection)) {
       const value = $getSelectionStyleValueForProperty(
         selection,
@@ -28,11 +27,11 @@ export function FontSizeToolbarPlugin() {
       );
       setFontSize(parseInt(value) || DEFAULT_FONT_SIZE);
     }
-  }
+  };
 
   useUpdateToolbarHandler($updateToolbar);
 
-  const handleUpdateFontSize = useCallback(
+  const updateFontSize = useCallback(
     (newSize: number) => {
       const size = Math.min(Math.max(newSize, MIN_FONT_SIZE), MAX_FONT_SIZE);
       activeEditor.update(() => {
@@ -49,36 +48,30 @@ export function FontSizeToolbarPlugin() {
   );
 
   return (
-    <div className="flex items-center gap-1">
-      <div className="flex items-center gap-1">
-        <Button
-          variant="outline"
-          size="icon"
-          className="!h-8 !w-8"
-          onClick={() => handleUpdateFontSize(fontSize - 1)}
-          disabled={fontSize <= MIN_FONT_SIZE}
-        >
-          <Minus className="size-3" />
-        </Button>
-        <Input
-          value={fontSize}
-          onChange={(e) =>
-            handleUpdateFontSize(parseInt(e.target.value) || DEFAULT_FONT_SIZE)
-          }
-          className="!h-8 w-12 text-center"
-          min={MIN_FONT_SIZE}
-          max={MAX_FONT_SIZE}
-        />
-        <Button
-          variant="outline"
-          size="icon"
-          className="!h-8 !w-8"
-          onClick={() => handleUpdateFontSize(fontSize + 1)}
-          disabled={fontSize >= MAX_FONT_SIZE}
-        >
-          <Plus className="size-3" />
-        </Button>
-      </div>
-    </div>
+    <ButtonGroup>
+      <Button
+        variant="outline"
+        size="icon-sm"
+        onClick={() => updateFontSize(fontSize - 1)}
+        disabled={fontSize <= MIN_FONT_SIZE}
+      >
+        <Minus className="size-3" />
+      </Button>
+      <Input
+        value={fontSize}
+        onChange={(e) => updateFontSize(parseInt(e.target.value) || DEFAULT_FONT_SIZE)}
+        className="h-8 w-12 text-center"
+        min={MIN_FONT_SIZE}
+        max={MAX_FONT_SIZE}
+      />
+      <Button
+        variant="outline"
+        size="icon-sm"
+        onClick={() => updateFontSize(fontSize + 1)}
+        disabled={fontSize >= MAX_FONT_SIZE}
+      >
+        <Plus className="size-3" />
+      </Button>
+    </ButtonGroup>
   );
 }

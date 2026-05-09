@@ -1,4 +1,5 @@
 import { NotebookPenIcon } from "lucide-react";
+import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,9 +12,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { TreeView } from "@lexical/react/LexicalTreeView";
 
-export function TreeViewPlugin() {
+export function TreeViewPlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();
-
   return (
     <Dialog>
       <DialogTrigger asChild>

@@ -1,15 +1,13 @@
-import { $isParagraphNode, $isTextNode, LexicalNode } from "lexical";
-import { EMOJI } from "@/components/editor/transformers/markdown-emoji-transformer";
-import { EQUATION } from "@/components/editor/transformers/markdown-equation-transformer";
+import { $isParagraphNode, $isTextNode, type LexicalNode } from "lexical";
+// import { EMOJI } from "@/registry/new-york-v4/editor/transformers/markdown-emoji-transformer"
 import { HR } from "@/components/editor/transformers/markdown-hr-transformer";
 import { IMAGE } from "@/components/editor/transformers/markdown-image-transformer";
-import { TWEET } from "@/components/editor/transformers/markdown-tweet-transformer";
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
   CHECK_LIST,
   ELEMENT_TRANSFORMERS,
-  ElementTransformer,
+  type ElementTransformer,
   MULTILINE_ELEMENT_TRANSFORMERS,
   TEXT_FORMAT_TRANSFORMERS,
   TEXT_MATCH_TRANSFORMERS,
@@ -27,6 +25,8 @@ import {
   TableRowNode,
 } from "@lexical/table";
 
+// import { TWEET } from "@/registry/new-york-v4/editor/transformers/markdown-tweet-transformer"
+
 // Very primitive table setup
 const TABLE_ROW_REG_EXP = /^(?:\|)(.+)(?:\|)\s?$/;
 const TABLE_ROW_DIVIDER_REG_EXP = /^(\| ?:?-*:? ?)+\|\s?$/;
@@ -34,9 +34,8 @@ const TABLE_ROW_DIVIDER_REG_EXP = /^(\| ?:?-*:? ?)+\|\s?$/;
 const OTHER_MARKDOWN_TRANSFORMERS = [
   HR,
   IMAGE,
-  EMOJI,
-  EQUATION,
-  TWEET,
+  // EMOJI,
+  // TWEET,
   CHECK_LIST,
   ...ELEMENT_TRANSFORMERS,
   ...MULTILINE_ELEMENT_TRANSFORMERS,

@@ -1,4 +1,4 @@
-import { $isRangeSelection, BaseSelection, FORMAT_TEXT_COMMAND } from "lexical";
+import { $isRangeSelection, type BaseSelection, FORMAT_TEXT_COMMAND } from "lexical";
 import { SubscriptIcon, SuperscriptIcon } from "lucide-react";
 import { useState } from "react";
 import { useToolbarContext } from "@/components/editor/context/toolbar-context";
@@ -11,12 +11,14 @@ export function SubSuperToolbarPlugin() {
   const [isSubscript, setIsSubscript] = useState(false);
   const [isSuperscript, setIsSuperscript] = useState(false);
 
-  function $updateToolbar(selection: BaseSelection) {
+  const $updateToolbar = (selection: BaseSelection) => {
     if ($isRangeSelection(selection) || $isTableSelection(selection)) {
+      // @ts-ignore
       setIsSubscript(selection.hasFormat("subscript"));
+      // @ts-ignore
       setIsSuperscript(selection.hasFormat("superscript"));
     }
-  }
+  };
 
   useUpdateToolbarHandler($updateToolbar);
 
@@ -34,7 +36,7 @@ export function SubSuperToolbarPlugin() {
         }}
         variant={"outline"}
       >
-        <SubscriptIcon className="h-4 w-4" />
+        <SubscriptIcon className="size-4" />
       </ToggleGroupItem>
       <ToggleGroupItem
         value="superscript"
@@ -45,7 +47,7 @@ export function SubSuperToolbarPlugin() {
         }}
         variant={"outline"}
       >
-        <SuperscriptIcon className="h-4 w-4" />
+        <SuperscriptIcon className="size-4" />
       </ToggleGroupItem>
     </ToggleGroup>
   );

@@ -1,29 +1,20 @@
-"use client";
-
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 import {
   $getSelection,
   $isLineBreakNode,
+  $isNodeSelection,
   $isRangeSelection,
-  BaseSelection,
+  type BaseSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_CRITICAL,
   COMMAND_PRIORITY_HIGH,
   COMMAND_PRIORITY_LOW,
   KEY_ESCAPE_COMMAND,
-  LexicalEditor,
+  type LexicalEditor,
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
 import { Check, Pencil, Trash, X } from "lucide-react";
-import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from "react";
+import { type Dispatch, type JSX, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useFloatingLinkContext } from "@/components/editor/context/floating-link-context";
 import { getSelectedNode } from "@/components/editor/utils/get-selected-node";
 import { setFloatingElemPositionForLinkEditor } from "@/components/editor/utils/set-floating-elem-position-for-link-editor";
 import { sanitizeUrl } from "@/components/editor/utils/url";
@@ -179,7 +170,7 @@ function FloatingLinkEditor({
     }
   }, [isLinkEditMode, isLink]);
 
-  function monitorInputInteraction(event: React.KeyboardEvent<HTMLInputElement>) {
+  const monitorInputInteraction = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleLinkSubmission();
@@ -187,9 +178,9 @@ function FloatingLinkEditor({
       event.preventDefault();
       setIsLinkEditMode(false);
     }
-  }
+  };
 
-  function handleLinkSubmission() {
+  const handleLinkSubmission = () => {
     if (lastSelection !== null) {
       if (linkUrl !== "") {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(editedLinkUrl));
@@ -211,8 +202,7 @@ function FloatingLinkEditor({
       setEditedLinkUrl("https://");
       setIsLinkEditMode(false);
     }
-  }
-
+  };
   return (
     <div
       ref={editorRef}
@@ -313,8 +303,20 @@ function useFloatingLinkEditorToolbar(
                 (!autoLinkNode.is(focusAutoLinkNode) || autoLinkNode.getIsUnlinked()))
             );
           });
-
         if (!badNode) {
+          setIsLink(true);
+        } else {
+          setIsLink(false);
+        }
+      } else if ($isNodeSelection(selection)) {
+        const nodes = selection.getNodes();
+        if (nodes.length === 0) {
+          setIsLink(false);
+          return;
+        }
+        const node = nodes[0];
+        const parent = node.getParent();
+        if ($isLinkNode(parent) || $isLinkNode(node)) {
           setIsLink(true);
         } else {
           setIsLink(false);
@@ -374,11 +376,14 @@ function useFloatingLinkEditorToolbar(
 
 export function FloatingLinkEditorPlugin({
   anchorElem,
+  isLinkEditMode,
+  setIsLinkEditMode,
 }: {
   anchorElem: HTMLDivElement | null;
+  isLinkEditMode: boolean;
+  setIsLinkEditMode: Dispatch<boolean>;
 }): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
-  const { isLinkEditMode, setIsLinkEditMode } = useFloatingLinkContext();
 
   return useFloatingLinkEditorToolbar(
     editor,

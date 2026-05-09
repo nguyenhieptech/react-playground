@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardAction,
@@ -13,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function HomeRoute() {
+  const [date, setDate] = useState<Date | undefined>(new Date());
+
   return (
     <div className="mt-32 flex items-center justify-center space-x-4">
       <div className="flex flex-col gap-4">
@@ -63,6 +69,14 @@ export function HomeRoute() {
           </Button>
         </CardFooter>
       </Card>
+
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-lg border"
+        captionLayout="dropdown"
+      />
     </div>
   );
 }

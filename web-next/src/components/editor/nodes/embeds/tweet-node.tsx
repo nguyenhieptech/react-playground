@@ -9,11 +9,11 @@ import type {
   NodeKey,
   Spread,
 } from "lexical";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type JSX, useCallback, useEffect, useRef, useState } from "react";
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
 import {
   DecoratorBlockNode,
-  SerializedDecoratorBlockNode,
+  type SerializedDecoratorBlockNode,
 } from "@lexical/react/LexicalDecoratorBlockNode";
 
 const WIDGET_SCRIPT_URL = "https://platform.twitter.com/widgets.js";
@@ -24,7 +24,7 @@ type TweetComponentProps = Readonly<{
     focus: string;
   }>;
   format: ElementFormatType | null;
-  loadingComponent?: React.JSX.Element | string;
+  loadingComponent?: JSX.Element | string;
   nodeKey: NodeKey;
   onError?: (error: string) => void;
   onLoad?: () => void;
@@ -171,12 +171,13 @@ export class TweetNode extends DecoratorBlockNode {
 
   getTextContent(
     _includeInert?: boolean | undefined,
+
     _includeDirectionless?: false | undefined
   ): string {
     return `https://x.com/i/web/status/${this.__id}`;
   }
 
-  decorate(editor: LexicalEditor, config: EditorConfig): React.JSX.Element {
+  decorate(_editor: LexicalEditor, config: EditorConfig): JSX.Element {
     const embedBlockTheme = config.theme.embedBlock || {};
     const className = {
       base: embedBlockTheme.base || "",
